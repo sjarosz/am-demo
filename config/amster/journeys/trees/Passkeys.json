@@ -1,0 +1,116 @@
+{
+  "name": "Passkeys",
+  "nodes": [
+    {
+      "type": "UsernameCollectorNode",
+      "id": "0a1b2c3d-0002-4000-8000-000000000002",
+      "body": { "_id": "0a1b2c3d-0002-4000-8000-000000000002", "autocompleteValues": [] }
+    },
+    {
+      "type": "PasswordCollectorNode",
+      "id": "536a184c-5c27-4fda-9469-d01eccfaeaa7",
+      "body": { "_id": "536a184c-5c27-4fda-9469-d01eccfaeaa7" }
+    },
+    {
+      "type": "WebAuthnAuthenticationNode",
+      "id": "42e31431-b517-4084-80ac-69700e73ec39",
+      "body": {
+        "_id": "42e31431-b517-4084-80ac-69700e73ec39",
+        "detectSignCountMismatch": false,
+        "requiresResidentKey": false,
+        "asScript": true,
+        "origins": [],
+        "userVerificationRequirement": "PREFERRED",
+        "isRecoveryCodeAllowed": false,
+        "timeout": 60
+      }
+    },
+    {
+      "type": "WebAuthnRegistrationNode",
+      "id": "53b594bf-7dcd-4b6b-90ad-7d78081db249",
+      "body": {
+        "_id": "53b594bf-7dcd-4b6b-90ad-7d78081db249",
+        "trustStoreAlias": "trustalias",
+        "fidoCertificationLevel": "OFF",
+        "relyingPartyName": "ForgeRock",
+        "maxSavedDevices": 0,
+        "generateRecoveryCodes": true,
+        "storeAttestationDataInTransientState": false,
+        "origins": [],
+        "userVerificationRequirement": "PREFERRED",
+        "postponeDeviceProfileStorage": false,
+        "excludeCredentials": false,
+        "requiresResidentKey": false,
+        "authenticatorAttachment": "UNSPECIFIED",
+        "asScript": true,
+        "validateFidoU2fAaguid": true,
+        "acceptedSigningAlgorithms": ["ES256", "RS256"],
+        "enforceRevocationCheck": false,
+        "attestationPreference": "NONE",
+        "timeout": 60
+      }
+    },
+    {
+      "type": "PageNode",
+      "id": "121b823a-ba4a-492c-ae8f-97179b4de2f3",
+      "body": {
+        "_id": "121b823a-ba4a-492c-ae8f-97179b4de2f3",
+        "nodes": [
+          { "_id": "0a1b2c3d-0002-4000-8000-000000000002", "nodeType": "UsernameCollectorNode", "displayName": "Username Collector" },
+          { "_id": "536a184c-5c27-4fda-9469-d01eccfaeaa7", "nodeType": "PasswordCollectorNode", "displayName": "Password Collector" }
+        ],
+        "stage": "UsernamePassword",
+        "pageHeader": {},
+        "pageDescription": {}
+      }
+    }
+  ],
+  "tree": {
+    "_id": "Passkeys",
+    "innerTreeOnly": false,
+    "entryNodeId": "121b823a-ba4a-492c-ae8f-97179b4de2f3",
+    "noSession": false,
+    "mustRun": false,
+    "enabled": true,
+    "transactionalOnly": false,
+    "uiConfig": {},
+    "nodes": {
+      "121b823a-ba4a-492c-ae8f-97179b4de2f3": {
+        "displayName": "Page Node",
+        "nodeType": "PageNode",
+        "version": "1.0",
+        "connections": { "outcome": "42e31431-b517-4084-80ac-69700e73ec39" },
+        "x": 152,
+        "y": 40
+      },
+      "42e31431-b517-4084-80ac-69700e73ec39": {
+        "displayName": "WebAuthn Authentication",
+        "nodeType": "WebAuthnAuthenticationNode",
+        "version": "1.0",
+        "connections": {
+          "success": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "noDevice": "53b594bf-7dcd-4b6b-90ad-7d78081db249",
+          "unsupported": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "failure": "53b594bf-7dcd-4b6b-90ad-7d78081db249",
+          "error": "53b594bf-7dcd-4b6b-90ad-7d78081db249"
+        },
+        "x": 400,
+        "y": 40
+      },
+      "53b594bf-7dcd-4b6b-90ad-7d78081db249": {
+        "displayName": "WebAuthn Registration",
+        "nodeType": "WebAuthnRegistrationNode",
+        "version": "1.0",
+        "connections": {
+          "success": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "failure": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "unsupported": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "clientError": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "x": 650,
+        "y": 200
+      }
+    },
+    "staticNodes": {}
+  }
+}

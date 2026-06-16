@@ -1,0 +1,44 @@
+{
+  "adminConnector": {
+    "host": "0.0.0.0",
+    "port": 8085
+  },
+  "connectors": [
+    {
+      "port": 8443,
+      "tls": "TlsServer"
+    }
+  ],
+  "heap": [
+    {
+      "name": "TlsServer",
+      "type": "ServerTlsOptions",
+      "config": {
+        "keyManager": {
+          "type": "SecretsKeyManager",
+          "config": {
+            "signingSecretId": "gateway.server.keypair",
+            "secretsProvider": "GatewayIdentityStore"
+          }
+        }
+      }
+    },
+    {
+      "name": "GatewayIdentityStore",
+      "type": "FileSystemSecretStore",
+      "config": {
+        "directory": "/var/gateway/secrets/tls",
+        "format": "PLAIN",
+        "suffix": ".pem",
+        "mappings": [
+          {
+            "secretId": "gateway.server.keypair",
+            "format": {
+              "type": "PemPropertyFormat"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

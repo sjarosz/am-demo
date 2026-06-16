@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App 2</title>
+  <style>
+    body { font-family: sans-serif; margin: 3rem; background: #faf7f2; color: #3a2414; }
+    main { max-width: 48rem; }
+    .pill { display: inline-block; padding: 0.25rem 0.75rem; background: #f1e0c7; border-radius: 999px; }
+    .slo-widget {
+      position: fixed; top: 16px; right: 16px; z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 999px;
+      background: #fffdf5; border: 1px solid #cfd7d1;
+      box-shadow: 0 8px 24px rgba(24, 32, 36, 0.12);
+      font: 600 0.9rem/1.2 "IBM Plex Sans", "Segoe UI", sans-serif;
+    }
+    .slo-widget .slo-status { color: #5a6168; }
+    .slo-widget.slo-in .slo-status { color: #0a7d54; }
+    .slo-widget.slo-out .slo-status { color: #a23b2d; }
+    .slo-btn {
+      appearance: none; border: 1px solid #005f73; background: #005f73; color: #fff;
+      padding: 7px 14px; border-radius: 999px; font: inherit; cursor: pointer;
+    }
+    .slo-widget.slo-out .slo-btn { background: #fff; color: #005f73; }
+    .slo-btn:disabled { opacity: 0.6; cursor: default; }
+  </style>
+</head>
+<body>
+  <div id="slo-widget" class="slo-widget slo-loading" aria-live="polite">
+    <span class="slo-status">Checking session&hellip;</span>
+    <button type="button" class="slo-btn" hidden></button>
+  </div>
+  <main>
+    <p class="pill">app2-backend.jrsz.org</p>
+    <h1>Protected Application 2</h1>
+    <p>This backend is intended to be reached through <code>https://app2.jrsz.org</code> via PingGateway.</p>
+  </main>
+  <script>
+    (function () {
+      var widget = document.getElementById('slo-widget');
+      var statusEl = widget.querySelector('.slo-status');
+      var btn = widget.querySelector('.slo-btn');
+
+      function render(state) {
+        widget.classList.remove('slo-loading', 'slo-in', 'slo-out');
+        if (state && state.authenticated) {
+          widget.classList.add('slo-in');
+          statusEl.textContent = state.username ? ('Signed in as ' + state.username) : 'Signed in';
+          btn.hidden = false; btn.textContent = 'Log out'; btn.dataset.action = 'logout';
+        } else {
+          widget.classList.add('slo-out');
+          statusEl.textContent = 'Signed out';
+          btn.hidden = false; btn.textContent = 'Log in'; btn.dataset.action = 'login';
+        }
+      }
+
+      function poll() {
+        fetch('/__slo/status', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(render)
+          .catch(function () { /* keep last known state */ });
+      }
+
+      btn.addEventListener('click', function () {
+        if (btn.dataset.action === 'login') {
+          window.location.href = '/__slo/login';
+          return;
+        }
+        btn.disabled = true;
+        statusEl.textContent = 'Logging out\u2026';
+        fetch('/__slo/logout', { method: 'POST', credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(function () { btn.disabled = false; render({ authenticated: false }); })
+          .catch(function () { btn.disabled = false; poll(); });
+      });
+
+      poll();
+      setInterval(poll, 5000);
+      window.addEventListener('focus', poll);
+    })();
+  </script>
+</body>
+</html>

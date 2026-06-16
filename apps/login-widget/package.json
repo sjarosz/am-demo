@@ -1,0 +1,18 @@
+{
+  "name": "login-widget-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PingAM Login Widget demo for the jrsz.org lab",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@forgerock/login-widget": "^1.3.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <Service name="Catalina">
+    <Connector
+      port="8443"
+      protocol="org.apache.coyote.http11.Http11NioProtocol"
+      maxThreads="150"
+      SSLEnabled="true"
+      scheme="https"
+      secure="true"
+      URIEncoding="UTF-8">
+      <SSLHostConfig>
+        <Certificate
+          certificateKeystoreType="PKCS12"
+          certificateKeystoreFile="@@KEYSTORE_FILE@@"
+          certificateKeystorePassword="@@KEYSTORE_PASSWORD@@" />
+      </SSLHostConfig>
+    </Connector>
+
+    <Engine name="Catalina" defaultHost="localhost">
+      <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true" />
+    </Engine>
+  </Service>
+</Server>

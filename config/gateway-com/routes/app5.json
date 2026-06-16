@@ -1,0 +1,23 @@
+{
+  "name": "app5",
+  "condition": "${request.uri.host == 'app5.jrsz.com'}",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "condition": "${request.uri.path == '/__slo/status'}",
+          "handler": "SloStatusHandler"
+        },
+        {
+          "condition": "${request.uri.path == '/__slo/logout'}",
+          "handler": "SloLogoutHandler"
+        },
+        {
+          "baseURI": "http://app5-backend.jrsz.com:8080",
+          "handler": "PlainReverseProxy"
+        }
+      ]
+    }
+  }
+}

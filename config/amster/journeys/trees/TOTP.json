@@ -1,0 +1,57 @@
+{
+  "name": "TOTP",
+  "nodes": [
+    {
+      "type": "UsernameCollectorNode",
+      "id": "ad561c13-08c6-4119-aab1-0368c98fa4ae",
+      "body": { "_id": "ad561c13-08c6-4119-aab1-0368c98fa4ae", "autocompleteValues": [] }
+    },
+    {
+      "type": "OathTokenVerifierNode",
+      "id": "ed89e1be-a1c6-4d62-8093-2c35e291b91a",
+      "body": {
+        "_id": "ed89e1be-a1c6-4d62-8093-2c35e291b91a",
+        "totpTimeInterval": 30,
+        "totpTimeSteps": 2,
+        "maximumAllowedClockDrift": 5,
+        "totpHashAlgorithm": "HMAC_SHA1",
+        "isRecoveryCodeAllowed": false,
+        "algorithm": "TOTP",
+        "hotpWindowSize": 100
+      }
+    }
+  ],
+  "tree": {
+    "_id": "TOTP",
+    "innerTreeOnly": false,
+    "entryNodeId": "ad561c13-08c6-4119-aab1-0368c98fa4ae",
+    "noSession": false,
+    "mustRun": false,
+    "enabled": true,
+    "transactionalOnly": false,
+    "uiConfig": {},
+    "nodes": {
+      "ad561c13-08c6-4119-aab1-0368c98fa4ae": {
+        "displayName": "Username Collector",
+        "nodeType": "UsernameCollectorNode",
+        "version": "1.0",
+        "connections": { "outcome": "ed89e1be-a1c6-4d62-8093-2c35e291b91a" },
+        "x": 152,
+        "y": 60
+      },
+      "ed89e1be-a1c6-4d62-8093-2c35e291b91a": {
+        "displayName": "OATH Token Verifier",
+        "nodeType": "OathTokenVerifierNode",
+        "version": "1.0",
+        "connections": {
+          "successOutcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "failureOutcome": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "notRegisteredOutcome": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "x": 400,
+        "y": 60
+      }
+    },
+    "staticNodes": {}
+  }
+}

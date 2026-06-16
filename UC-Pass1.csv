@@ -1,0 +1,74 @@
+Test ID,Use Case,Protocol / Pattern,Channel / Tool,Test Intent,Execution Steps,Expected Evidence / Assertions,ADP Comments
+TC-SSO-01,Cookie-based SSO across three protected web applications using bookmarked deep links.,SSO session + access-gateway policy enforcement,Browser,Prove one successful login creates a session that allows deep-link access to three protected apps without additional prompts.,"1. Clear browser cookies.
+ 2. Open APP1 deep link bookmark.
+ 3. Open APP2 and APP3 deep link bookmarks in the same browser.
+ 4. Capture cookies, redirect sequence, and access-gateway and server audit logs.","APP1, APP2, and APP3 deep links land on the target resource.
+ Only first access prompts for authentication.
+ SSO session/audit ID is consistent or traceable across all three apps.
+ No unexpected basic-auth, local-app login, or redirect loop.",
+TC-SSO-02,Header injection with three headers into each protected application.,Access-gateway attribute injection + policy response attributes,Browser + app echo endpoint,"Prove the access gateway can inject standardized identity, entitlement, and trace headers into all protected applications.","1. Authenticate once.
+ 2. Browse to APP1/APP2/APP3 /whoami endpoints.
+ 3. Verify headers: X-Demo-User, X-Demo-Entitlement, X-Demo-Trace.
+ 4. Change a policy response attribute and repeat.","All three apps receive the same header schema.
+ Values reflect the authenticated user/session/policy.
+ Header injection is performed by the access gateway and cannot be spoofed by inbound client headers.",
+TC-SSO-03,Logout invalidates the SSO session and forces re-authentication for all three bookmarked web apps.,Global logout + access-gateway logout handling + session denylisting,Browser,Prove logout ends the usable SSO session and protected resources require re-authentication after logout.,"1. Complete TC-SSO-01.
+ 2. Start logout from APP1 or the authentication server.
+ 3. Attempt APP2 and APP3 deep links.
+ 4. Reauthenticate and verify the deep link resumes correctly.","After logout, all protected deep links redirect to the authentication server for authentication.
+ Old SSO cookie/token is not accepted.
+ After reauth, deep links return to requested target and fresh audit/session ID is created.",
+TC-OIDC-01,Browser-based OIDC authorization code flow with PKCE.,OIDC Authorization Code + PKCE,Browser + token inspector,"Prove a public browser client can obtain an authorization code with PKCE, exchange it for tokens, and receive custom OIDC claims.","1. Generate code_verifier and S256 code_challenge.
+ 2. Start /oauth2/authorize with response_type=code, scope=openid profile demo, state, nonce, code_challenge.
+ 3. Authenticate and consent if prompted.
+ 4. Exchange code with code_verifier.
+ 5. Decode ID token/access token and call userinfo if applicable.","Authorization response contains code and original state.
+ Token response contains access token and ID token.
+ ID token validates issuer, audience, signature, nonce, expiry, and custom claims.
+ Wrong code_verifier fails.",
+TC-SAML-01,SAML SSO with three custom assertion attributes; both IdP-init and SP-init with RelayState.,SAML 2.0 browser SSO,Browser + SAML tracer,Prove the federation server can issue and consume SAML assertions with reusable custom assertion logic and correct RelayState behavior.,"1. IdP-init: start IdP-initiated SSO at the IdP, targeting the SP connection (SP entity ID) with RelayState.
+ 2. Authenticate.
+ 3. Inspect assertion and final RelayState target.
+ 4. SP-init: start SP-initiated SSO at the SP, targeting the IdP connection (IdP entity ID) with RelayState.
+ 5. Inspect AuthnRequest, Response, NameID, and attributes.","SAML Response is signed/valid.
+ Assertion contains demoDepartment, demoEntitlement, demoAssurance.
+ RelayState returns to allowed deep link.
+ SP maps account correctly and establishes local session.",
+TC-SAML-02,Three IdPs and three SPs in one circle of trust; perform IdP-init and SP-init for each pair.,SAML 2.0 CoT matrix + IdP Discovery,Browser + SAML tracer,Prove the CoT can support a multi-provider topology without duplicating assertion logic for every pair.,Run the 18 rows in the SAML CoT Matrix sheet: 9 IdP-init transactions and 9 SP-init transactions.,"Every IdP/SP pair completes SSO.
+ Each pair lands on pair-specific RelayState target.
+ Assertions contain the three custom attributes and correct issuer/audience.
+ Discovery does not pick the wrong IdP.",
+TC-OAUTH-01,OAuth2 client credentials flow with custom access token modification adding three claims.,OAuth2 client_credentials,Postman,Prove machine-to-machine access tokens can be customized without changing every client.,"1. Post grant_type=client_credentials with client auth.
+ 2. Request scopes api.read api.write demo.
+ 3. Decode JWT or introspect token.
+ 4. Verify three custom claims: demoTenant, demoEntitlements, demoTrace.","HTTP 200 token response.
+ Access token contains requested/authorized scopes and the three custom claims.
+ Claims differ correctly by client profile or environment.
+ Unauthorized scope is absent or rejected.",
+TC-OIDC-02,OIDC-style service-client token with custom claims adding three claims.,OIDC/OAuth2 service client; client_credentials nuance,Postman,Demonstrate the service-client variant safely: validate custom claims in the access token and document whether an ID token is issued for client_credentials in the target configuration.,"1. Request grant_type=client_credentials with service scopes.
+ 2. Include openid only if the target authorization-server configuration supports/permits the desired behavior.
+ 3. Decode access token or introspect.
+ 4. Verify claims demoService, demoClientTier, demoPolicyVersion.","Access token contains the three service-client claims.
+ If ID token is not issued, the test passes with explicit evidence that the configuration is standards-aligned.
+ If an ID token is issued by a supported extension/config, validate issuer/audience/signature/claims.",
+TC-OAUTH-02,OAuth2 token exchange delegation with custom claims.,OAuth2 Token Exchange delegation,Postman,"Prove an actor client can exchange a subject token for a delegated token only when may_act authorizes it, and receive custom delegated claims.","1. Obtain subject token for user/client.
+ 2. Obtain actor token for delegate client.
+ 3. POST token exchange with subject_token, actor_token, requested_token_type, scope.
+ 4. Decode exchanged token.","Exchanged token contains act/may_act lineage as expected, delegated scope only, and custom claims demoDelegationReason, demoActorClient, demoSubjectRef.
+ Unauthorized actor is rejected.",
+TC-OAUTH-03,Browser-based OAuth2 consent with an external web application and saved consent.,OAuth2 authorization code + consent persistence / remote consent,Browser + external app + optional Postman token exchange,"Prove user-facing consent works, the external app receives authorization, and saved consent suppresses repeat consent where allowed.","1. Clear saved consent for user/client.
+ 2. Start authorization code flow from external app.
+ 3. Authenticate and approve scopes with save consent.
+ 4. Complete token exchange.
+ 5. Repeat same request and verify consent screen is skipped or saved consent is applied.
+ 6. Use prompt=consent to force re-consent.","First run displays consent and records saved grant.
+ Second run uses saved consent for same scopes/client.
+ Expanded scopes require new consent.
+ External app receives code and tokens only at registered redirect URI.",
+TC-OAUTH-04,Exchange refresh token for a new access token.,OAuth2 refresh_token,Postman,Prove a client can renew access without resource owner interaction and that custom claims remain correct after refresh.,"1. Obtain initial tokens using auth code flow.
+ 2. POST grant_type=refresh_token with client auth and refresh_token.
+ 3. Decode/introspect new access token.
+ 4. Optionally verify old refresh token behavior depending on rotation settings.","New access token is issued without user interaction.
+ Claims are recomputed or preserved as intended.
+ Scopes do not exceed original grant.
+ Refresh token rotation behavior matches provider settings.",

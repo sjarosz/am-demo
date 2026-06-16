@@ -1,0 +1,38 @@
+# Downloaded product archives and installers
+*.zip
+*.war
+*.jar
+*.tar
+*.tar.gz
+*.tgz
+*.dmg
+*.pkg
+*.msi
+/zips/
+
+# Unpacked downloaded product distributions
+/openam/
+/amster/
+/opendj/
+/ping-gateway-*/
+
+# Application dependencies and generated build output
+node_modules/
+dist/
+build/
+.vite/
+
+# Runtime logs and local debug output
+*.log
+logs/
+
+# Python and local tooling caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

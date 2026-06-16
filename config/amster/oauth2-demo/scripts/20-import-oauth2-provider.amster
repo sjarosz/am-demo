@@ -1,0 +1,5 @@
+create OAuth2Provider --realm / --body rootProviderBody
+update OAuth2Provider --realm / --body rootProviderBody
+
+create OAuth2Provider --realm /alpha --body alphaProviderBody
+update OAuth2Provider --realm /alpha --body alphaProviderBody

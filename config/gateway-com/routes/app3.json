@@ -1,0 +1,40 @@
+{
+  "name": "app3",
+  "condition": "${request.uri.host == 'app3.jrsz.com'}",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "condition": "${request.uri.path == '/__slo/status'}",
+          "handler": "SloStatusHandler"
+        },
+        {
+          "condition": "${request.uri.path == '/__slo/logout'}",
+          "handler": "SloLogoutHandler"
+        },
+        {
+          "condition": "${request.uri.path == '/__slo/login'}",
+          "handler": "SloLoginHandler"
+        },
+        {
+          "baseURI": "https://app3-backend.jrsz.com:8443",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "type": "SingleSignOnFilter",
+                  "config": {
+                    "amService": "AmService"
+                  }
+                }
+              ],
+              "handler": "SecureReverseProxy"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

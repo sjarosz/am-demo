@@ -1,0 +1,224 @@
+{
+  "entityId": "https://am.jrsz.org:8443/am/jrsz-org",
+  "identityProvider": {
+    "assertionContent": {
+      "signingAndEncryption": {
+        "requestResponseSigning": {},
+        "encryption": {},
+        "secretIdAndAlgorithms": {}
+      },
+      "nameIdFormat": {},
+      "authenticationContext": {
+        "authenticationContextMapper": "com.sun.identity.saml2.plugins.DefaultIDPAuthnContextMapper",
+        "authContextItems": [
+          {
+            "contextReference": "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+            "level": 0
+          }
+        ]
+      },
+      "assertionTime": {},
+      "basicAuthentication": {},
+      "assertionCache": {}
+    },
+    "assertionProcessing": {
+      "attributeMapper": {
+        "attributeMapper": "com.sun.identity.saml2.plugins.DefaultIDPAttributeMapper",
+        "attributeMap": [
+          {
+            "samlAttribute": "uid",
+            "localAttribute": "uid",
+            "binary": false
+          }
+        ]
+      },
+      "accountMapper": {},
+      "localConfiguration": {}
+    },
+    "services": {
+      "metaAlias": "/alpha/idp-org",
+      "serviceAttributes": {
+        "artifactResolutionService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/ArtifactResolver/metaAlias/alpha/idp-org"
+          }
+        ],
+        "singleLogoutService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/IDPSloRedirect/metaAlias/alpha/idp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPSloRedirect/metaAlias/alpha/idp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/IDPSloPOST/metaAlias/alpha/idp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPSloPOST/metaAlias/alpha/idp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/IDPSloSoap/metaAlias/alpha/idp-org"
+          }
+        ],
+        "nameIdService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/IDPMniRedirect/metaAlias/alpha/idp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPMniRedirect/metaAlias/alpha/idp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/IDPMniPOST/metaAlias/alpha/idp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPMniPOST/metaAlias/alpha/idp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/IDPMniSoap/metaAlias/alpha/idp-org"
+          }
+        ],
+        "singleSignOnService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/SSORedirect/metaAlias/alpha/idp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/SSOPOST/metaAlias/alpha/idp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/SSOSoap/metaAlias/alpha/idp-org"
+          }
+        ]
+      }
+    },
+    "advanced": {
+      "saeConfiguration": {},
+      "ecpConfiguration": {},
+      "sessionSynchronization": {},
+      "idpFinderImplementation": {},
+      "relayStateUrlList": {
+        "relayStateUrlList": [
+          "https://app7.jrsz.org/*",
+          "https://app7.jrsz.org/*?*",
+          "https://app7.jrsz.com:8444/*",
+          "https://app7.jrsz.com:8444/*?*",
+          "https://*",
+          "https://*?*",
+          "https://*",
+          "https://*?*"
+        ]
+      },
+      "idpAdapter": {},
+      "applicationContext": {}
+    }
+  },
+  "serviceProvider": {
+    "assertionContent": {
+      "signingAndEncryption": {
+        "requestResponseSigning": {},
+        "encryption": {},
+        "secretIdAndAlgorithms": {}
+      },
+      "nameIdFormat": {},
+      "authenticationContext": {
+        "authContextItems": [
+          {
+            "contextReference": "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+            "level": 0,
+            "defaultItem": true
+          }
+        ],
+        "authenticationComparisonType": "Exact"
+      },
+      "basicAuthentication": {},
+      "clientAuthentication": {}
+    },
+    "assertionProcessing": {
+      "attributeMapper": {},
+      "autoFederation": {
+        "autoFedEnabled": true,
+        "autoFedAttribute": "uid"
+      },
+      "accountMapping": {},
+      "responseArtifactMessageEncoding": {},
+      "url": {},
+      "redirectTreeConfiguration": {},
+      "adapter": {}
+    },
+    "services": {
+      "metaAlias": "/alpha/sp-org",
+      "serviceAttributes": {
+        "singleLogoutService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/SPSloRedirect/metaAlias/alpha/sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPSloRedirect/metaAlias/alpha/sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/SPSloPOST/metaAlias/alpha/sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPSloPOST/metaAlias/alpha/sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/SPSloSoap/metaAlias/alpha/sp-org"
+          }
+        ],
+        "nameIdService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/SPMniRedirect/metaAlias/alpha/sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPMniRedirect/metaAlias/alpha/sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/SPMniPOST/metaAlias/alpha/sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPMniPOST/metaAlias/alpha/sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/SPMniSoap/metaAlias/alpha/sp-org"
+          }
+        ],
+        "assertionConsumerService": [
+          {
+            "isDefault": false,
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact",
+            "location": "https://am.jrsz.org:8443/am/Consumer/metaAlias/alpha/sp-org",
+            "index": 0
+          },
+          {
+            "isDefault": true,
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/Consumer/metaAlias/alpha/sp-org",
+            "index": 1
+          },
+          {
+            "isDefault": false,
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:PAOS",
+            "location": "https://am.jrsz.org:8443/am/Consumer/ECP/metaAlias/alpha/sp-org",
+            "index": 2
+          }
+        ]
+      }
+    },
+    "advanced": {
+      "saeConfiguration": {},
+      "ecpConfiguration": {},
+      "idpProxy": {},
+      "relayStateUrlList": {
+        "relayStateUrlList": [
+          "https://app7.jrsz.org/*",
+          "https://app7.jrsz.org/*?*",
+          "https://app7.jrsz.com:8444/*",
+          "https://app7.jrsz.com:8444/*?*",
+          "https://*",
+          "https://*?*",
+          "https://*",
+          "https://*?*"
+        ]
+      }
+    }
+  }
+}

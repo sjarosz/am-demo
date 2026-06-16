@@ -1,0 +1,6 @@
+{
+  "name": "app4",
+  "baseURI": "http://app4-backend.jrsz.com:3000",
+  "condition": "${request.uri.host == 'app4.jrsz.com'}",
+  "handler": "PlainReverseProxy"
+}

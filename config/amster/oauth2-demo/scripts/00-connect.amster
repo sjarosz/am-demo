@@ -1,0 +1,75 @@
+amUrl = System.getenv("AM_SERVER_URL") ?: System.getenv("AM_URL")
+amsterKey = System.getenv("AMSTER_PRIVATE_KEY") ?: "/home/forgerock/openam/security/keys/amster/amster_rsa"
+app4BaseUrl = System.getenv("APP4_BASE_URL") ?: "https://app4.jrsz.org"
+app4ClientId = System.getenv("APP4_CLIENT_ID") ?: "demo-pkce-app"
+app4RedirectUri = System.getenv("APP4_REDIRECT_URI") ?: "${app4BaseUrl}/callback"
+igAgentId = System.getenv("IG_AGENT_ID") ?: "ig_agent_alpha"
+igAgentPassword = System.getenv("IG_AGENT_PASSWORD") ?: "igagent-changeit-01"
+igBaseUrl = System.getenv("IG_BASE_URL") ?: "https://ig.jrsz.org"
+providerTemplatePath = "/opt/amster-config/oauth-oidc.service.json"
+clientTemplatePath = "/opt/amster-config/oauth2-demo/entities/demo-pkce-app.oauth2.app.json"
+
+renderProviderBody = {
+  def providerTemplate = new groovy.json.JsonSlurper().parse(new File(providerTemplatePath))
+  groovy.json.JsonOutput.toJson(providerTemplate.service["oauth-oidc"])
+}
+
+renderClientBody = { clientId, redirectUri ->
+  def renderedClientTemplate = new File(clientTemplatePath)
+    .text
+    .replace("@@CLIENT_ID@@", clientId)
+    .replace("@@APP4_REDIRECT_URI@@", redirectUri)
+  def clientTemplate = new groovy.json.JsonSlurper().parseText(renderedClientTemplate)
+  groovy.json.JsonOutput.toJson(clientTemplate.application[clientId])
+}
+
+realmBody = { realmName ->
+  groovy.json.JsonOutput.toJson([
+    name      : realmName,
+    active    : true,
+    parentPath: "/",
+    aliases   : [],
+  ])
+}
+
+igAgentBody = { password ->
+  groovy.json.JsonOutput.toJson([
+    userpassword           : password,
+    status                 : [inherited: false, value: "Active"],
+    igCdssoRedirectUrls    : [inherited: false, value: []],
+    igCdssoLoginUrlTemplate: [inherited: false, value: ""],
+  ])
+}
+
+validationBody = { gatewayBaseUrl ->
+  def urls = [
+    "${gatewayBaseUrl}/*",
+    "${gatewayBaseUrl}/*?*",
+    "https://app1.jrsz.org/*",
+    "https://app1.jrsz.org/*?*",
+    "https://app2.jrsz.org/*",
+    "https://app2.jrsz.org/*?*",
+    "https://app3.jrsz.org/*",
+    "https://app3.jrsz.org/*?*",
+    "https://app4.jrsz.org/*",
+    "https://app4.jrsz.org/*?*",
+    "https://app5.jrsz.org/*",
+    "https://app5.jrsz.org/*?*",
+    "https://app6.jrsz.org/*",
+    "https://app6.jrsz.org/*?*",
+  ]
+  groovy.json.JsonOutput.toJson([
+    validGotoDestinations: urls,
+  ])
+}
+
+rootProviderBody = renderProviderBody()
+alphaProviderBody = renderProviderBody()
+rootClientBody = renderClientBody(app4ClientId, app4RedirectUri)
+alphaClientBody = renderClientBody(app4ClientId, app4RedirectUri)
+alphaRealmBody = realmBody("alpha")
+bravoRealmBody = realmBody("bravo")
+alphaIgAgentBody = igAgentBody(igAgentPassword)
+alphaValidationBody = validationBody(igBaseUrl)
+
+connect --private-key amsterKey amUrl

@@ -1,0 +1,88 @@
+{
+  "name": "SamlLogin",
+  "nodes": [
+    {
+      "type": "product-Saml2Node",
+      "id": "5a2d0001-1111-4111-8111-000000000001",
+      "body": {
+        "_id": "5a2d0001-1111-4111-8111-000000000001",
+        "idpEntityId": "@@IDP_ENTITY@@",
+        "metaAlias": "@@SP_METAALIAS@@",
+        "binding": "HTTP_POST",
+        "requestBinding": "HTTP_REDIRECT",
+        "allowCreate": true,
+        "forceAuthn": false,
+        "isPassive": false,
+        "validateIdpEntityId": true,
+        "authComparison": "EXACT",
+        "authnContextClassRef": [],
+        "authnContextDeclRef": [],
+        "nameIdFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
+      }
+    },
+    {
+      "type": "ProvisionDynamicAccountNode",
+      "id": "5a2d0002-2222-4222-8222-000000000002",
+      "body": {
+        "_id": "5a2d0002-2222-4222-8222-000000000002",
+        "accountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider"
+      }
+    },
+    {
+      "type": "SetSuccessUrlNode",
+      "id": "5a2d0003-3333-4333-8333-000000000003",
+      "body": {
+        "_id": "5a2d0003-3333-4333-8333-000000000003",
+        "successUrl": "@@SUCCESS_URL@@"
+      }
+    }
+  ],
+  "tree": {
+    "_id": "SamlLogin",
+    "innerTreeOnly": false,
+    "entryNodeId": "5a2d0001-1111-4111-8111-000000000001",
+    "noSession": false,
+    "mustRun": false,
+    "enabled": true,
+    "transactionalOnly": false,
+    "uiConfig": {},
+    "nodes": {
+      "5a2d0001-1111-4111-8111-000000000001": {
+        "displayName": "SAML2 Authentication",
+        "nodeType": "product-Saml2Node",
+        "version": "1.0",
+        "connections": {
+          "ACCOUNT_EXISTS": "5a2d0003-3333-4333-8333-000000000003",
+          "NO_ACCOUNT": "5a2d0002-2222-4222-8222-000000000002",
+          "ERROR": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "x": 160,
+        "y": 80
+      },
+      "5a2d0002-2222-4222-8222-000000000002": {
+        "displayName": "Provision Dynamic Account",
+        "nodeType": "ProvisionDynamicAccountNode",
+        "version": "1.0",
+        "connections": {
+          "outcome": "5a2d0003-3333-4333-8333-000000000003"
+        },
+        "x": 440,
+        "y": 240
+      },
+      "5a2d0003-3333-4333-8333-000000000003": {
+        "displayName": "Set Success URL",
+        "nodeType": "SetSuccessUrlNode",
+        "version": "1.0",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "x": 720,
+        "y": 120
+      }
+    },
+    "staticNodes": {
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": { "x": 980, "y": 80 },
+      "e301438c-0bd0-429c-ab0c-66126501069a": { "x": 980, "y": 320 }
+    }
+  }
+}

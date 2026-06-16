@@ -1,0 +1,117 @@
+Test ID,Use Case,Protocol / Pattern,Channel / Tool,Test Intent,Execution Steps,Expected Evidence / Assertions,ADP Comments
+UC-SSO-01,Cookie-based SSO across three gateway-protected web apps (app1/app2/app3) in the /alpha realm.,PingGateway SingleSignOnFilter + AM SSO session,Browser,Prove one AM login creates a shared SSO session that grants deep-link access to all three IG-protected apps without re-prompting.,"1. Clear cookies for jrsz.org.
+ 2. Open https://app1.jrsz.org/ and authenticate as demo-user.
+ 3. In the same browser open https://app2.jrsz.org/ and https://app3.jrsz.org/.
+ 4. Inspect the iPlanetDirectoryPro cookie and the IG redirect sequence.","app1 prompts for login once; app2/app3 open without re-prompt.
+ A single iPlanetDirectoryPro cookie on jrsz.org is shared by all three.
+ No redirect loop or basic-auth prompt; IG proxies to each backend after the SSO gate.",
+UC-SSO-02,Global Single Logout (smart Login/Logout button) across app1-app5.,AM REST session logout + per-app /__slo control endpoints,Browser,Prove ending the shared AM SSO session logs the user out of every protected app within the polling interval.,"1. Sign in via UC-SSO-01 (app1-app3) and open app4 + app5.
+ 2. Confirm each page's pill shows Log out with the username.
+ 3. Click Log out on any app (POST /__slo/logout -> AM sessions?_action=logout).
+ 4. Watch the other open tabs (they poll /__slo/status every ~5s).","The clicked app calls AM REST logout and clears the cookie.
+ Within ~5s every open app page flips its pill to Log in.
+ app4 also drops its local OIDC tokens; app5 revokes its widget tokens via the SDK.",
+UC-SSO-03,Re-authentication required after logout for gated deep links.,PingGateway SSO gate re-challenge,Browser,Prove protected resources force a fresh AM login after the SSO session is ended.,"1. Complete UC-SSO-02.
+ 2. Reload https://app1.jrsz.org/ (or click Log in).
+ 3. Complete AM login again and confirm the deep link resumes.","After logout the old cookie is rejected and IG redirects to AM login.
+ After re-auth the requested deep link is returned and a fresh session/cookie is issued.",
+UC-OIDC-01,Browser OIDC Authorization Code flow with PKCE (app4 public client).,OIDC Authorization Code + S256 PKCE,Browser + app4 callback token inspector,Prove a public browser client can complete PKCE login against the /alpha OAuth2 provider and inspect issued tokens/claims.,"1. Open https://app4.jrsz.org/ and start login (client demo-pkce-app).
+ 2. app4 generates code_verifier + S256 challenge and calls /oauth2/authorize (scope openid profile).
+ 3. Authenticate as demo-user and consent if prompted.
+ 4. app4 exchanges the code with the code_verifier and renders the decoded tokens + userinfo.","Authorization response returns code with the original state.
+ Token response returns id_token + access_token; id_token validates issuer/audience/nonce/expiry.
+ Callback page shows decoded claims and userinfo for demo-user.",
+UC-OIDC-02,"PingAM Login Widget modal sign-in (app5, ForgeRock JS SDK).",OIDC public client via @forgerock/login-widget,Browser,Prove an embedded Login Widget can drive an AM journey and obtain OAuth tokens via redirect.,"1. Open https://app5.jrsz.org/ (client sdkPublicClient, journey sdkUsernamePasswordJourney).
+ 2. Launch the Login Widget modal and authenticate as demo-user.
+ 3. Observe the OAuth redirect to /callback.html.
+ 4. Confirm userinfo is displayed after sign-in.","Widget completes the journey and the SDK obtains tokens via the callback.
+ userinfo for demo-user renders in the page.
+ /__slo/status reports the shared AM session; logout revokes the widget tokens.",
+UC-SCRIPT-OIDC-01,"OAuth2/OIDC sample-script customizations surfaced in tokens (app8, /scriptlab).",OIDC Authorization Code + PKCE (confidential client) with 6 scripted provider hooks,Browser + app8 token decoder,"Prove the wired sample scripts inject identifiable custom elements (star-tagged) into the id_token, userinfo, access token, introspection and tokeninfo.","1. Open https://app8.jrsz.org/ and run Standard login as demo-user (client scriptlab-rp).
+ 2. Inspect the decoded id_token + userinfo for the OIDC Claims script output.
+ 3. Inspect the JWT access token + introspect for the Access Token Modification + may_act output.
+ 4. Inspect /tokeninfo for the Evaluate Scope output.","id_token/userinfo carry the OIDC-claims star fields; access token + introspect carry the access-token-modification star fields and a may_act claim.
+ tokeninfo reflects evaluate-scope (scope->attribute values + star marker).
+ Every star-tagged element is highlighted in app8's rendered JSON.",
+UC-SCRIPT-OIDC-02,Scripted scope validation rejects an unauthorized scope (app8 negative control).,OAuth2 Validate Scope script,Browser + app8,Prove the Validate Scope sample script rejects a deliberately bogus scope.,"1. In app8 choose Request bad scope.
+ 2. Start the authorization request including the invalid scope.
+ 3. Observe the AM response.","AM rejects the request with invalid_scope.
+ No tokens are issued for the bad-scope request, confirming the validate-scope hook ran.",
+UC-SAML-01,SAML 2.0 cross-domain SSO across both AM stacks (app7 console).,SAML 2.0 browser SSO (IdP-init + SP-init) over the jrsz-federation circle of trust,Browser + app7 console / SAML tracer,Prove the dual-role org and com entities complete SSO in all four permutations with auto-federation onto demo-user.,"1. Open https://app7.jrsz.org/ and log in as demo-user where prompted.
+ 2. Launch org IdP -> com SP (IdP-init) and (SP-init); confirm the session on https://app7.jrsz.com:8444/.
+ 3. Launch com IdP -> org SP (IdP-init) and (SP-init); confirm the session on the org console.
+ 4. Inspect the assertion (NameID, issuer, audience) and RelayState landing.","All four IdP/SP-init flows complete and establish a federated session.
+ Auto-federation on uid resolves to demo-user on the SP side.
+ RelayState returns to the allow-listed app7 console; assertion issuer/audience are correct.",
+UC-SAML-02,SAML 2.0 Single Logout from a federated entity (app7 console).,SAML 2.0 SLO (IdP-init + SP-init front-channel),Browser + app7 console,Prove SAML SLO terminates the federated session and propagates LogoutRequests to the partner.,"1. Establish a federated session via UC-SAML-01.
+ 2. From the app7 SLO card trigger IDP-initiated SLO for the active entity.
+ 3. Repeat with SP-initiated SLO.
+ 4. Re-check session state on both consoles.","SLO ends the SAML session and cascades a LogoutRequest to the federation partner.
+ Both consoles show no AM session afterward.
+ SLO only acts when a live federated session exists (metaAlias read from the session).",
+UC-SAML-SCRIPT-01,"SAML 2.0 custom scripts customize the assertion and SP session (app9, /samllab).",SAML 2.0 SSO with IDP Attribute Mapper + NameID Mapper + SP Adapter scripts (org IdP -> com SP),Browser + app9 console,Prove the three sample SAML2 scripts inject star-tagged attributes/NameID into the assertion and surface them into the com SP session.,"1. Open https://app9.jrsz.org/ and launch org IdP -> com SP (IdP-init or SP-init); log in as demo-user.
+ 2. Open https://app9.jrsz.com:8444/ (SP side).
+ 3. Read the Script proof panel (samllabProof session property via getSessionInfo).
+ 4. Confirm the star-tagged attributes and NameID are present.","IDP Attribute Mapper adds star-tagged SAML attributes; NameID Mapper star-prefixes the Subject NameID.
+ SP Adapter stashes them into the com SP session as samllabProof.
+ app9 highlights every star-tagged element; auto-fed uid resolves demo-user.",
+UC-FED-OIDC-01,Cross-AM OIDC social login / external IdP (SocialLogin journey).,OIDC social federation (each AM is the other's OP) with alias/email match + dynamic provisioning,Browser,Prove a user can log in to one AM realm using the partner AM as an external OIDC IdP and resolve to the correct local account.,"1. Open the SocialLogin journey (launchpad ""OIDC external IDP login"") on jrsz.org.
+ 2. Choose the partner IdP and authenticate at the partner AM as demo-user.
+ 3. Return to the consumer realm and confirm the authenticated session.
+ 4. Repeat in the reverse direction (com -> org).","Consumer resolves the account by social alias, then by email, else provisions a new email-named account.
+ Lands authenticated on this side's IG launchpad (valid goto).
+ Works in both directions; repeat logins reuse the account via the social alias.",
+UC-FED-SAML-01,SAML 2.0 external IdP login in integrated mode (SamlLogin journey).,"SAML 2.0 SP-init inside an authentication tree (SAML2 node, AuthConsumer ACS)",Browser,Prove a SAML SP flow can run inside a journey and resolve or provision the federated user.,"1. Open the SamlLogin journey (launchpad ""External SAML IDP login"") on jrsz.org.
+ 2. The SAML2 node SP-inits an AuthnRequest from org-integrated-sp to the partner IdP jrsz-com.
+ 3. Authenticate at the partner; the assertion returns to the AuthConsumer ACS inside the tree.
+ 4. Confirm the resulting realm session.","Auto-federation on uid yields ACCOUNT_EXISTS -> demo-user; genuinely new users go through Provision Dynamic Account.
+ Journey completes and sets the success URL to this side's launchpad.
+ Uses the integrated SP entity (AuthConsumer), separate from the app7 federation.",
+UC-MFA-01,Multi-factor authentication journey with OATH enrollment + verification (MFA tree).,Authentication tree: Page (username+password) -> Data Store Decision -> OATH,Browser + authenticator app,Prove the MFA journey enrolls a TOTP device when absent and verifies the OATH token on subsequent logins.,"1. Open the MFA tree XUI link for /alpha.
+ 2. Enter demo-user credentials (Page node).
+ 3. On first login complete OATH Registration with an authenticator app.
+ 4. Complete OATH Token Verifier with the generated code.","Username/password validates via Data Store Decision.
+ First login registers an OATH device; the OATH code is required and verified.
+ Successful verification establishes an authenticated session.",
+UC-MFA-02,TOTP-only step for an already-enrolled user (TOTP tree).,Authentication tree: Username Collector -> OATH Token Verifier,Browser + authenticator app,Prove a user who already has a registered authenticator can authenticate with username + OATH code only.,"1. Open the TOTP tree XUI link for /alpha.
+ 2. Enter the username (Username Collector).
+ 3. Enter the current OATH code (OATH Token Verifier).","No password step is presented.
+ A valid OATH code completes authentication; an invalid/expired code fails.",
+UC-WEBAUTHN-01,Passkey (WebAuthn) registration and authentication (Passkeys tree).,Authentication tree: Page (username+password) -> WebAuthn Registration/Authentication,Browser + platform/roaming authenticator,Prove passkey enrollment and subsequent WebAuthn sign-in work in the journey.,"1. Open the Passkeys tree XUI link for /alpha.
+ 2. Enter demo-user credentials (Page node).
+ 3. On first login complete WebAuthn Registration (create a passkey).
+ 4. On a later login complete WebAuthn Authentication with the passkey.","A passkey is registered to the account on first run.
+ WebAuthn authentication succeeds with the registered credential and establishes a session.",
+UC-WEBAUTHN-02,Passwordless WebAuthn sign-in (Passwordless tree).,Authentication tree: Username Collector -> WebAuthn Authentication,Browser + registered authenticator,Prove a user can authenticate with a passkey and no password step.,"1. Open the Passwordless tree XUI link for /alpha.
+ 2. Enter the username (Username Collector).
+ 3. Complete WebAuthn Authentication with a registered passkey.","No password is collected in the tree.
+ WebAuthn authentication with a registered credential establishes the session; absence of a credential fails.",
+UC-TIMEOUT-01,"AM session timeout (idle and max) enforcement across IG apps and OIDC RPs (app6, /timeout-test).",AM server-side/client-side session idle + max lifetime,Browser + app6 console probes,Prove that once the AM session is invalid (idle or max) no protected resource serves content and silent OIDC re-entry fails.,"1. Open https://app6.jrsz.org/ and set a profile via set-timeout-profile.sh (e.g. idle-first or max-first); re-login as tt-user.
+ 2. Authenticate to IG App A, App B, RP C, RP D.
+ 3. Trigger the condition (stay idle / keep active to hit max).
+ 4. After expiry probe AM validate (refresh=false), App A/B, and prompt=none.","AM validate returns invalid at the expected clock.
+ IG App A (no cache) stops serving immediately; prompt=none fails with login_required.
+ The back-channel feed shows SESSION_IDLE_TIMEOUT / SESSION_MAX_TIMEOUT.",
+UC-TIMEOUT-02,PingGateway cache behavior vs AM logout (app6 App A no-cache vs App B cached).,IG AmService (uncached) vs AmServiceCached (TTL cache),Browser + app6 console,Prove IG caching can serve stale protected content up to CACHE_TTL after AM logout unless notifications/eviction are enabled.,"1. Authenticate and access /protected/a (App A) and /protected/b (App B).
+ 2. Log out the AM session (AM REST or IG /logout).
+ 3. Immediately re-request App A and App B.
+ 4. Observe behavior over the cache TTL window.","App A revalidates every request and denies access immediately after logout.
+ App B may serve cached content up to CACHE_TTL (G3 stale-cache) with notifications off; enabling eviction makes it deny immediately (G2).",
+UC-TIMEOUT-03,OIDC logout matrix incl. back-channel and multi-device (app6 RP C/RP D).,OIDC RP-initiated logout + AM REST logout + back-channel logout + logoutByUser,Browser + app6 back-channel SSE feed,Prove OIDC RPs clear local state by sid/sub on AM logout and that logout scope (single session vs user-wide) is correct.,"1. Authenticate RP C (confidential) and RP D (public PKCE).
+ 2. Trigger RP-initiated logout from RP C (id_token_hint + post_logout_redirect_uri).
+ 3. Observe back-channel logout tokens delivered to RP C and RP D.
+ 4. Test logoutByUser (multi-device) and the local-only logout negative control.","Each RP holding the session clears its local session by sid/sub.
+ logoutByUser kills all of the user's sessions; session-specific logout kills only one.
+ Local-only RP logout does NOT invalidate the AM session (negative control).",
+UC-TIMEOUT-04,Token validation and revocation behavior through API E (app6 T-matrix).,OAuth2 introspection vs local-JWT validation; refresh-token reuse/revocation,Browser + app6 (API E resource server),Prove the difference between live-state token validation and self-contained JWT acceptance after logout.,"1. Capture an RP C access token.
+ 2. Call API E with mode=introspect and mode=jwt before and after AM logout/revocation.
+ 3. Attempt refresh-token reuse after logout.
+ 4. Revoke the refresh token and retry.","mode=introspect rejects revoked/logged-out tokens (live AM state).
+ mode=jwt accepts a captured token until exp (documented residual risk).
+ Refresh reuse fails when logout revokes the grant; rotation behaves per provider settings.",
+UC-TIMEOUT-05,AM session storage type detection: client-side (stateless JWT) vs server-side (CTS).,AM session storage modes,Browser + app6 instrumentation strip,Prove the lab can switch and detect the realm's SSO session storage type and its logout/idle implications.,"1. Set TIMEOUT_REALM_STATELESS (true=client-side, false=server-side) and re-bootstrap.
+ 2. Log in as tt-user and read the AM type chip on the app6 strip.
+ 3. Inspect the iPlanetDirectoryPro cookie shape (embedded JWT vs opaque reference).
+ 4. Observe idle enforcement and logout (denylist) behavior for that mode.","AM type chip shows Client-side (JWT) or Server-side (CTS) matching the configured mode.
+ Client-side cookie embeds a JWT (~2KB); server-side cookie is a short opaque reference.
+ Server-side gives deterministic idle/max enforcement and central revocation; client-side relies on denylisting.",

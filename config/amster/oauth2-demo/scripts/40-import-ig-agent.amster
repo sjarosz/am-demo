@@ -1,0 +1,2 @@
+create IdentityGatewayAgents --realm /alpha --id igAgentId --body alphaIgAgentBody
+update IdentityGatewayAgents --realm /alpha --id igAgentId --body alphaIgAgentBody

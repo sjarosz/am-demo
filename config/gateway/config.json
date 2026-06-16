@@ -1,0 +1,223 @@
+{
+  "handler": {
+    "type": "Router",
+    "name": "_router",
+    "config": {
+      "directory": "${openig.configDirectory}/routes"
+    }
+  },
+  "heap": [
+    {
+      "name": "SecretsPasswords",
+      "type": "FileSystemSecretStore",
+      "config": {
+        "directory": "/var/gateway/secrets/passwords",
+        "format": "PLAIN"
+      }
+    },
+    {
+      "name": "PlatformTrustStore",
+      "type": "KeyStoreSecretStore",
+      "config": {
+        "file": "/var/gateway/secrets/trust/truststore.p12",
+        "storeType": "PKCS12",
+        "storePasswordSecretId": "truststore.pass",
+        "secretsProvider": "SecretsPasswords",
+        "mappings": [
+          {
+            "secretId": "platform.ca",
+            "aliasesMatching": [
+              ".*"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "PlatformTrustManager",
+      "type": "SecretsTrustManager",
+      "config": {
+        "verificationSecretId": "platform.ca",
+        "secretsProvider": "PlatformTrustStore",
+        "checkRevocation": false
+      }
+    },
+    {
+      "name": "ClientTlsOptions",
+      "type": "ClientTlsOptions",
+      "config": {
+        "trustManager": "PlatformTrustManager"
+      }
+    },
+    {
+      "name": "BackendTlsOptions",
+      "type": "ClientTlsOptions",
+      "config": {
+        "trustManager": "PlatformTrustManager",
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    },
+    {
+      "name": "SecureReverseProxy",
+      "type": "ReverseProxyHandler",
+      "config": {
+        "tls": "BackendTlsOptions",
+        "soTimeout": "30 seconds"
+      }
+    },
+    {
+      "name": "PlainReverseProxy",
+      "type": "ReverseProxyHandler",
+      "config": {
+        "soTimeout": "30 seconds"
+      }
+    },
+    {
+      "name": "AmClientHandler",
+      "type": "ClientHandler",
+      "config": {
+        "tls": "ClientTlsOptions"
+      }
+    },
+    {
+      "name": "SloStatusHandler",
+      "type": "ScriptableHandler",
+      "config": {
+        "type": "application/x-groovy",
+        "clientHandler": "AmClientHandler",
+        "file": "slo-status.groovy"
+      }
+    },
+    {
+      "name": "SloLogoutHandler",
+      "type": "ScriptableHandler",
+      "config": {
+        "type": "application/x-groovy",
+        "clientHandler": "AmClientHandler",
+        "file": "slo-logout.groovy"
+      }
+    },
+    {
+      "name": "SloLoginHandler",
+      "type": "StaticResponseHandler",
+      "config": {
+        "status": 302,
+        "reason": "Found",
+        "headers": {
+          "Location": [
+            "${request.uri.scheme}://${request.uri.authority}/"
+          ],
+          "Cache-Control": [
+            "no-store"
+          ]
+        }
+      }
+    },
+    {
+      "name": "AmService",
+      "type": "AmService",
+      "config": {
+        "url": "https://am.jrsz.org:8443/am",
+        "realm": "/alpha",
+        "version": "8.1.0",
+        "secretsProvider": {
+          "type": "SecretsProvider",
+          "config": {
+            "stores": [
+              "SecretsPasswords"
+            ]
+          }
+        },
+        "agent": {
+          "username": "ig_agent_alpha",
+          "passwordSecretId": "ig.agent.alpha.pass"
+        },
+        "notifications": {
+          "enabled": false,
+          "tls": "ClientTlsOptions"
+        },
+        "ssoTokenHeader": "iPlanetDirectoryPro",
+        "amHandler": {
+          "type": "ClientHandler",
+          "config": {
+            "tls": "ClientTlsOptions"
+          }
+        }
+      }
+    },
+    {
+      "name": "AmServiceTimeout",
+      "type": "AmService",
+      "comment": "app6 IG App A: timeout-test realm, no session cache (every request revalidates against AM).",
+      "config": {
+        "url": "https://am.jrsz.org:8443/am",
+        "realm": "/timeout-test",
+        "version": "8.1.0",
+        "secretsProvider": {
+          "type": "SecretsProvider",
+          "config": {
+            "stores": [
+              "SecretsPasswords"
+            ]
+          }
+        },
+        "agent": {
+          "username": "ig_agent_alpha",
+          "passwordSecretId": "ig.agent.alpha.pass"
+        },
+        "notifications": {
+          "enabled": false,
+          "tls": "ClientTlsOptions"
+        },
+        "ssoTokenHeader": "iPlanetDirectoryPro",
+        "amHandler": {
+          "type": "ClientHandler",
+          "config": {
+            "tls": "ClientTlsOptions"
+          }
+        }
+      }
+    },
+    {
+      "name": "AmServiceCached",
+      "type": "AmService",
+      "comment": "app6 IG App B: timeout-test realm with an IG session cache. notifications is intentionally DISABLED so the gateway boots even before the timeout-test realm/agent is bootstrapped (fresh clone or after `docker compose down -v`); an enabled notification service is a fatal startup dependency in IG. With notifications off, the cache evicts on expiration (CACHE_TTL), so App B can briefly serve stale content after AM logout/timeout - this exercises the stale-cache (G3) behavior. To demo instant WebSocket eviction (G2), set notifications.enabled=true AFTER running the bootstrap, then restart the gateway.",
+      "config": {
+        "url": "https://am.jrsz.org:8443/am",
+        "realm": "/timeout-test",
+        "version": "8.1.0",
+        "secretsProvider": {
+          "type": "SecretsProvider",
+          "config": {
+            "stores": [
+              "SecretsPasswords"
+            ]
+          }
+        },
+        "agent": {
+          "username": "ig_agent_alpha",
+          "passwordSecretId": "ig.agent.alpha.pass"
+        },
+        "sessionCache": {
+          "enabled": true,
+          "maximumSize": 1000,
+          "expiration": "1 minute"
+        },
+        "notifications": {
+          "enabled": false,
+          "tls": "ClientTlsOptions"
+        },
+        "ssoTokenHeader": "iPlanetDirectoryPro",
+        "amHandler": {
+          "type": "ClientHandler",
+          "config": {
+            "tls": "ClientTlsOptions"
+          }
+        }
+      }
+    }
+  ],
+  "session": {
+    "type": "JwtSessionManager"
+  }
+}

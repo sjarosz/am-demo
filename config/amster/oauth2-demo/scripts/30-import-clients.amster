@@ -1,0 +1,5 @@
+create OAuth2Clients --realm / --id app4ClientId --body rootClientBody
+update OAuth2Clients --realm / --id app4ClientId --body rootClientBody
+
+create OAuth2Clients --realm /alpha --id app4ClientId --body alphaClientBody
+update OAuth2Clients --realm /alpha --id app4ClientId --body alphaClientBody

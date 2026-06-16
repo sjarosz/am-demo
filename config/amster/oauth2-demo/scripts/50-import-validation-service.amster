@@ -1,0 +1,2 @@
+create ValidationService --realm /alpha --body alphaValidationBody
+update ValidationService --realm /alpha --body alphaValidationBody

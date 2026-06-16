@@ -1,0 +1,102 @@
+{
+  "userpassword": "@@CLIENT_SECRET@@",
+  "advancedOAuth2ClientConfig": {
+    "grantTypes": {
+      "inherited": false,
+      "value": [
+        "authorization_code",
+        "refresh_token"
+      ]
+    },
+    "isConsentImplied": {
+      "inherited": false,
+      "value": true
+    },
+    "responseTypes": {
+      "inherited": false,
+      "value": [
+        "code"
+      ]
+    },
+    "subjectType": {
+      "inherited": false,
+      "value": "public"
+    },
+    "tokenEndpointAuthMethod": {
+      "inherited": false,
+      "value": "client_secret_basic"
+    }
+  },
+  "coreOAuth2ClientConfig": {
+    "accessTokenLifetime": {
+      "inherited": false,
+      "value": @@AT_TTL@@
+    },
+    "clientName": {
+      "inherited": false,
+      "value": [
+        "rp-c-app"
+      ]
+    },
+    "clientType": {
+      "inherited": false,
+      "value": "Confidential"
+    },
+    "redirectionUris": {
+      "inherited": false,
+      "value": [
+        "@@REDIRECT_URI@@"
+      ]
+    },
+    "refreshTokenLifetime": {
+      "inherited": false,
+      "value": @@RT_TTL@@
+    },
+    "scopes": {
+      "inherited": false,
+      "value": [
+        "openid",
+        "profile",
+        "email"
+      ]
+    },
+    "status": {
+      "inherited": false,
+      "value": "Active"
+    }
+  },
+  "coreOpenIDClientConfig": {
+    "backchannel_logout_session_required": {
+      "inherited": false,
+      "value": true
+    },
+    "backchannel_logout_uri": {
+      "inherited": false,
+      "value": "@@BACKCHANNEL_URI@@"
+    },
+    "jwtTokenLifetime": {
+      "inherited": false,
+      "value": @@ID_TTL@@
+    },
+    "postLogoutRedirectUri": {
+      "inherited": false,
+      "value": [
+        "@@POST_LOGOUT_URI@@"
+      ]
+    }
+  },
+  "overrideOAuth2ClientConfig": {
+    "issueRefreshToken": true,
+    "issueRefreshTokenOnRefreshedToken": true
+  },
+  "signEncOAuth2ClientConfig": {
+    "idTokenSignedResponseAlg": {
+      "inherited": false,
+      "value": "RS256"
+    },
+    "publicKeyLocation": {
+      "inherited": false,
+      "value": "jwks_uri"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "app8",
+  "condition": "${request.uri.host == 'app8.jrsz.org'}",
+  "comment": "OAuth2/OIDC custom-script tester console. Ungated: app8 is a confidential OIDC client that manages its own authorization-code redirects and token calls against the /scriptlab realm, so the gateway just reverse-proxies the backend.",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "baseURI": "http://app8-backend.jrsz.org:3000",
+          "handler": "PlainReverseProxy"
+        }
+      ]
+    }
+  }
+}

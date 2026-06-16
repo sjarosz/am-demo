@@ -1,0 +1,103 @@
+{
+  "entityId": "org-integrated-sp",
+  "serviceProvider": {
+    "assertionContent": {
+      "signingAndEncryption": {
+        "requestResponseSigning": {},
+        "encryption": {},
+        "secretIdAndAlgorithms": {}
+      },
+      "nameIdFormat": {},
+      "authenticationContext": {
+        "authContextItems": [
+          {
+            "contextReference": "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+            "level": 0,
+            "defaultItem": true
+          }
+        ],
+        "authenticationComparisonType": "Exact"
+      },
+      "basicAuthentication": {},
+      "clientAuthentication": {}
+    },
+    "assertionProcessing": {
+      "attributeMapper": {},
+      "autoFederation": {
+        "autoFedEnabled": true,
+        "autoFedAttribute": "uid"
+      },
+      "accountMapping": {},
+      "responseArtifactMessageEncoding": {},
+      "url": {},
+      "redirectTreeConfiguration": {},
+      "adapter": {}
+    },
+    "services": {
+      "metaAlias": "/alpha/integrated-sp-org",
+      "serviceAttributes": {
+        "singleLogoutService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/SPSloPOST/metaAlias/alpha/integrated-sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPSloPOST/metaAlias/alpha/integrated-sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/SPSloSoap/metaAlias/alpha/integrated-sp-org"
+          }
+        ],
+        "nameIdService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/SPMniRedirect/metaAlias/alpha/integrated-sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPMniRedirect/metaAlias/alpha/integrated-sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/SPMniPOST/metaAlias/alpha/integrated-sp-org",
+            "responseLocation": "https://am.jrsz.org:8443/am/SPMniPOST/metaAlias/alpha/integrated-sp-org"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/SPMniSoap/metaAlias/alpha/integrated-sp-org"
+          }
+        ],
+        "assertionConsumerService": [
+          {
+            "isDefault": false,
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact",
+            "location": "https://am.jrsz.org:8443/am/AuthConsumer/metaAlias/alpha/integrated-sp-org",
+            "index": 0
+          },
+          {
+            "isDefault": true,
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/AuthConsumer/metaAlias/alpha/integrated-sp-org",
+            "index": 1
+          }
+        ]
+      }
+    },
+    "advanced": {
+      "saeConfiguration": {},
+      "ecpConfiguration": {},
+      "idpProxy": {},
+      "relayStateUrlList": {
+        "relayStateUrlList": [
+          "https://ig.jrsz.org/*",
+          "https://ig.jrsz.org/*?*",
+          "https://ig.jrsz.com:8444/*",
+          "https://ig.jrsz.com:8444/*?*",
+          "https://*",
+          "https://*?*"
+        ]
+      }
+    }
+  }
+}

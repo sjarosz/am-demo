@@ -1,0 +1,16 @@
+{
+  "name": "app7",
+  "condition": "${request.uri.host == 'app7.jrsz.com'}",
+  "comment": "SAML v2.0 cross-domain federation test console. Ungated: AM is both the IDP and SP, and the console only launches AM's built-in idpssoinit/spssoinit endpoints, so the gateway just reverse-proxies the backend.",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "baseURI": "http://app7-backend.jrsz.com:3000",
+          "handler": "PlainReverseProxy"
+        }
+      ]
+    }
+  }
+}

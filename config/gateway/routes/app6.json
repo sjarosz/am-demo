@@ -1,0 +1,72 @@
+{
+  "name": "app6",
+  "condition": "${request.uri.host == 'app6.jrsz.org'}",
+  "comment": "Session-timeout / logout / OIDC SLO test console. Console, OIDC RPs, API E and probes are ungated; /protected/a and /protected/b are IG-protected (App A no-cache, App B cached); /logout is a global IG logout.",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "condition": "${request.uri.path == '/protected/a' or request.uri.path == '/protected/a/'}",
+          "baseURI": "http://app6-backend.jrsz.org:3000",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "type": "SingleSignOnFilter",
+                  "config": {
+                    "amService": "AmServiceTimeout"
+                  }
+                }
+              ],
+              "handler": "PlainReverseProxy"
+            }
+          }
+        },
+        {
+          "condition": "${request.uri.path == '/protected/b' or request.uri.path == '/protected/b/'}",
+          "baseURI": "http://app6-backend.jrsz.org:3000",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "type": "SingleSignOnFilter",
+                  "config": {
+                    "amService": "AmServiceCached"
+                  }
+                }
+              ],
+              "handler": "PlainReverseProxy"
+            }
+          }
+        },
+        {
+          "condition": "${request.uri.path == '/logout'}",
+          "baseURI": "http://app6-backend.jrsz.org:3000",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "type": "SingleSignOnFilter",
+                  "config": {
+                    "amService": "AmServiceTimeout",
+                    "logoutExpression": "${request.uri.path == '/logout'}",
+                    "defaultLogoutLandingPage": "https://app6.jrsz.org/"
+                  }
+                }
+              ],
+              "handler": "PlainReverseProxy"
+            }
+          }
+        },
+        {
+          "baseURI": "http://app6-backend.jrsz.org:3000",
+          "handler": "PlainReverseProxy"
+        }
+      ]
+    }
+  }
+}

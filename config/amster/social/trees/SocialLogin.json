@@ -1,0 +1,124 @@
+{
+  "name": "SocialLogin",
+  "nodes": [
+    {
+      "type": "SelectIdPNode",
+      "id": "3a1d0001-1111-4111-8111-000000000001",
+      "body": {
+        "_id": "3a1d0001-1111-4111-8111-000000000001",
+        "includeLocalAuthentication": false,
+        "filteredProviders": [],
+        "offerOnlyExisting": false,
+        "identityAttribute": "mail",
+        "passwordAttribute": "password"
+      }
+    },
+    {
+      "type": "SocialProviderHandlerNodeV2",
+      "id": "3a1d0002-2222-4222-8222-000000000002",
+      "body": {
+        "_id": "3a1d0002-2222-4222-8222-000000000002",
+        "script": "7c2e5a18-3f4b-4c9d-b0e1-a2b3c4d5e6f7",
+        "usernameAttribute": "userName",
+        "clientType": "BROWSER",
+        "storeTokens": false,
+        "detectConnectionTimeOut": false,
+        "subjectAttribute": "iplanet-am-user-alias-list"
+      }
+    },
+    {
+      "type": "ProvisionDynamicAccountNode",
+      "id": "3a1d0003-3333-4333-8333-000000000003",
+      "body": {
+        "_id": "3a1d0003-3333-4333-8333-000000000003",
+        "accountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider"
+      }
+    },
+    {
+      "type": "SetSuccessUrlNode",
+      "id": "3a1d0004-4444-4444-8444-000000000004",
+      "body": {
+        "_id": "3a1d0004-4444-4444-8444-000000000004",
+        "successUrl": "@@SUCCESS_URL@@"
+      }
+    },
+    {
+      "type": "ScriptedDecisionNode",
+      "id": "3a1d0006-6666-4666-8666-000000000006",
+      "body": {
+        "_id": "3a1d0006-6666-4666-8666-000000000006",
+        "script": "5d3a9b2c-6e7f-4a1b-9c8d-0e1f2a3b4c5d",
+        "outcomes": ["found", "notFound"]
+      }
+    }
+  ],
+  "tree": {
+    "_id": "SocialLogin",
+    "innerTreeOnly": false,
+    "entryNodeId": "3a1d0001-1111-4111-8111-000000000001",
+    "noSession": false,
+    "mustRun": false,
+    "enabled": true,
+    "transactionalOnly": false,
+    "uiConfig": {},
+    "nodes": {
+      "3a1d0001-1111-4111-8111-000000000001": {
+        "displayName": "Select Identity Provider",
+        "nodeType": "SelectIdPNode",
+        "version": "1.0",
+        "connections": {
+          "socialAuthentication": "3a1d0002-2222-4222-8222-000000000002"
+        },
+        "x": 160,
+        "y": 80
+      },
+      "3a1d0002-2222-4222-8222-000000000002": {
+        "displayName": "Social Provider Handler Node",
+        "nodeType": "SocialProviderHandlerNodeV2",
+        "version": "1.0",
+        "connections": {
+          "ACCOUNT_EXISTS": "3a1d0004-4444-4444-8444-000000000004",
+          "NO_ACCOUNT": "3a1d0006-6666-4666-8666-000000000006",
+          "SOCIAL_AUTH_INTERRUPTED": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "x": 420,
+        "y": 80
+      },
+      "3a1d0006-6666-4666-8666-000000000006": {
+        "displayName": "Match Existing User by Email",
+        "nodeType": "ScriptedDecisionNode",
+        "version": "1.0",
+        "connections": {
+          "found": "3a1d0004-4444-4444-8444-000000000004",
+          "notFound": "3a1d0003-3333-4333-8333-000000000003"
+        },
+        "x": 700,
+        "y": 80
+      },
+      "3a1d0003-3333-4333-8333-000000000003": {
+        "displayName": "Provision Dynamic Account",
+        "nodeType": "ProvisionDynamicAccountNode",
+        "version": "1.0",
+        "connections": {
+          "outcome": "3a1d0004-4444-4444-8444-000000000004"
+        },
+        "x": 700,
+        "y": 240
+      },
+      "3a1d0004-4444-4444-8444-000000000004": {
+        "displayName": "Set Success URL",
+        "nodeType": "SetSuccessUrlNode",
+        "version": "1.0",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "x": 980,
+        "y": 120
+      }
+    },
+    "staticNodes": {
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": { "x": 1220, "y": 80 },
+      "e301438c-0bd0-429c-ab0c-66126501069a": { "x": 1220, "y": 320 }
+    }
+  }
+}

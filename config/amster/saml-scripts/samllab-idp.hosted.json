@@ -1,0 +1,114 @@
+{
+  "entityId": "https://am.jrsz.org:8443/am/samllab-idp",
+  "identityProvider": {
+    "assertionContent": {
+      "signingAndEncryption": {
+        "requestResponseSigning": {},
+        "encryption": {},
+        "secretIdAndAlgorithms": {}
+      },
+      "nameIdFormat": {},
+      "authenticationContext": {
+        "authenticationContextMapper": "com.sun.identity.saml2.plugins.DefaultIDPAuthnContextMapper",
+        "authContextItems": [
+          {
+            "contextReference": "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+            "level": 0
+          }
+        ]
+      },
+      "assertionTime": {},
+      "basicAuthentication": {},
+      "assertionCache": {}
+    },
+    "assertionProcessing": {
+      "attributeMapper": {
+        "attributeMapper": "com.sun.identity.saml2.plugins.DefaultIDPAttributeMapper",
+        "attributeMap": [
+          {
+            "samlAttribute": "uid",
+            "localAttribute": "uid",
+            "binary": false
+          }
+        ]
+      },
+      "accountMapper": {},
+      "localConfiguration": {}
+    },
+    "services": {
+      "metaAlias": "/samllab/idp",
+      "serviceAttributes": {
+        "artifactResolutionService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/ArtifactResolver/metaAlias/samllab/idp"
+          }
+        ],
+        "singleLogoutService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/IDPSloRedirect/metaAlias/samllab/idp",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPSloRedirect/metaAlias/samllab/idp"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/IDPSloPOST/metaAlias/samllab/idp",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPSloPOST/metaAlias/samllab/idp"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/IDPSloSoap/metaAlias/samllab/idp"
+          }
+        ],
+        "nameIdService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/IDPMniRedirect/metaAlias/samllab/idp",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPMniRedirect/metaAlias/samllab/idp"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/IDPMniPOST/metaAlias/samllab/idp",
+            "responseLocation": "https://am.jrsz.org:8443/am/IDPMniPOST/metaAlias/samllab/idp"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/IDPMniSoap/metaAlias/samllab/idp"
+          }
+        ],
+        "singleSignOnService": [
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+            "location": "https://am.jrsz.org:8443/am/SSORedirect/metaAlias/samllab/idp"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+            "location": "https://am.jrsz.org:8443/am/SSOPOST/metaAlias/samllab/idp"
+          },
+          {
+            "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
+            "location": "https://am.jrsz.org:8443/am/SSOSoap/metaAlias/samllab/idp"
+          }
+        ]
+      }
+    },
+    "advanced": {
+      "saeConfiguration": {},
+      "ecpConfiguration": {},
+      "sessionSynchronization": {},
+      "idpFinderImplementation": {},
+      "relayStateUrlList": {
+        "relayStateUrlList": [
+          "https://app9.jrsz.org/*",
+          "https://app9.jrsz.org/*?*",
+          "https://app9.jrsz.com:8444/*",
+          "https://app9.jrsz.com:8444/*?*",
+          "https://*",
+          "https://*?*"
+        ]
+      },
+      "idpAdapter": {},
+      "applicationContext": {}
+    }
+  }
+}

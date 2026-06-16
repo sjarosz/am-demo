@@ -1,0 +1,130 @@
+/*
+ * Glass / transparent theme for @forgerock/login-widget.
+ *
+ * The widget has no "transparent: true" config option. Per Ping's theming docs,
+ * official color changes require rebuilding from forgerock-web-login-framework
+ * (tailwind.config.cjs). For the npm package, CSS overrides scoped to #widget-root
+ * are the practical approach: https://developer.pingidentity.com/login-widget/login-widget/customize/theme.html
+ *
+ * Unlayered CSS wins over the widget's @layer fr-widget.* styles.
+ */
+#widget-root .fr_widget-root dialog.tw_dialog-box {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: min(32rem, calc(100vw - 2rem));
+  height: fit-content;
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+#widget-root .fr_widget-root dialog.tw_dialog-box::backdrop {
+  background-color: rgba(15, 23, 42, 0.18);
+}
+
+#widget-root .fr_widget-root dialog.tw_dialog-box_animate {
+  top: 0;
+  opacity: 0;
+}
+
+#widget-root .fr_widget-root dialog.tw_dialog-box_animate[open] {
+  animation: app-widget-fade-in 180ms ease-out forwards;
+}
+
+#widget-root .fr_widget-root dialog.tw_dialog-closing[open] {
+  animation: app-widget-fade-out 120ms ease-in forwards;
+}
+
+#widget-root .fr_widget-root dialog.tw_dialog-closing::backdrop {
+  animation: app-widget-backdrop-out 180ms ease-out forwards;
+}
+
+#widget-root .fr_widget-root .tw_dialog-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+#widget-root .fr_widget-root .tw_dialog-body {
+  margin: 1.75rem 1.5rem 2rem;
+  background: transparent;
+}
+
+/* Form fields: translucent so the landscape shows through the whole widget */
+#widget-root .fr_widget-root .tw_input-base,
+#widget-root .fr_widget-root .tw_select-base,
+#widget-root .fr_widget-root .tw_input-base:hover,
+#widget-root .fr_widget-root .tw_select-base:hover,
+#widget-root .fr_widget-root .tw_input-base:focus,
+#widget-root .fr_widget-root .tw_select-base:focus,
+#widget-root .fr_widget-root .tw_input-base[aria-invalid="true"],
+#widget-root .fr_widget-root .tw_select-base[aria-invalid="true"],
+#widget-root .fr_widget-root .tw_input-base[aria-invalid="true"]:focus {
+  background-color: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+#widget-root .fr_widget-root .tw_alert {
+  background-color: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+#widget-root .fr_widget-root .tw_button-primary {
+  background-color: rgba(2, 132, 199, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+#widget-root .fr_widget-root .tw_button-secondary,
+#widget-root .fr_widget-root .tw_button-text {
+  background-color: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+@keyframes app-widget-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes app-widget-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes app-widget-backdrop-out {
+  from {
+    background-color: rgba(15, 23, 42, 0.18);
+  }
+
+  to {
+    background-color: rgba(15, 23, 42, 0);
+  }
+}

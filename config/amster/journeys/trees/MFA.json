@@ -1,0 +1,117 @@
+{
+  "name": "MFA",
+  "nodes": [
+    {
+      "type": "UsernameCollectorNode",
+      "id": "0a1b2c3d-0001-4000-8000-000000000001",
+      "body": { "_id": "0a1b2c3d-0001-4000-8000-000000000001", "autocompleteValues": [] }
+    },
+    {
+      "type": "PasswordCollectorNode",
+      "id": "88ce067c-b1e7-4313-8aee-556bd01b6aab",
+      "body": { "_id": "88ce067c-b1e7-4313-8aee-556bd01b6aab" }
+    },
+    {
+      "type": "DataStoreDecisionNode",
+      "id": "a1ccd993-2bee-4998-afad-975cd5676208",
+      "body": { "_id": "a1ccd993-2bee-4998-afad-975cd5676208" }
+    },
+    {
+      "type": "OathTokenVerifierNode",
+      "id": "4bf447ce-5a8b-41cd-8f4c-b6984a4c17ac",
+      "body": {
+        "_id": "4bf447ce-5a8b-41cd-8f4c-b6984a4c17ac",
+        "totpTimeInterval": 30,
+        "totpTimeSteps": 2,
+        "maximumAllowedClockDrift": 5,
+        "totpHashAlgorithm": "HMAC_SHA1",
+        "isRecoveryCodeAllowed": false,
+        "algorithm": "TOTP",
+        "hotpWindowSize": 100
+      }
+    },
+    {
+      "type": "OathRegistrationNode",
+      "id": "b8127b5e-1b9d-4697-9ef9-4260f28a4fa3",
+      "body": {
+        "_id": "b8127b5e-1b9d-4697-9ef9-4260f28a4fa3",
+        "addChecksum": false,
+        "bgColor": "032b75",
+        "generateRecoveryCodes": true,
+        "truncationOffset": -1,
+        "algorithm": "TOTP",
+        "postponeDeviceProfileStorage": false,
+        "passwordLength": "SIX_DIGITS",
+        "totpTimeInterval": 30,
+        "scanQRCodeMessage": {},
+        "accountName": "USERNAME",
+        "issuer": "ForgeRock",
+        "minSharedSecretLength": 32,
+        "totpHashAlgorithm": "HMAC_SHA1"
+      }
+    },
+    {
+      "type": "PageNode",
+      "id": "2f210603-539a-4860-845a-aee2418e67ba",
+      "body": {
+        "_id": "2f210603-539a-4860-845a-aee2418e67ba",
+        "nodes": [
+          { "_id": "0a1b2c3d-0001-4000-8000-000000000001", "nodeType": "UsernameCollectorNode", "displayName": "Username Collector" },
+          { "_id": "88ce067c-b1e7-4313-8aee-556bd01b6aab", "nodeType": "PasswordCollectorNode", "displayName": "Password Collector" }
+        ],
+        "stage": "UsernamePassword",
+        "pageHeader": {},
+        "pageDescription": {}
+      }
+    }
+  ],
+  "tree": {
+    "_id": "MFA",
+    "innerTreeOnly": false,
+    "entryNodeId": "2f210603-539a-4860-845a-aee2418e67ba",
+    "noSession": false,
+    "mustRun": false,
+    "enabled": true,
+    "transactionalOnly": false,
+    "uiConfig": {},
+    "nodes": {
+      "2f210603-539a-4860-845a-aee2418e67ba": {
+        "displayName": "Page Node",
+        "nodeType": "PageNode",
+        "version": "1.0",
+        "connections": { "outcome": "a1ccd993-2bee-4998-afad-975cd5676208" },
+        "x": 152,
+        "y": 31
+      },
+      "a1ccd993-2bee-4998-afad-975cd5676208": {
+        "displayName": "Data Store Decision",
+        "nodeType": "DataStoreDecisionNode",
+        "version": "1.0",
+        "connections": { "true": "4bf447ce-5a8b-41cd-8f4c-b6984a4c17ac", "false": "e301438c-0bd0-429c-ab0c-66126501069a" },
+        "x": 360,
+        "y": 58
+      },
+      "4bf447ce-5a8b-41cd-8f4c-b6984a4c17ac": {
+        "displayName": "OATH Token Verifier",
+        "nodeType": "OathTokenVerifierNode",
+        "version": "1.0",
+        "connections": {
+          "successOutcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "failureOutcome": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "notRegisteredOutcome": "b8127b5e-1b9d-4697-9ef9-4260f28a4fa3"
+        },
+        "x": 557,
+        "y": 50
+      },
+      "b8127b5e-1b9d-4697-9ef9-4260f28a4fa3": {
+        "displayName": "OATH Registration",
+        "nodeType": "OathRegistrationNode",
+        "version": "1.0",
+        "connections": { "successOutcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0" },
+        "x": 761,
+        "y": 221
+      }
+    },
+    "staticNodes": {}
+  }
+}

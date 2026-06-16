@@ -1,0 +1,12 @@
+read Realms --global --id alpha
+read Realms --global --id bravo
+
+read OAuth2Provider --realm /
+read OAuth2Provider --realm /alpha
+
+read OAuth2Clients --realm / --id app4ClientId
+read OAuth2Clients --realm /alpha --id app4ClientId
+read IdentityGatewayAgents --realm /alpha --id igAgentId
+read ValidationService --realm /alpha
+
+:exit

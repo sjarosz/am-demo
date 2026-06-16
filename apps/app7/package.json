@@ -1,0 +1,13 @@
+{
+  "name": "app7-saml-federation-console",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SAML v2.0 cross-domain federation test console for PingAM (jrsz.org <-> jrsz.com)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

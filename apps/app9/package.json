@@ -1,0 +1,13 @@
+{
+  "name": "app9-saml-script-tester",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SAML2 custom-script tester for PingAM - exercises the IDP Attribute Mapper, NameID Mapper and SP Adapter sample scripts in the /samllab cross-AM federation and highlights star-tagged assertion/session elements",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

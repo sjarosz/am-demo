@@ -1,0 +1,29 @@
+{
+  "name": "launchpad",
+  "condition": "${request.uri.host == 'ig.jrsz.org' and (request.uri.path == '/' or request.uri.path == '/__slo/status' or request.uri.path == '/__slo/logout')}",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "condition": "${request.uri.path == '/__slo/status'}",
+          "handler": "SloStatusHandler"
+        },
+        {
+          "condition": "${request.uri.path == '/__slo/logout'}",
+          "handler": "SloLogoutHandler"
+        },
+        {
+          "condition": "${request.uri.path == '/'}",
+          "handler": {
+            "type": "ScriptableHandler",
+            "config": {
+              "type": "application/x-groovy",
+              "file": "launchpad.groovy"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

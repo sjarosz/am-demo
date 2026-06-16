@@ -1,0 +1,5 @@
+create Realms --global --body alphaRealmBody
+update Realms --global --id alpha --body alphaRealmBody
+
+create Realms --global --body bravoRealmBody
+update Realms --global --id bravo --body bravoRealmBody

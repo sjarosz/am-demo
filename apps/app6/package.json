@@ -1,0 +1,13 @@
+{
+  "name": "app6-session-timeout-console",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Session timeout / logout / OIDC SLO use-cases test console for PingAM + PingGateway",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
