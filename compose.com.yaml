@@ -368,6 +368,12 @@ services:
     hostname: ig.jrsz.net
     env_file:
       - .env.com
+    environment:
+      # RFC 7523 bridge route (/bridge/bonaire05/token): jwt-bearer client at bonaire05 (values in .env)
+      REMOTE_AS_TOKEN_ENDPOINT: ${REMOTE_AS_TOKEN_ENDPOINT:-https://openam-bonaire05.forgeblocks.com:443/am/oauth2/realms/root/realms/alpha/access_token}
+      BONAIRE_JWT_CLIENT_ID: ${BONAIRE_JWT_CLIENT_ID:-jrsz-concierge}
+      BONAIRE_JWT_CLIENT_SECRET: ${BONAIRE_JWT_CLIENT_SECRET:-}
+      BONAIRE_JWT_SCOPE: ${BONAIRE_JWT_SCOPE:-a2a:invoke}
     depends_on:
       am-com:
         condition: service_healthy

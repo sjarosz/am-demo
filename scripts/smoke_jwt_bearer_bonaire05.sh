@@ -7,6 +7,8 @@
 #      (aud = bonaire05 token endpoint, preferred_username = uid, scope incl. a2a:invoke)
 #   2. POST that token as `assertion` (grant_type jwt-bearer) to bonaire05 with a client that has
 #      the JWT Bearer grant (client_secret_post) -> bonaire05 access token for the same userName
+#   3. the same exchange through the one-hop IG bridge: POST https://ig.jrsz.net:8444/bridge/bonaire05/token
+#      with the jrsz.net token as Bearer -> bonaire05 token JSON (BONAIRE_BRIDGE_URL to override)
 #
 # Reads .env for defaults. Env:
 #   COM_AM_BASE_URL              default https://am.jrsz.net:9443/am
@@ -108,3 +110,21 @@ if [[ -z "${remote_at}" ]]; then
 fi
 decode_claims "${remote_at}" "bonaire05 access token"
 echo "PASS: bonaire05 issued a token for '${USER_NAME}' from the jrsz.net /${LOCAL_REALM} assertion"
+
+# --- 3. same thing through the one-hop IG bridge (config/gateway/routes.com-only/bridge-bonaire05.json)
+BRIDGE_URL="${BONAIRE_BRIDGE_URL:-https://ig.jrsz.net:8444/bridge/bonaire05/token}"
+echo "3) One-hop bridge: POST ${BRIDGE_URL} with the jrsz.net token as Bearer"
+bridge_resp="$(curl "${curl_local[@]}" -o /dev/stdout -w '\n%{http_code}' -X POST "${BRIDGE_URL}" \
+  -H "Authorization: Bearer ${ASSERTION}" || true)"
+bridge_code="${bridge_resp##*$'\n'}"
+bridge_body="${bridge_resp%$'\n'*}"
+if [[ "${bridge_code}" == "404" ]]; then
+  echo "  bridge route not loaded on ${BRIDGE_URL%/bridge*} (render + restart gateway-com); skipping" >&2
+elif [[ "${bridge_code}" != "200" ]]; then
+  echo "FAIL: bridge returned HTTP ${bridge_code}: ${bridge_body}" >&2
+  exit 1
+else
+  bridge_at="$(python3 -c 'import sys,json; print(json.load(sys.stdin).get("access_token",""))' <<<"${bridge_body}")"
+  decode_claims "${bridge_at}" "bonaire05 access token via IG bridge"
+  echo "PASS: IG bridge returned a bonaire05 token for '${USER_NAME}'"
+fi

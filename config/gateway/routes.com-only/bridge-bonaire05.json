@@ -1,0 +1,31 @@
+{
+  "name": "bridge-bonaire05",
+  "condition": "${request.uri.host == 'ig.jrsz.net' and request.uri.path == '/bridge/bonaire05/token'}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "Bonaire05JwtBearerBridge",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "bonaire05-bridge.groovy",
+            "args": {
+              "mode": "respond"
+            },
+            "_comment": "tokenEndpoint/clientId/clientSecret/defaultScope come from the gateway container env (REMOTE_AS_TOKEN_ENDPOINT, BONAIRE_JWT_CLIENT_ID, BONAIRE_JWT_CLIENT_SECRET, BONAIRE_JWT_SCOPE via .env); they may also be passed here as args."
+          }
+        }
+      ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 500,
+          "reason": "Internal Server Error",
+          "entity": "bridge filter did not respond"
+        }
+      }
+    }
+  }
+}

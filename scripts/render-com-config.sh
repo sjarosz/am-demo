@@ -10,6 +10,8 @@
 #   2. Browser-facing gateway URLs in the launchpad HTML get the gateway's
 #      published port:  https://{appN,ig}.jrsz.org/ -> https://{appN,ig}.jrsz.net:8444/
 #   3. Everything else:  jrsz.org -> jrsz.net
+#   5. routes.com-only/*.json are copied verbatim (jrsz.net-only routes, e.g. the bonaire05
+#      RFC 7523 bridge) and app8.json is dropped (no app8 backend on jrsz.net).
 #      (route host conditions become portless .com hosts; backend baseURIs keep
 #       their internal :8443/:8080/:3000 ports; cookie Domain=jrsz.org -> jrsz.net).
 set -euo pipefail
@@ -60,5 +62,13 @@ PALETTE=':root {
     }'
 PALETTE="${PALETTE}" perl -0777 -pi -e 's/:root \{.*?\}/$ENV{PALETTE}/s' \
   "${DST}/scripts/groovy/launchpad.groovy"
+
+# 5. jrsz.net-only routes (written with jrsz.net names, so copied AFTER the rewrites) and
+#    routes that have no backend on this stack.
+if compgen -G "${SRC}/routes.com-only/*.json" >/dev/null; then
+  cp "${SRC}"/routes.com-only/*.json "${DST}/routes/"
+fi
+rm -rf "${DST}/routes.com-only"
+rm -f "${DST}/routes/app8.json"   # app8 (script lab) exists on jrsz.org only
 
 echo "Rendered jrsz.net gateway config into ${DST}"

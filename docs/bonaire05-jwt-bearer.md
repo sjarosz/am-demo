@@ -81,7 +81,7 @@ that normalises `sub` for jwt-bearer grants already exist from the mcp-demo.
 ./scripts/smoke_jwt_bearer_bonaire05.sh
 ```
 
-Does the two calls and prints the decoded tokens:
+Does the calls below (plus the IG bridge, next section) and prints the decoded tokens:
 
 ```
 1) password grant at am.jrsz.net /bravo (bonaire-portal, acarter)   -> RS256 AT: aud=<bonaire05 token endpoint>, preferred_username=acarter, scope [openid profile email a2a:invoke]
@@ -98,6 +98,51 @@ curl -X POST https://openam-bonaire05.forgeblocks.com/am/oauth2/realms/root/real
   --data-urlencode 'client_id=jrsz-concierge' --data-urlencode "client_secret=${SECRET}" \
   --data-urlencode 'scope=a2a:invoke'
 ```
+
+## One-hop bridge through PingGateway (the simplest client experience)
+
+Because AM's RFC 8693 token exchange only accepts tokens *it* issued, a foreign JWT cannot be
+put straight into `token-exchange` at bonaire05 (`invalid_request / Invalid token exchange` for
+`access_token`, `jwt` and `id_token` subject types — verified). The jwt-bearer call is the
+minimal entry into bonaire05's trust domain, so it is packaged as **one IG hop** on the jrsz.net
+gateway — no local key material, no minting, no subject mapping (compare the mcp-demo broker
+ingress: JwtValidationFilter + AssignmentFilter + GrantSwapJwtAssertionOAuth2ClientFilter +
+broker key + `AddIssuedTokenType` shim):
+
+```
+POST https://ig.jrsz.net:8444/bridge/bonaire05/token          (optional ?scope=... / form scope=)
+Authorization: Bearer <jrsz.net /bravo access token>
+  -> 200 {"access_token": <bonaire05 AT>, "scope": "a2a:invoke", "expires_in": 3599, ...}
+  -> 401 invalid_token / invalid_grant (missing, malformed or rejected assertion)
+  -> 400 invalid_scope (scope not in the assertion's `scope` claim), 502 anything else
+```
+
+Files: route `config/gateway/routes.com-only/bridge-bonaire05.json` (jrsz.net-only; the render
+script copies `routes.com-only/*` into `config/gateway-com/routes/` after its rewrites) and the
+filter `config/gateway/scripts/groovy/bonaire05-bridge.groovy` (`ScriptableFilter`, ~100 lines:
+read Bearer → jwt-bearer POST with `client_secret_post` → return JSON, or in `mode: forward` swap
+the `Authorization` header and continue to a backend). The bonaire05 client id/secret/scope and
+token endpoint reach the gateway container as `BONAIRE_JWT_CLIENT_ID`, `BONAIRE_JWT_CLIENT_SECRET`,
+`BONAIRE_JWT_SCOPE`, `REMOTE_AS_TOKEN_ENDPOINT` (`compose.com.yaml` `gateway-com.environment`,
+values from `.env`).
+
+```bash
+# 1) IdP login at jrsz.net /bravo -> assertion (RS256 JWT, aud = bonaire05, preferred_username)
+A=$(curl -s -u bonaire-portal:bonaire-portal-secret-changeit \
+  -X POST https://am.jrsz.net:9443/am/oauth2/realms/root/realms/bravo/access_token \
+  --data-urlencode grant_type=password --data-urlencode username=acarter --data-urlencode 'password=…' \
+  --data-urlencode 'scope=openid profile email a2a:invoke' | jq -r .access_token)
+
+# 2) one hop: bonaire05 token out
+curl -s -X POST -H "Authorization: Bearer $A" https://ig.jrsz.net:8444/bridge/bonaire05/token | jq
+
+# 3) onward RFC 8693 hops use the bonaire05 token exactly like the mcp-demo egress gateways
+```
+
+After editing the route/filter: `./scripts/render-com-config.sh && docker compose restart gateway-com`
+(IG's route watcher unloads a route whose file is replaced by the render's `rm -rf` + copy).
+To protect a bonaire05-facing backend instead of returning the token, reuse the same filter with
+`"args": {"mode": "forward"}` in front of a `ReverseProxyHandler`.
 
 ## Rotation / re-runs
 

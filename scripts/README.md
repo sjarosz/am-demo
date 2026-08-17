@@ -49,7 +49,7 @@ Additional smoke tests:
 - `./scripts/smoke_ldap_onboarding.sh [--keep]`
   Add a user to ds.jrsz.net, reconcile, assert it exists in bonaire05; delete it, reconcile, assert it is gone.
 - `./scripts/smoke_jwt_bearer_bonaire05.sh`
-  jrsz.net `/bravo` password grant -> RS256 access token -> RFC 7523 jwt-bearer exchange at the bonaire05 AIC tenant (`docs/bonaire05-jwt-bearer.md`). Remote trust is created by `./scripts/provision_bonaire05_trust.py`.
+  jrsz.net `/bravo` password grant -> RS256 access token -> RFC 7523 jwt-bearer exchange at the bonaire05 AIC tenant, directly and through the one-hop IG bridge `https://ig.jrsz.net:8444/bridge/bonaire05/token` (`docs/bonaire05-jwt-bearer.md`). Remote trust is created by `./scripts/provision_bonaire05_trust.py`.
 
 - `./scripts/smoke_oidc_app4.sh`
   Drives the full `app4` browser-style Authorization Code + PKCE flow through Gateway and AM using cookies and redirects, then asserts token material is rendered on the final page.
