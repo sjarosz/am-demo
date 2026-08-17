@@ -222,6 +222,9 @@ generate_password_files() {
 generate_oidc_signing_key() {
   # Dedicated /bravo OIDC ID-token signing keypair (registered in horizon AIC).
   OIDC_SIGNING_PASSWORD="${DEFAULT_PASSWORD}" "${ROOT_DIR}/scripts/generate-oidc-signing-key.sh"
+  # Second, independent signing key for the jrsz.net stack (/bravo -> bonaire05 JWT bearer).
+  OIDC_DIR="${SECRETS_DIR}/oidc-signing-net" OIDC_SIGNING_SUBJECT="/CN=net-bravo-oidc-signing/O=JRSZ/OU=Development/C=US" \
+    OIDC_SIGNING_PASSWORD="${DEFAULT_PASSWORD}" "${ROOT_DIR}/scripts/generate-oidc-signing-key.sh"
 }
 
 main() {

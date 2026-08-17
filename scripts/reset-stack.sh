@@ -38,10 +38,10 @@ if [[ "${KEEP_DATA}" == "false" ]]; then
   docker compose --profile bootstrap down -v --remove-orphans
 
   echo "==> Verifying AM/DS volumes are gone"
-  if docker volume ls --format '{{.Name}}' | grep -E 'am-standalone_(am-home-bootstrap|ds-data|ds-secrets)(-com)?$'; then
+  if docker volume ls --format '{{.Name}}' | grep -E '(am-demo|am-standalone)_(am-home-bootstrap|ds-data|ds-secrets)(-com)?$'; then
     echo "    Some volumes survived; force-removing"
     docker volume ls --format '{{.Name}}' \
-      | grep -E 'am-standalone_(am-home-bootstrap|ds-data|ds-secrets)(-com)?$' \
+      | grep -E '(am-demo|am-standalone)_(am-home-bootstrap|ds-data|ds-secrets)(-com)?$' \
       | xargs -r docker volume rm
   else
     echo "    clean"
@@ -76,6 +76,16 @@ docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.net >/dev/null 2>&1
 
 echo "==> Restarting gateways so SSO picks up freshly-created agents"
 docker compose restart gateway gateway-com >/dev/null
+
+# ds.jrsz.net -> RCS -> bonaire05 user onboarding (docs/bonaire05-ldap-onboarding.md).
+# Replays the seed users (the DS volume was just wiped) and the tenant-side config; idempotent.
+LDAP_ONBOARDING="$(grep -E '^BOOTSTRAP_LDAP_ONBOARDING=' .env.com 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '"'"'"'"' || true)"
+if [[ "${LDAP_ONBOARDING:-true}" == "true" ]]; then
+  echo "==> Replaying LDAP onboarding (RCS + bonaire05); disable with BOOTSTRAP_LDAP_ONBOARDING=false in .env.com"
+  if ! ./scripts/setup-ldap-onboarding.sh; then
+    echo "    !! LDAP onboarding replay failed - fix and re-run ./scripts/setup-ldap-onboarding.sh (stack itself is fine)"
+  fi
+fi
 
 echo "==> Done. Quick check:"
 docker compose ps --format '{{.Name}}\t{{.Status}}' | grep -E 'am\.jrsz|ig\.jrsz' || true

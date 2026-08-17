@@ -17,7 +17,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OIDC_DIR="${ROOT_DIR}/secrets/oidc-signing"
+OIDC_DIR="${OIDC_DIR:-${ROOT_DIR}/secrets/oidc-signing}"   # override for a second stack, e.g. secrets/oidc-signing-net
 
 KEY_FILE="${OIDC_DIR}/bravo-oidc-rsa.key.pem"
 CERT_FILE="${OIDC_DIR}/bravo-oidc-rsa.cert.pem"

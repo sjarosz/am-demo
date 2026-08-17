@@ -22,6 +22,9 @@ After `install-openam`, the bootstrap container applies the repo's repeatable de
 - provision the cross-domain SAML federation (`config/amster/saml/`)
 - provision cross-AM OIDC social login (`config/amster/social/`)
 - provision the `/bravo` OIDC realm whose id_tokens are signed by a dedicated
-  cert trusted by the horizon AIC instance (`config/amster/oidc-horizon/`)
+  cert trusted by the horizon AIC instance (`config/amster/oidc-horizon/`, org stack)
+- provision `/bravo` on the jrsz.net stack as an RFC 7523 JWT-bearer IdP for the
+  bonaire05 AIC tenant (`config/amster/oidc-bonaire/`, `BOOTSTRAP_OIDC_BONAIRE`), whose
+  remote half is `scripts/provision_bonaire05_trust.py`
 
 OAuth provider template: `config/amster/oauth-oidc.service.json`

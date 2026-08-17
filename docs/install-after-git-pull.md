@@ -26,7 +26,7 @@ These artifacts are version-controlled and restored by `git pull`:
 |------|-----|
 | `.env` | Local secrets and overrides — copy from `.env.example` |
 | `secrets/` | Generated PKI, truststores, gateway password files |
-| `openam/`, `opendj/`, `amster/`, `ping-gateway-2026.3.0/` | Ping vendor distributions (large, licensed) |
+| `openam/`, `opendj/`, `amster/`, `openicf/`, `ping-gateway-2026.3.0/` | Ping vendor distributions (large, licensed) |
 | Docker named volumes | Runtime AM + DS state (`am-home-bootstrap`, `ds-data`, `ds-secrets`) |
 | `node_modules/`, `dist/` | Rebuilt during `docker compose build` |
 
@@ -52,6 +52,7 @@ Restore these directories at the **repo root** (`am-standalone/`):
 | `opendj/` | PingDS 8.1.0 | DS runtime used by `docker/ds/Dockerfile` |
 | `amster/` | Amster 8.1.0 | `amster` launcher + `amster-8.1.0.jar` |
 | `ping-gateway-2026.3.0/` | PingGateway 2026.3.0 | Gateway runtime used by `docker/gateway/Dockerfile` |
+| `openicf/` | Remote Connector Server 1.5.20.35 | `unzip zips/openicf-zip-1.5.20.35.zip` at repo root; used by `docker/rcs/Dockerfile` (only needed for the bonaire05 LDAP onboarding, `docs/bonaire05-ldap-onboarding.md`) |
 
 Optional: keep original archives in `zips/` (also gitignored).
 
@@ -225,6 +226,14 @@ docker compose --profile bootstrap up --build --abort-on-container-exit amster-b
 > Always pass `--build` to the bootstrap commands. The amster entrypoint (which
 > decides the bootstrap steps, e.g. importing journeys) is baked into the image,
 > so a stale image would silently skip newly added steps.
+
+5. (Optional, needs `frodo` + the saved `openam-bonaire05` connection) ds.jrsz.net → bonaire05 user
+   onboarding via the Remote Connector Server — idempotent, also replayed by `scripts/reset-stack.sh`:
+
+```bash
+./scripts/setup-ldap-onboarding.sh --smoke   # unzip zips/openicf-zip-*.zip, secret, seed users, rcs-com, tenant config, recon
+```
+See [bonaire05-ldap-onboarding.md](bonaire05-ldap-onboarding.md).
 
 ### Validate
 

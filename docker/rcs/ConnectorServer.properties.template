@@ -1,0 +1,15 @@
+# Rendered by docker/rcs/docker-entrypoint.sh from RCS_* environment variables.
+connectorserver.url=${RCS_URL}
+connectorserver.connectorServerName=${RCS_NAME}
+connectorserver.tokenEndpoint=${RCS_TOKEN_ENDPOINT}
+connectorserver.clientId=${RCS_CLIENT_ID}
+connectorserver.clientSecret=${RCS_CLIENT_SECRET}
+connectorserver.scope=${RCS_SCOPE}
+connectorserver.loggerClass=org.forgerock.openicf.common.logging.slf4j.SLF4JLog
+connectorserver.webSocketConnections=${RCS_WS_CONNECTIONS}
+connectorserver.maxWebSocketConnections=${RCS_WS_MAX_CONNECTIONS}
+# The framework builds its own SSLContext from these (JDK cacerts + lab CA, merged by the entrypoint);
+# without them the LDAP connector's LDAPS handshake fails PKIX even with javax.net.ssl.trustStore set.
+connectorserver.trustStoreFile=security/rcs-truststore.p12
+connectorserver.trustStoreType=PKCS12
+connectorserver.trustStorePass=${RCS_TRUSTSTORE_PASSWORD}

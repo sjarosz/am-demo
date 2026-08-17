@@ -40,5 +40,16 @@ The resulting CA certificate must be trusted by your host browser or OS if you w
 
 Additional smoke tests:
 
+- `./scripts/setup-ldap-onboarding.sh [--smoke]`
+  Idempotent one-shot for the whole ds.jrsz.net -> RCS -> bonaire05 onboarding (unzip RCS, secret, seed users, tenant config, start `rcs-com`, reconcile). Called by `reset-stack.sh` (`BOOTSTRAP_LDAP_ONBOARDING`).
+- `./scripts/seed-ldap-users.sh [com|org]`
+  Seed 10 demo inetOrgPerson users (`config/ds/seed-users.ldif`) into the DS identity store (`ou=people,ou=identities`).
+- `./scripts/provision_bonaire05_ldap_app.py [--dry-run|--no-recon|--recon-only|--delete]`
+  Register the lab RCS (`rcs.jrsz.net`, compose service `rcs-com`) in the bonaire05 AIC tenant and create the LDAP application + authoritative mapping that onboards ds.jrsz.net users as alpha_users (`docs/bonaire05-ldap-onboarding.md`).
+- `./scripts/smoke_ldap_onboarding.sh [--keep]`
+  Add a user to ds.jrsz.net, reconcile, assert it exists in bonaire05; delete it, reconcile, assert it is gone.
+- `./scripts/smoke_jwt_bearer_bonaire05.sh`
+  jrsz.net `/bravo` password grant -> RS256 access token -> RFC 7523 jwt-bearer exchange at the bonaire05 AIC tenant (`docs/bonaire05-jwt-bearer.md`). Remote trust is created by `./scripts/provision_bonaire05_trust.py`.
+
 - `./scripts/smoke_oidc_app4.sh`
   Drives the full `app4` browser-style Authorization Code + PKCE flow through Gateway and AM using cookies and redirects, then asserts token material is rendered on the final page.

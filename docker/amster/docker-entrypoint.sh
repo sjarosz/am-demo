@@ -92,6 +92,10 @@ if [[ "${BOOTSTRAP_OIDC_HORIZON:-true}" == "true" ]]; then
   /opt/amster-config/oidc-horizon/run-bootstrap.sh
 fi
 
+if [[ "${BOOTSTRAP_OIDC_BONAIRE:-false}" == "true" ]]; then
+  /opt/amster-config/oidc-bonaire/run-bootstrap.sh
+fi
+
 if [[ "${BOOTSTRAP_DEMO_USER:-true}" == "true" ]]; then
   /opt/amster-config/demo-user/run-bootstrap.sh
 fi

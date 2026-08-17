@@ -1,0 +1,343 @@
+# Demo users seeded into the jrsz.net (or jrsz.org) DS identity store by scripts/seed-ldap-users.sh.
+# Same objectClasses AM itself writes, so AM and the RCS LDAP connector both see them.
+# Password 'Jrsz$2025!' satisfies the DS dictionary/common-password validators.
+
+dn: uid=aadams,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: aadams
+cn: Alice Adams
+givenName: Alice
+sn: Adams
+displayName: Alice Adams
+mail: aadams@jrsz.net
+telephoneNumber: +1 555 0101
+ou: Engineering
+employeeNumber: 1001
+title: Engineering Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=bbaker,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: bbaker
+cn: Bob Baker
+givenName: Bob
+sn: Baker
+displayName: Bob Baker
+mail: bbaker@jrsz.net
+telephoneNumber: +1 555 0102
+ou: Finance
+employeeNumber: 1002
+title: Finance Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=cclark,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: cclark
+cn: Carol Clark
+givenName: Carol
+sn: Clark
+displayName: Carol Clark
+mail: cclark@jrsz.net
+telephoneNumber: +1 555 0103
+ou: Sales
+employeeNumber: 1003
+title: Sales Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=ddavis,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: ddavis
+cn: Dan Davis
+givenName: Dan
+sn: Davis
+displayName: Dan Davis
+mail: ddavis@jrsz.net
+telephoneNumber: +1 555 0104
+ou: Engineering
+employeeNumber: 1004
+title: Engineering Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=eevans,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: eevans
+cn: Eve Evans
+givenName: Eve
+sn: Evans
+displayName: Eve Evans
+mail: eevans@jrsz.net
+telephoneNumber: +1 555 0105
+ou: HR
+employeeNumber: 1005
+title: HR Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=ffisher,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: ffisher
+cn: Frank Fisher
+givenName: Frank
+sn: Fisher
+displayName: Frank Fisher
+mail: ffisher@jrsz.net
+telephoneNumber: +1 555 0106
+ou: Support
+employeeNumber: 1006
+title: Support Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=ggreen,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: ggreen
+cn: Grace Green
+givenName: Grace
+sn: Green
+displayName: Grace Green
+mail: ggreen@jrsz.net
+telephoneNumber: +1 555 0107
+ou: Marketing
+employeeNumber: 1007
+title: Marketing Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=hhall,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: hhall
+cn: Henry Hall
+givenName: Henry
+sn: Hall
+displayName: Henry Hall
+mail: hhall@jrsz.net
+telephoneNumber: +1 555 0108
+ou: Legal
+employeeNumber: 1008
+title: Legal Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=iirwin,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: iirwin
+cn: Iris Irwin
+givenName: Iris
+sn: Irwin
+displayName: Iris Irwin
+mail: iirwin@jrsz.net
+telephoneNumber: +1 555 0109
+ou: Operations
+employeeNumber: 1009
+title: Operations Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!
+
+dn: uid=jjones,ou=people,ou=identities
+changetype: add
+objectClass: top
+objectClass: person
+objectClass: organizationalperson
+objectClass: inetorgperson
+objectClass: inetuser
+objectClass: iplanet-am-managed-person
+objectClass: iplanet-am-user-service
+objectClass: iPlanetPreferences
+objectClass: sunAMAuthAccountLockout
+objectClass: sunFMSAML2NameIdentifier
+objectClass: forgerock-am-dashboard-service
+objectClass: devicePrintProfilesContainer
+objectClass: kbaInfoContainer
+objectClass: oathDeviceProfilesContainer
+objectClass: pushDeviceProfilesContainer
+objectClass: webauthnDeviceProfilesContainer
+objectClass: deviceProfilesContainer
+objectClass: boundDevicesContainer
+objectClass: iplanet-am-auth-configuration-service
+uid: jjones
+cn: Jack Jones
+givenName: Jack
+sn: Jones
+displayName: Jack Jones
+mail: jjones@jrsz.net
+telephoneNumber: +1 555 0110
+ou: IT
+employeeNumber: 1010
+title: IT Specialist
+inetUserStatus: Active
+userPassword: Jrsz$2025!

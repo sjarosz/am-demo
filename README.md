@@ -190,6 +190,8 @@ docker compose down
 - OAuth demo validation: [docs/oauth2-demo-validation.md](docs/oauth2-demo-validation.md)
 - Real TLS certificate for jrsz.org (Let's Encrypt via Cloudflare DNS-01): [docs/tls-letsencrypt.md](docs/tls-letsencrypt.md)
 - Keeping certificates valid (renewals, expiry dates, what to restart, backups): [docs/tls-maintenance.md](docs/tls-maintenance.md)
+- jrsz.net `/bravo` as RFC 7523 JWT-bearer IdP for the bonaire05 AIC tenant: [docs/bonaire05-jwt-bearer.md](docs/bonaire05-jwt-bearer.md)
+- ds.jrsz.net as authoritative user source for bonaire05 (Remote Connector Server + LDAP application): [docs/bonaire05-ldap-onboarding.md](docs/bonaire05-ldap-onboarding.md)
 
 ## Current lab status
 

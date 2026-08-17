@@ -125,6 +125,17 @@ services:
       # The /bravo OIDC -> horizon JWT-bearer feature targets the org stack only
       # (its signing keystore is mounted into amster-bootstrap on jrsz.org).
       BOOTSTRAP_OIDC_HORIZON: "false"
+      # jrsz.net counterpart: /bravo as RFC 7523 IdP for the bonaire05 AIC tenant
+      # (config/amster/oidc-bonaire, docs/bonaire05-jwt-bearer.md). Uses the separate
+      # signing key in secrets/oidc-signing-net (mounted at /run/secrets/oidc below).
+      BOOTSTRAP_OIDC_BONAIRE: ${BOOTSTRAP_OIDC_BONAIRE:-true}
+      REMOTE_AS_NAME: ${REMOTE_AS_NAME:-bonaire05}
+      REMOTE_AS_TOKEN_ENDPOINT: ${REMOTE_AS_TOKEN_ENDPOINT:-https://openam-bonaire05.forgeblocks.com:443/am/oauth2/realms/root/realms/alpha/access_token}
+      BONAIRE_PORTAL_CLIENT_ID: ${BONAIRE_PORTAL_CLIENT_ID:-bonaire-portal}
+      BONAIRE_PORTAL_CLIENT_SECRET: ${BONAIRE_PORTAL_CLIENT_SECRET:-bonaire-portal-secret-changeit}
+      BONAIRE_PORTAL_SCOPES: ${BONAIRE_PORTAL_SCOPES:-openid profile email a2a:invoke}
+      BONAIRE_DEMO_USER: ${BONAIRE_DEMO_USER:-acarter}
+      BONAIRE_DEMO_USER_PASSWORD: ${BONAIRE_DEMO_USER_PASSWORD:-}
     depends_on:
       am-com:
         condition: service_healthy
@@ -138,6 +149,7 @@ services:
       - am-home-bootstrap-com:/home/forgerock/openam
       - ./secrets/truststores:/run/secrets/trust:ro
       - ./config/amster:/opt/amster-config
+      - ./secrets/oidc-signing-net:/run/secrets/oidc:ro
 
   app1-com:
     build:
@@ -225,7 +237,7 @@ services:
         aliases:
           - app4-backend.jrsz.net
     volumes:
-      - ./secrets/tls/ca:/run/secrets/ca:ro
+      - ./secrets/tls/ca/jrsz-root-ca.cert.pem:/run/secrets/ca/jrsz-root-ca.cert.pem:ro
     expose:
       - "3000"
 
@@ -274,7 +286,7 @@ services:
         aliases:
           - app6-backend.jrsz.net
     volumes:
-      - ./secrets/tls/ca:/run/secrets/ca:ro
+      - ./secrets/tls/ca/jrsz-root-ca.cert.pem:/run/secrets/ca/jrsz-root-ca.cert.pem:ro
     expose:
       - "3000"
 
@@ -310,7 +322,7 @@ services:
         aliases:
           - app7-backend.jrsz.net
     volumes:
-      - ./secrets/tls/ca:/run/secrets/ca:ro
+      - ./secrets/tls/ca/jrsz-root-ca.cert.pem:/run/secrets/ca/jrsz-root-ca.cert.pem:ro
     expose:
       - "3000"
 
@@ -344,7 +356,7 @@ services:
         aliases:
           - app9-backend.jrsz.net
     volumes:
-      - ./secrets/tls/ca:/run/secrets/ca:ro
+      - ./secrets/tls/ca/jrsz-root-ca.cert.pem:/run/secrets/ca/jrsz-root-ca.cert.pem:ro
     expose:
       - "3000"
 
@@ -396,6 +408,43 @@ services:
     ports:
       - "8444:8443"
 
+  # Remote Connector Server for the bonaire05 AIC tenant. Hosts the LDAP
+  # connector that exposes ds.jrsz.net (ou=identities) to the tenant; the
+  # tenant's LDAP application + mapping (scripts/provision_bonaire05_ldap_app.py)
+  # onboards those users as alpha_users with DS as the authoritative source.
+  # RCS_* values come from .env.com; RCS_NAME must equal the connector server
+  # name registered in the tenant. Outbound-only (wss to the tenant), no ports.
+  rcs-com:
+    build:
+      context: .
+      dockerfile: docker/rcs/Dockerfile
+    container_name: rcs.jrsz.net
+    hostname: rcs.jrsz.net
+    env_file:
+      - .env.com
+    depends_on:
+      ds-com:
+        condition: service_healthy
+    networks:
+      jrsz_net:
+        aliases:
+          - rcs.jrsz.net
+    volumes:
+      - ./secrets/tls/ca/jrsz-root-ca.cert.pem:/run/secrets/ca/jrsz-root-ca.cert.pem:ro
+      - ./secrets/rcs:/run/secrets/rcs:ro
+      - rcs-logs-com:/opt/openicf/logs
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "grep operational= /opt/openicf/logs/ConnectorServer.log | tail -1 | grep -q operational=true",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 150s
+
 networks:
   jrsz_net:
     name: jrsz_net
@@ -404,3 +453,4 @@ volumes:
   am-home-bootstrap-com:
   ds-data-com:
   ds-secrets-com:
+  rcs-logs-com:
