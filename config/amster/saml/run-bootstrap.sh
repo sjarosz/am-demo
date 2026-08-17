@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Provision the cross-domain SAML 2.0 federation (jrsz.org <-> jrsz.com) from the
+# Provision the cross-domain SAML 2.0 federation (jrsz.org <-> jrsz.net) from the
 # canon artifacts in this directory. Invoked by the amster bootstrap container
 # (docker/amster/docker-entrypoint.sh) once per stack; idempotent.
 #

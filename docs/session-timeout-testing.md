@@ -5,7 +5,7 @@ inactivity, explicit logout, and OIDC single logout. It implements the practical
 test plan: AM is the source of truth, IG must not be the weak link, and OIDC
 token invalidation is treated separately from SSO session invalidation.
 
-Open it at **https://app6.jrsz.org/** (or the twin **https://app6.jrsz.com:8444/**).
+Open it at **https://app6.jrsz.org/** (or the twin **https://app6.jrsz.net:8444/**).
 
 The console is a Node/Express app behind PingGateway. The dashboard, OIDC RPs,
 API E and the probe endpoints are ungated; `/protected/a` and `/protected/b` are
@@ -72,7 +72,7 @@ Re-login afterwards so a fresh session and fresh tokens pick up the new values.
 | `token-first` | 30m | 120m | 60s | 180s | 60s | access/refresh token |
 | `race` | 2m | 20m | 120s | 120s | 120s | near-simultaneous |
 
-For jrsz.com, source `.env.com` first:
+For jrsz.net, source `.env.com` first:
 `set -a; . ./.env.com; set +a; ./scripts/set-timeout-profile.sh baseline`.
 
 PingGateway warns that an AM `sessionIdleRefresh.interval` below one minute can
@@ -204,7 +204,7 @@ docker compose --profile bootstrap up --abort-on-container-exit amster-bootstrap
 ./scripts/set-timeout-profile.sh baseline
 ```
 
-For the jrsz.com twin, regenerate the gateway config and use the `-com` services:
+For the jrsz.net twin, regenerate the gateway config and use the `-com` services:
 
 ```bash
 ./scripts/render-com-config.sh

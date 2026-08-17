@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Provision the SAML2 custom-script lab (app9) in the isolated /samllab realm,
-# across the jrsz.org <-> jrsz.com federation. Invoked by the amster bootstrap
+# across the jrsz.org <-> jrsz.net federation. Invoked by the amster bootstrap
 # container (docker/amster/docker-entrypoint.sh) once per stack; idempotent.
 #
 # The side (org/com) is auto-detected from AM_COOKIE_DOMAIN, and the script

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provision the SAML2 custom-script lab (app9) across the jrsz.org <-> jrsz.com
+"""Provision the SAML2 custom-script lab (app9) across the jrsz.org <-> jrsz.net
 federation, from the checked-in canon artifacts in this directory. Idempotent.
 
 This exercises three of the PingAM 8.1 sample SAML2 scripts in a genuine
@@ -42,7 +42,9 @@ ADMIN_PW = os.environ.get("AM_ADMIN_PWD") or os.environ.get("AM_ADMIN_PASSWORD")
 COOKIE_DOMAIN = os.environ.get("AM_COOKIE_DOMAIN", "jrsz.org")
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-SIDE = "com" if "com" in COOKIE_DOMAIN else "org"
+# Side detection: the org stack owns jrsz.org; any other cookie domain (jrsz.net, formerly
+# jrsz.com) is the "com" side. AM_SIDE=org|com overrides.
+SIDE = os.environ.get("AM_SIDE") or ("org" if COOKIE_DOMAIN.lstrip(".") == "jrsz.org" else "com")
 PARTNER = "org" if SIDE == "com" else "com"
 
 REALM_NAME = "samllab"
@@ -52,9 +54,9 @@ COT_NAME = "samllab-cot"
 DEMO_USER = os.environ.get("DEMO_USER_NAME") or "demo-user"
 DEMO_USER_PASSWORD = os.environ.get("DEMO_USER_PASSWORD") or "Jrsz$2025!"
 
-IG_DEFAULTS = {"org": "https://ig.jrsz.org", "com": "https://ig.jrsz.com:8444"}
+IG_DEFAULTS = {"org": "https://ig.jrsz.org", "com": "https://ig.jrsz.net:8444"}
 IG_BASE = (os.environ.get("IG_BASE_URL") or IG_DEFAULTS[SIDE]).rstrip("/")
-APP9_DEFAULTS = {"org": "https://app9.jrsz.org", "com": "https://app9.jrsz.com:8444"}
+APP9_DEFAULTS = {"org": "https://app9.jrsz.org", "com": "https://app9.jrsz.net:8444"}
 APP9_BASE = (os.environ.get("APP9_BASE_URL") or APP9_DEFAULTS[SIDE]).rstrip("/")
 
 # Fixed script ids (so re-runs reconcile in place).
@@ -277,7 +279,7 @@ def provision_user(t):
         "givenName": "Demo",
         "sn": "User",
         "cn": "Demo User",
-        "mail": f"{DEMO_USER}@jrsz.{SIDE}",
+        "mail": f"{DEMO_USER}@{COOKIE_DOMAIN.lstrip('.')}",
         "telephoneNumber": "+1-555-0142",
         "userPassword": DEMO_USER_PASSWORD,
         "inetUserStatus": "Active",

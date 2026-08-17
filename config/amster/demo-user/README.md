@@ -15,7 +15,7 @@ Creates the lab end-user account used by:
 | Password | `Jrsz$2025!`  |
 
 The password is set via `DEMO_USER_PASSWORD` in `.env` (and `.env.com` for the
-jrsz.com stack). The default in `.env.example` is `Jrsz$2025!`.
+jrsz.net stack). The default in `.env.example` is `Jrsz$2025!`.
 
 **Why this password?** The DS identities backend runs dictionary and
 common-password validators. "Jrsz" is a project-specific token that does not

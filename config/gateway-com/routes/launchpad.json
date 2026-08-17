@@ -1,6 +1,6 @@
 {
   "name": "launchpad",
-  "condition": "${request.uri.host == 'ig.jrsz.com' and (request.uri.path == '/' or request.uri.path == '/__slo/status' or request.uri.path == '/__slo/logout')}",
+  "condition": "${request.uri.host == 'ig.jrsz.net' and (request.uri.path == '/' or request.uri.path == '/__slo/status' or request.uri.path == '/__slo/logout')}",
   "handler": {
     "type": "DispatchHandler",
     "config": {

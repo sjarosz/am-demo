@@ -6,6 +6,7 @@ For normal use, start with:
 
 - [install-after-git-pull.md](install-after-git-pull.md) — new machine / post-clone setup
 - [getting-started.md](getting-started.md) — shorter walkthrough
+- [tls-maintenance.md](tls-maintenance.md) — certificate expiries, `./scripts/le-cert.sh renew` (Let's Encrypt, every ≤60 days), private-CA renewal in 2028, restarts, backups
 
 For rebuild/debug history and exact failure fixes, use:
 
@@ -23,9 +24,9 @@ This workspace now contains a Docker Compose starter stack for:
 - `app5.jrsz.org`
 - `app6.jrsz.org`
 
-A parallel **jrsz.com** stack (`compose.com.yaml`, included from `compose.yaml`) runs
+A parallel **jrsz.net** stack (`compose.com.yaml`, included from `compose.yaml`) runs
 the same services as independent twins on deconflicted host ports — AM on `9443`,
-gateway/apps on `8444`. See the "Parallel jrsz.com stack" section in
+gateway/apps on `8444`. See the "Parallel jrsz.net stack" section in
 [install-after-git-pull.md](install-after-git-pull.md). Render its gateway config with
 `./scripts/render-com-config.sh` and bootstrap with the `amster-bootstrap-com` service.
 

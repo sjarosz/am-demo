@@ -1,6 +1,6 @@
 {
   "name": "app5",
-  "condition": "${request.uri.host == 'app5.jrsz.com'}",
+  "condition": "${request.uri.host == 'app5.jrsz.net'}",
   "handler": {
     "type": "DispatchHandler",
     "config": {
@@ -14,7 +14,7 @@
           "handler": "SloLogoutHandler"
         },
         {
-          "baseURI": "http://app5-backend.jrsz.com:8080",
+          "baseURI": "http://app5-backend.jrsz.net:8080",
           "handler": "PlainReverseProxy"
         }
       ]

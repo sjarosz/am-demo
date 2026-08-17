@@ -1,9 +1,9 @@
-# jrsz.com parallel stack - a full independent twin of the jrsz.org services.
+# jrsz.net parallel stack - a full independent twin of the jrsz.org services.
 #
 # Both stacks share the jrsz_net network and run concurrently. Published host
 # ports are deconflicted from jrsz.org:
-#   am.jrsz.org  8443:8443   | am.jrsz.com  9443:9443   (AM listens on 9443 inside
-#   ig.jrsz.org  443:8443    | ig.jrsz.com  8444:8443    the com container too)
+#   am.jrsz.org  8443:8443   | am.jrsz.net  9443:9443   (AM listens on 9443 inside
+#   ig.jrsz.org  443:8443    | ig.jrsz.net  8444:8443    the com container too)
 #
 # Domain/URL/port/cookie values are hardcoded here on purpose: docker compose
 # `${VAR}` interpolation reads the root .env (jrsz.org), not .env.com. Shared
@@ -19,8 +19,8 @@ services:
         DS_ROOT_PASSWORD: ${DS_ROOT_PASSWORD}
         DS_MONITOR_PASSWORD: ${DS_MONITOR_PASSWORD}
         DS_AM_PROFILE_PASSWORD: ${DS_AM_PROFILE_PASSWORD}
-    container_name: ds.jrsz.com
-    hostname: ds.jrsz.com
+    container_name: ds.jrsz.net
+    hostname: ds.jrsz.net
     env_file:
       - .env.com
     environment:
@@ -28,12 +28,12 @@ services:
       DS_SET_UID_ADMIN_AND_MONITOR_PASSWORDS: "true"
       DS_UID_ADMIN_PASSWORD: ${DS_ROOT_PASSWORD}
       DS_UID_MONITOR_PASSWORD: ${DS_MONITOR_PASSWORD}
-      DS_ADVERTISED_LISTEN_ADDRESS: ds.jrsz.com
+      DS_ADVERTISED_LISTEN_ADDRESS: ds.jrsz.net
       USE_DEMO_KEYSTORE_AND_PASSWORDS: "false"
     networks:
       jrsz_net:
         aliases:
-          - ds.jrsz.com
+          - ds.jrsz.net
     volumes:
       - ds-data-com:/opt/opendj/data
       - ds-secrets-com:/opt/opendj/secrets
@@ -60,16 +60,16 @@ services:
     build:
       context: .
       dockerfile: docker/am/Dockerfile
-    container_name: am.jrsz.com
-    hostname: am.jrsz.com
+    container_name: am.jrsz.net
+    hostname: am.jrsz.net
     env_file:
       - .env.com
     environment:
-      KEYSTORE_FILE: /run/secrets/tls/am-com.p12
+      KEYSTORE_FILE: ${AM_COM_KEYSTORE_FILE:-/run/secrets/tls/am-com.p12}
       KEYSTORE_PASSWORD: ${AM_KEYSTORE_PASSWORD}
       TRUSTSTORE_FILE: /run/secrets/trust/truststore.p12
       TRUSTSTORE_PASSWORD: ${TRUSTSTORE_PASSWORD}
-      AM_URL: https://am.jrsz.com:9443/am
+      AM_URL: https://am.jrsz.net:9443/am
       AM_HTTPS_PORT: "9443"
     depends_on:
       ds-com:
@@ -77,10 +77,10 @@ services:
     networks:
       jrsz_net:
         aliases:
-          - am.jrsz.com
+          - am.jrsz.net
     volumes:
       - am-home-bootstrap-com:/home/forgerock/openam
-      - ./secrets/tls/am-com:/run/secrets/tls:ro
+      - ${AM_COM_TLS_DIR:-./secrets/tls/am-com}:/run/secrets/tls:ro
       - ./secrets/truststores:/run/secrets/trust:ro
       - ./config/amster:/opt/amster-config
     ports:
@@ -96,25 +96,25 @@ services:
     build:
       context: .
       dockerfile: docker/amster/Dockerfile
-    container_name: amster-bootstrap.jrsz.com
-    hostname: amster-bootstrap.jrsz.com
+    container_name: amster-bootstrap.jrsz.net
+    hostname: amster-bootstrap.jrsz.net
     env_file:
       - .env.com
     profiles:
       - bootstrap
     environment:
-      AM_SERVER_URL: https://am.jrsz.com:9443/am
+      AM_SERVER_URL: https://am.jrsz.net:9443/am
       AM_CFG_DIR: /home/forgerock/openam
-      AM_COOKIE_DOMAIN: jrsz.com
+      AM_COOKIE_DOMAIN: jrsz.net
       AM_USER_STORE_TYPE: LDAPv3ForOpenDS
-      AM_CFG_STORE_HOST: ds.jrsz.com
+      AM_CFG_STORE_HOST: ds.jrsz.net
       AM_CFG_STORE_PORT: "1636"
       AM_CFG_STORE_ADMIN_PORT: "4444"
       AM_CFG_STORE_ROOT_SUFFIX: ou=am-config
       AM_CFG_STORE_SSL: SSL
       AM_CFG_STORE_DIR_MGR: uid=am-config,ou=admins,ou=am-config
       AM_CFG_STORE_DIR_MGR_PWD: ${DS_AM_PROFILE_PASSWORD}
-      AM_USER_STORE_HOST: ds.jrsz.com
+      AM_USER_STORE_HOST: ds.jrsz.net
       AM_USER_STORE_PORT: "1636"
       AM_USER_STORE_ROOT_SUFFIX: ou=identities
       AM_USER_STORE_SSL: SSL
@@ -133,7 +133,7 @@ services:
     networks:
       jrsz_net:
         aliases:
-          - amster-bootstrap.jrsz.com
+          - amster-bootstrap.jrsz.net
     volumes:
       - am-home-bootstrap-com:/home/forgerock/openam
       - ./secrets/truststores:/run/secrets/trust:ro
@@ -144,17 +144,17 @@ services:
       context: .
       dockerfile: docker/app1/Dockerfile
       args:
-        APP_DOMAIN: jrsz.com
-    container_name: app1-backend.jrsz.com
-    hostname: app1-backend.jrsz.com
+        APP_DOMAIN: jrsz.net
+    container_name: app1-backend.jrsz.net
+    hostname: app1-backend.jrsz.net
     environment:
-      SERVER_NAME: app1-backend.jrsz.com
+      SERVER_NAME: app1-backend.jrsz.net
       KEYSTORE_FILE: /run/secrets/tls/app1-com.p12
       KEYSTORE_PASSWORD: ${APP_KEYSTORE_PASSWORD}
     networks:
       jrsz_net:
         aliases:
-          - app1-backend.jrsz.com
+          - app1-backend.jrsz.net
     volumes:
       - ./secrets/tls/app1-com:/run/secrets/tls:ro
     expose:
@@ -165,17 +165,17 @@ services:
       context: .
       dockerfile: docker/app2/Dockerfile
       args:
-        APP_DOMAIN: jrsz.com
-    container_name: app2-backend.jrsz.com
-    hostname: app2-backend.jrsz.com
+        APP_DOMAIN: jrsz.net
+    container_name: app2-backend.jrsz.net
+    hostname: app2-backend.jrsz.net
     environment:
-      SERVER_NAME: app2-backend.jrsz.com
+      SERVER_NAME: app2-backend.jrsz.net
       KEYSTORE_FILE: /run/secrets/tls/app2-com.p12
       KEYSTORE_PASSWORD: ${APP_KEYSTORE_PASSWORD}
     networks:
       jrsz_net:
         aliases:
-          - app2-backend.jrsz.com
+          - app2-backend.jrsz.net
     volumes:
       - ./secrets/tls/app2-com:/run/secrets/tls:ro
     expose:
@@ -186,17 +186,17 @@ services:
       context: .
       dockerfile: docker/app3/Dockerfile
       args:
-        APP_DOMAIN: jrsz.com
-    container_name: app3-backend.jrsz.com
-    hostname: app3-backend.jrsz.com
+        APP_DOMAIN: jrsz.net
+    container_name: app3-backend.jrsz.net
+    hostname: app3-backend.jrsz.net
     environment:
-      SERVER_NAME: app3-backend.jrsz.com
+      SERVER_NAME: app3-backend.jrsz.net
       KEYSTORE_FILE: /run/secrets/tls/app3-com.p12
       KEYSTORE_PASSWORD: ${APP_KEYSTORE_PASSWORD}
     networks:
       jrsz_net:
         aliases:
-          - app3-backend.jrsz.com
+          - app3-backend.jrsz.net
     volumes:
       - ./secrets/tls/app3-com:/run/secrets/tls:ro
     expose:
@@ -206,16 +206,16 @@ services:
     build:
       context: .
       dockerfile: docker/app4/Dockerfile
-    container_name: app4-backend.jrsz.com
-    hostname: app4-backend.jrsz.com
+    container_name: app4-backend.jrsz.net
+    hostname: app4-backend.jrsz.net
     env_file:
       - .env.com
     environment:
       PORT: "3000"
-      DEMO_BASE_URL: https://app4.jrsz.com:8444
-      AM_BASE_URL: https://am.jrsz.com:9443/am
-      OIDC_ISSUER_URL: https://am.jrsz.com:9443/am/oauth2/realms/root/realms/alpha
-      AM_COOKIE_DOMAIN: jrsz.com
+      DEMO_BASE_URL: https://app4.jrsz.net:8444
+      AM_BASE_URL: https://am.jrsz.net:9443/am
+      OIDC_ISSUER_URL: https://am.jrsz.net:9443/am/oauth2/realms/root/realms/alpha
+      AM_COOKIE_DOMAIN: jrsz.net
       CLIENT_ID: demo-pkce-app
       CLIENT_SECRET: ""
       NODE_EXTRA_CA_CERTS: /run/secrets/ca/jrsz-root-ca.cert.pem
@@ -223,7 +223,7 @@ services:
     networks:
       jrsz_net:
         aliases:
-          - app4-backend.jrsz.com
+          - app4-backend.jrsz.net
     volumes:
       - ./secrets/tls/ca:/run/secrets/ca:ro
     expose:
@@ -234,15 +234,15 @@ services:
       context: .
       dockerfile: docker/login-widget/Dockerfile
       args:
-        VITE_AM_BASE_URL: https://am.jrsz.com:9443/am
+        VITE_AM_BASE_URL: https://am.jrsz.net:9443/am
         VITE_CLIENT_ID: sdkPublicClient
         VITE_JOURNEY: sdkUsernamePasswordJourney
-    container_name: app5-backend.jrsz.com
-    hostname: app5-backend.jrsz.com
+    container_name: app5-backend.jrsz.net
+    hostname: app5-backend.jrsz.net
     networks:
       jrsz_net:
         aliases:
-          - app5-backend.jrsz.com
+          - app5-backend.jrsz.net
     expose:
       - "8080"
 
@@ -250,20 +250,20 @@ services:
     build:
       context: .
       dockerfile: docker/app6/Dockerfile
-    container_name: app6-backend.jrsz.com
-    hostname: app6-backend.jrsz.com
+    container_name: app6-backend.jrsz.net
+    hostname: app6-backend.jrsz.net
     env_file:
       - .env.com
     environment:
       PORT: "3000"
-      APP6_BASE_URL: https://app6.jrsz.com:8444
-      AM_BASE_URL: https://am.jrsz.com:9443/am
-      AM_COOKIE_DOMAIN: jrsz.com
+      APP6_BASE_URL: https://app6.jrsz.net:8444
+      AM_BASE_URL: https://am.jrsz.net:9443/am
+      AM_COOKIE_DOMAIN: jrsz.net
       AM_ADMIN_PASSWORD: ${AM_ADMIN_PASSWORD}
       DEMO_USER_NAME: ${DEMO_USER_NAME:-demo-user}
       TIMEOUT_REALM: /timeout-test
       TIMEOUT_REALM_PATH: realms/root/realms/timeout-test
-      OIDC_ISSUER_URL: https://am.jrsz.com:9443/am/oauth2/realms/root/realms/timeout-test
+      OIDC_ISSUER_URL: https://am.jrsz.net:9443/am/oauth2/realms/root/realms/timeout-test
       RP_C_CLIENT_ID: rp-c-app
       RP_C_CLIENT_SECRET: rp-c-secret-changeit
       RP_D_CLIENT_ID: rp-d-app
@@ -272,7 +272,7 @@ services:
     networks:
       jrsz_net:
         aliases:
-          - app6-backend.jrsz.com
+          - app6-backend.jrsz.net
     volumes:
       - ./secrets/tls/ca:/run/secrets/ca:ro
     expose:
@@ -282,24 +282,24 @@ services:
     build:
       context: .
       dockerfile: docker/app7/Dockerfile
-    container_name: app7-backend.jrsz.com
-    hostname: app7-backend.jrsz.com
+    container_name: app7-backend.jrsz.net
+    hostname: app7-backend.jrsz.net
     env_file:
       - .env.com
     environment:
       PORT: "3000"
       LOCAL_SIDE: com
-      APP7_BASE_URL: https://app7.jrsz.com:8444
-      AM_BASE_URL: https://am.jrsz.com:9443/am
-      AM_COOKIE_DOMAIN: jrsz.com
+      APP7_BASE_URL: https://app7.jrsz.net:8444
+      AM_BASE_URL: https://am.jrsz.net:9443/am
+      AM_COOKIE_DOMAIN: jrsz.net
       AM_ADMIN_PASSWORD: ${AM_ADMIN_PASSWORD}
       DEMO_USER_NAME: ${DEMO_USER_NAME:-demo-user}
       AM_REALM: /alpha
       AM_REALM_PATH: realms/root/realms/alpha
       ORG_AM_BASE_URL: https://am.jrsz.org:8443/am
-      COM_AM_BASE_URL: https://am.jrsz.com:9443/am
+      COM_AM_BASE_URL: https://am.jrsz.net:9443/am
       ORG_ENTITY_ID: https://am.jrsz.org:8443/am/jrsz-org
-      COM_ENTITY_ID: https://am.jrsz.com:9443/am/jrsz-com
+      COM_ENTITY_ID: https://am.jrsz.net:9443/am/jrsz-com
       ORG_IDP_METAALIAS: /alpha/idp-org
       ORG_SP_METAALIAS: /alpha/sp-org
       COM_IDP_METAALIAS: /alpha/idp-com
@@ -308,7 +308,7 @@ services:
     networks:
       jrsz_net:
         aliases:
-          - app7-backend.jrsz.com
+          - app7-backend.jrsz.net
     volumes:
       - ./secrets/tls/ca:/run/secrets/ca:ro
     expose:
@@ -318,31 +318,31 @@ services:
     build:
       context: .
       dockerfile: docker/app9/Dockerfile
-    container_name: app9-backend.jrsz.com
-    hostname: app9-backend.jrsz.com
+    container_name: app9-backend.jrsz.net
+    hostname: app9-backend.jrsz.net
     env_file:
       - .env.com
     environment:
       PORT: "3000"
       LOCAL_SIDE: com
-      APP9_BASE_URL: https://app9.jrsz.com:8444
-      AM_BASE_URL: https://am.jrsz.com:9443/am
-      AM_COOKIE_DOMAIN: jrsz.com
+      APP9_BASE_URL: https://app9.jrsz.net:8444
+      AM_BASE_URL: https://am.jrsz.net:9443/am
+      AM_COOKIE_DOMAIN: jrsz.net
       AM_ADMIN_PASSWORD: ${AM_ADMIN_PASSWORD}
       DEMO_USER_NAME: ${DEMO_USER_NAME:-demo-user}
       AM_REALM: /samllab
       AM_REALM_PATH: realms/root/realms/samllab
       ORG_AM_BASE_URL: https://am.jrsz.org:8443/am
-      COM_AM_BASE_URL: https://am.jrsz.com:9443/am
+      COM_AM_BASE_URL: https://am.jrsz.net:9443/am
       SAMLLAB_IDP_ENTITY_ID: https://am.jrsz.org:8443/am/samllab-idp
-      SAMLLAB_SP_ENTITY_ID: https://am.jrsz.com:9443/am/samllab-sp
+      SAMLLAB_SP_ENTITY_ID: https://am.jrsz.net:9443/am/samllab-sp
       SAMLLAB_IDP_METAALIAS: /samllab/idp
       SAMLLAB_SP_METAALIAS: /samllab/sp
       NODE_EXTRA_CA_CERTS: /run/secrets/ca/jrsz-root-ca.cert.pem
     networks:
       jrsz_net:
         aliases:
-          - app9-backend.jrsz.com
+          - app9-backend.jrsz.net
     volumes:
       - ./secrets/tls/ca:/run/secrets/ca:ro
     expose:
@@ -352,8 +352,8 @@ services:
     build:
       context: .
       dockerfile: docker/gateway/Dockerfile
-    container_name: ig.jrsz.com
-    hostname: ig.jrsz.com
+    container_name: ig.jrsz.net
+    hostname: ig.jrsz.net
     env_file:
       - .env.com
     depends_on:
@@ -378,19 +378,19 @@ services:
     networks:
       jrsz_net:
         aliases:
-          - ig.jrsz.com
-          - app1.jrsz.com
-          - app2.jrsz.com
-          - app3.jrsz.com
-          - app4.jrsz.com
-          - app5.jrsz.com
-          - app6.jrsz.com
-          - app7.jrsz.com
-          - app9.jrsz.com
+          - ig.jrsz.net
+          - app1.jrsz.net
+          - app2.jrsz.net
+          - app3.jrsz.net
+          - app4.jrsz.net
+          - app5.jrsz.net
+          - app6.jrsz.net
+          - app7.jrsz.net
+          - app9.jrsz.net
     volumes:
       - ./config/gateway-com:/var/gateway/config:ro
       - ./config/gateway-com/scripts:/var/gateway/scripts:ro
-      - ./secrets/tls/gateway-com:/var/gateway/secrets/tls:ro
+      - ${GATEWAY_COM_TLS_DIR:-./secrets/tls/gateway-com}:/var/gateway/secrets/tls:ro
       - ./secrets/truststores:/var/gateway/secrets/trust:ro
       - ./secrets/passwords/gateway:/var/gateway/secrets/passwords:ro
     ports:

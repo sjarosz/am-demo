@@ -188,6 +188,8 @@ docker compose down
 - Single Logout + smart buttons: [docs/single-logout.md](docs/single-logout.md)
 - OAuth demo expansion: [docs/oauth2-demo-plan.md](docs/oauth2-demo-plan.md)
 - OAuth demo validation: [docs/oauth2-demo-validation.md](docs/oauth2-demo-validation.md)
+- Real TLS certificate for jrsz.org (Let's Encrypt via Cloudflare DNS-01): [docs/tls-letsencrypt.md](docs/tls-letsencrypt.md)
+- Keeping certificates valid (renewals, expiry dates, what to restart, backups): [docs/tls-maintenance.md](docs/tls-maintenance.md)
 
 ## Current lab status
 

@@ -7,7 +7,7 @@
 # Usage:
 #   ./scripts/set-timeout-profile.sh <baseline|idle-first|max-first|app-first|token-first|race>
 #
-# Targets the jrsz.org stack by sourcing .env. To target jrsz.com, pre-set
+# Targets the jrsz.org stack by sourcing .env. To target jrsz.net, pre-set
 # AM_URL / AM_ADMIN_PASSWORD / RP_C_CLIENT_ID / RP_D_CLIENT_ID in the environment
 # (e.g. `set -a; . ./.env.com; set +a; ./scripts/set-timeout-profile.sh baseline`).
 #
@@ -17,7 +17,9 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ENV_FILE="${ENV_FILE:-${ROOT_DIR}/.env}"
-CA_CERT="${CA_CERT:-${ROOT_DIR}/secrets/tls/ca/jrsz-root-ca.cert.pem}"
+CA_BUNDLE_DEFAULT="${ROOT_DIR}/secrets/tls/ca/ca-bundle.pem"
+[[ -f "${CA_BUNDLE_DEFAULT}" ]] || CA_BUNDLE_DEFAULT="${ROOT_DIR}/secrets/tls/ca/jrsz-root-ca.cert.pem"
+CA_CERT="${CA_CERT:-${CA_BUNDLE_DEFAULT}}"
 
 PROFILE="${1:-}"
 if [[ -z "${PROFILE}" ]]; then

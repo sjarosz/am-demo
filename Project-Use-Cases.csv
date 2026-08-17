@@ -38,7 +38,7 @@ UC-SCRIPT-OIDC-02,Scripted scope validation rejects an unauthorized scope (app8 
  3. Observe the AM response.","AM rejects the request with invalid_scope.
  No tokens are issued for the bad-scope request, confirming the validate-scope hook ran.",
 UC-SAML-01,SAML 2.0 cross-domain SSO across both AM stacks (app7 console).,SAML 2.0 browser SSO (IdP-init + SP-init) over the jrsz-federation circle of trust,Browser + app7 console / SAML tracer,Prove the dual-role org and com entities complete SSO in all four permutations with auto-federation onto demo-user.,"1. Open https://app7.jrsz.org/ and log in as demo-user where prompted.
- 2. Launch org IdP -> com SP (IdP-init) and (SP-init); confirm the session on https://app7.jrsz.com:8444/.
+ 2. Launch org IdP -> com SP (IdP-init) and (SP-init); confirm the session on https://app7.jrsz.net:8444/.
  3. Launch com IdP -> org SP (IdP-init) and (SP-init); confirm the session on the org console.
  4. Inspect the assertion (NameID, issuer, audience) and RelayState landing.","All four IdP/SP-init flows complete and establish a federated session.
  Auto-federation on uid resolves to demo-user on the SP side.
@@ -50,7 +50,7 @@ UC-SAML-02,SAML 2.0 Single Logout from a federated entity (app7 console).,SAML 2
  Both consoles show no AM session afterward.
  SLO only acts when a live federated session exists (metaAlias read from the session).",
 UC-SAML-SCRIPT-01,"SAML 2.0 custom scripts customize the assertion and SP session (app9, /samllab).",SAML 2.0 SSO with IDP Attribute Mapper + NameID Mapper + SP Adapter scripts (org IdP -> com SP),Browser + app9 console,Prove the three sample SAML2 scripts inject star-tagged attributes/NameID into the assertion and surface them into the com SP session.,"1. Open https://app9.jrsz.org/ and launch org IdP -> com SP (IdP-init or SP-init); log in as demo-user.
- 2. Open https://app9.jrsz.com:8444/ (SP side).
+ 2. Open https://app9.jrsz.net:8444/ (SP side).
  3. Read the Script proof panel (samllabProof session property via getSessionInfo).
  4. Confirm the star-tagged attributes and NameID are present.","IDP Attribute Mapper adds star-tagged SAML attributes; NameID Mapper star-prefixes the Subject NameID.
  SP Adapter stashes them into the com SP session as samllabProof.

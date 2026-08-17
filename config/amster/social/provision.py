@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provision cross-AM OIDC social login (jrsz.org <-> jrsz.com).
+"""Provision cross-AM OIDC social login (jrsz.org <-> jrsz.net).
 
 Each /alpha realm plays BOTH roles, symmetric to the SAML federation:
   * As an OpenID Provider (OP): hosts a confidential OIDC client that the PARTNER
@@ -32,12 +32,14 @@ COOKIE_DOMAIN = os.environ.get("AM_COOKIE_DOMAIN", "jrsz.org")
 REALM_PATH = os.environ.get("SOCIAL_REALM_PATH", "realms/root/realms/alpha")
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-SIDE = "com" if "com" in COOKIE_DOMAIN else "org"
+# Side detection: the org stack owns jrsz.org; any other cookie domain (jrsz.net, formerly
+# jrsz.com) is the "com" side. AM_SIDE=org|com overrides.
+SIDE = os.environ.get("AM_SIDE") or ("org" if COOKIE_DOMAIN.lstrip(".") == "jrsz.org" else "com")
 PARTNER = "org" if SIDE == "com" else "com"
 
 BASES = {
     "org": (os.environ.get("ORG_AM_BASE_URL") or "https://am.jrsz.org:8443/am").rstrip("/"),
-    "com": (os.environ.get("COM_AM_BASE_URL") or "https://am.jrsz.com:9443/am").rstrip("/"),
+    "com": (os.environ.get("COM_AM_BASE_URL") or "https://am.jrsz.net:9443/am").rstrip("/"),
 }
 SECRETS = {
     "org": os.environ.get("SOCIAL_ORG_RP_SECRET") or "org-social-secret-changeit",
@@ -97,7 +99,7 @@ REDIRECT_SUFFIX = f"/XUI/?realm={XUI_REALM}"
 # ``IG_BASE_URL/*`` in the realm Validation Service (validGotoDestinations), so AM
 # honors the redirect. The trailing slash makes the bare host match the ``/*``
 # goto pattern and lands on the launchpad route (path ``/``).
-IG_DEFAULTS = {"org": "https://ig.jrsz.org", "com": "https://ig.jrsz.com:8444"}
+IG_DEFAULTS = {"org": "https://ig.jrsz.org", "com": "https://ig.jrsz.net:8444"}
 IG_BASE = (os.environ.get("IG_BASE_URL") or IG_DEFAULTS[SIDE]).rstrip("/")
 SUCCESS_URL = IG_BASE + "/"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Reliable full reset for the jrsz.org + jrsz.com lab.
+# Reliable full reset for the jrsz.org + jrsz.net lab.
 #
 # Why this exists:
 #   The `amster-bootstrap` / `amster-bootstrap-com` services are one-shot
@@ -30,7 +30,7 @@ if [[ "${1:-}" == "--keep-data" ]]; then
 fi
 
 echo "==> Removing one-shot bootstrap containers (so they cannot pin volumes)"
-docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.com >/dev/null 2>&1 || true
+docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.net >/dev/null 2>&1 || true
 
 if [[ "${KEEP_DATA}" == "false" ]]; then
   echo "==> Tearing down stack and wiping volumes (down -v, including bootstrap profile)"
@@ -52,7 +52,7 @@ echo "==> Starting the full stack (detached, with build)"
 docker compose up -d --build
 
 echo "==> Waiting for both AMs to report healthy (configurator mode)"
-for am in am.jrsz.org am.jrsz.com; do
+for am in am.jrsz.org am.jrsz.net; do
   printf '    %s ' "${am}"
   for _ in $(seq 1 60); do
     status="$(docker inspect -f '{{.State.Health.Status}}' "${am}" 2>/dev/null || echo missing)"
@@ -68,11 +68,11 @@ done
 echo "==> Bootstrapping jrsz.org"
 docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap
 
-echo "==> Bootstrapping jrsz.com"
+echo "==> Bootstrapping jrsz.net"
 docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap-com
 
 echo "==> Cleaning up one-shot bootstrap containers (keeps future 'down -v' clean)"
-docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.com >/dev/null 2>&1 || true
+docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.net >/dev/null 2>&1 || true
 
 echo "==> Restarting gateways so SSO picks up freshly-created agents"
 docker compose restart gateway gateway-com >/dev/null

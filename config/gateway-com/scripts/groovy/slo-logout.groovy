@@ -4,11 +4,11 @@ import org.forgerock.http.protocol.Status
 import groovy.json.JsonOutput
 
 // Global Single Logout: invoke AM's session logout service for the shared SSO
-// token, then expire the iPlanetDirectoryPro cookie across the jrsz.com domain.
+// token, then expire the iPlanetDirectoryPro cookie across the jrsz.net domain.
 // Killing the shared AM session logs out app1-app3 everywhere at once; app4
 // observes the dead AM session on its next status poll and honors the logout.
 
-def CLEAR_COOKIE = 'iPlanetDirectoryPro=; Domain=jrsz.com; Path=/; Max-Age=0; HttpOnly'
+def CLEAR_COOKIE = 'iPlanetDirectoryPro=; Domain=jrsz.net; Path=/; Max-Age=0; HttpOnly'
 
 def doneResponse = {
     Response r = new Response(Status.OK)
@@ -27,7 +27,7 @@ if (token == null || token.isEmpty()) {
 
 Request amReq = new Request()
 amReq.setMethod('POST')
-amReq.setUri('https://am.jrsz.com:9443/am/json/realms/root/realms/alpha/sessions?_action=logout')
+amReq.setUri('https://am.jrsz.net:9443/am/json/realms/root/realms/alpha/sessions?_action=logout')
 amReq.headers.put('iPlanetDirectoryPro', token)
 amReq.headers.put('Accept-API-Version', 'resource=5.1, protocol=1.0')
 amReq.headers.put('Content-Type', 'application/json')

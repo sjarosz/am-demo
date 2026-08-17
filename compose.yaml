@@ -70,7 +70,7 @@ services:
           - am.jrsz.org
     volumes:
       - am-home-bootstrap:/home/forgerock/openam
-      - ./secrets/tls/am:/run/secrets/tls:ro
+      - ${AM_TLS_DIR:-./secrets/tls/am}:/run/secrets/tls:ro
       - ./secrets/truststores:/run/secrets/trust:ro
       - ./config/amster:/opt/amster-config
     ports:
@@ -283,9 +283,9 @@ services:
       AM_REALM: ${SAML_REALM:-/alpha}
       AM_REALM_PATH: ${SAML_REALM_PATH:-realms/root/realms/alpha}
       ORG_AM_BASE_URL: ${ORG_AM_BASE_URL:-https://am.jrsz.org:8443/am}
-      COM_AM_BASE_URL: ${COM_AM_BASE_URL:-https://am.jrsz.com:9443/am}
+      COM_AM_BASE_URL: ${COM_AM_BASE_URL:-https://am.jrsz.net:9443/am}
       ORG_ENTITY_ID: ${ORG_ENTITY_ID:-https://am.jrsz.org:8443/am/jrsz-org}
-      COM_ENTITY_ID: ${COM_ENTITY_ID:-https://am.jrsz.com:9443/am/jrsz-com}
+      COM_ENTITY_ID: ${COM_ENTITY_ID:-https://am.jrsz.net:9443/am/jrsz-com}
       ORG_IDP_METAALIAS: ${ORG_IDP_METAALIAS:-/alpha/idp-org}
       ORG_SP_METAALIAS: ${ORG_SP_METAALIAS:-/alpha/sp-org}
       COM_IDP_METAALIAS: ${COM_IDP_METAALIAS:-/alpha/idp-com}
@@ -346,9 +346,9 @@ services:
       AM_REALM: ${SAMLLAB_REALM:-/samllab}
       AM_REALM_PATH: ${SAMLLAB_REALM_PATH:-realms/root/realms/samllab}
       ORG_AM_BASE_URL: ${ORG_AM_BASE_URL:-https://am.jrsz.org:8443/am}
-      COM_AM_BASE_URL: ${COM_AM_BASE_URL:-https://am.jrsz.com:9443/am}
+      COM_AM_BASE_URL: ${COM_AM_BASE_URL:-https://am.jrsz.net:9443/am}
       SAMLLAB_IDP_ENTITY_ID: ${SAMLLAB_IDP_ENTITY_ID:-https://am.jrsz.org:8443/am/samllab-idp}
-      SAMLLAB_SP_ENTITY_ID: ${SAMLLAB_SP_ENTITY_ID:-https://am.jrsz.com:9443/am/samllab-sp}
+      SAMLLAB_SP_ENTITY_ID: ${SAMLLAB_SP_ENTITY_ID:-https://am.jrsz.net:9443/am/samllab-sp}
       SAMLLAB_IDP_METAALIAS: ${SAMLLAB_IDP_METAALIAS:-/samllab/idp}
       SAMLLAB_SP_METAALIAS: ${SAMLLAB_SP_METAALIAS:-/samllab/sp}
       NODE_EXTRA_CA_CERTS: /run/secrets/ca/jrsz-root-ca.cert.pem
@@ -406,7 +406,7 @@ services:
     volumes:
       - ./config/gateway:/var/gateway/config:ro
       - ./config/gateway/scripts:/var/gateway/scripts:ro
-      - ./secrets/tls/gateway:/var/gateway/secrets/tls:ro
+      - ${GATEWAY_TLS_DIR:-./secrets/tls/gateway}:/var/gateway/secrets/tls:ro
       - ./secrets/truststores:/var/gateway/secrets/trust:ro
       - ./secrets/passwords/gateway:/var/gateway/secrets/passwords:ro
     ports:

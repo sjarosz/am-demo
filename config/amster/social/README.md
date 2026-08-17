@@ -1,4 +1,4 @@
-# Cross-AM OIDC social login (jrsz.org &harr; jrsz.com)
+# Cross-AM OIDC social login (jrsz.org &harr; jrsz.net)
 
 Each `/alpha` realm is the **other** stack's social (OpenID Connect) identity
 provider, symmetric to the SAML federation in `../saml/`. This folder holds the
@@ -135,7 +135,7 @@ side's IG launchpad**:
 | Side | Success URL |
 |---|---|
 | org | `https://ig.jrsz.org/` |
-| com | `https://ig.jrsz.com:8444/` |
+| com | `https://ig.jrsz.net:8444/` |
 
 The committed `trees/SocialLogin.json` carries a `@@SUCCESS_URL@@` placeholder;
 `provision.py` substitutes the real value from `IG_BASE_URL` (per stack, in
@@ -152,8 +152,8 @@ extra config is needed here.
 # Provisioned automatically by the bootstrap profile; to run manually:
 AM_SERVER_URL=https://am.jrsz.org:8443/am AM_ADMIN_PASSWORD=changeit \
   AM_COOKIE_DOMAIN=jrsz.org ./run-bootstrap.sh
-AM_SERVER_URL=https://am.jrsz.com:9443/am AM_ADMIN_PASSWORD=changeit \
-  AM_COOKIE_DOMAIN=jrsz.com ./run-bootstrap.sh
+AM_SERVER_URL=https://am.jrsz.net:9443/am AM_ADMIN_PASSWORD=changeit \
+  AM_COOKIE_DOMAIN=jrsz.net ./run-bootstrap.sh
 
 # End-to-end browser-style smoketest (both directions):
 ../../../scripts/smoke_social.sh

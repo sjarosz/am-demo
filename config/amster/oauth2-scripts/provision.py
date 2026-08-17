@@ -31,7 +31,9 @@ ADMIN_PW = os.environ.get("AM_ADMIN_PWD") or os.environ.get("AM_ADMIN_PASSWORD")
 COOKIE_DOMAIN = os.environ.get("AM_COOKIE_DOMAIN", "jrsz.org")
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-SIDE = "com" if "com" in COOKIE_DOMAIN else "org"
+# Side detection: the org stack owns jrsz.org; any other cookie domain (jrsz.net, formerly
+# jrsz.com) is the "com" side. AM_SIDE=org|com overrides.
+SIDE = os.environ.get("AM_SIDE") or ("org" if COOKIE_DOMAIN.lstrip(".") == "jrsz.org" else "com")
 
 REALM_NAME = "scriptlab"
 REALM_PATH = f"realms/root/realms/{REALM_NAME}"

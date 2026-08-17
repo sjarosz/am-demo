@@ -1,7 +1,7 @@
 # Authentication journeys (alpha realm)
 
 Imports four authentication journeys into the **`alpha`** realm of each stack
-(`jrsz.org` and `jrsz.com`):
+(`jrsz.org` and `jrsz.net`):
 
 | Journey | Flow |
 | --- | --- |
@@ -14,7 +14,7 @@ Reach them through the XUI, e.g.:
 
 ```
 https://am.jrsz.org:8443/am/XUI/?realm=/alpha&authIndexType=service&authIndexValue=MFA#login/
-https://am.jrsz.com:9443/am/XUI/?realm=/alpha&authIndexType=service&authIndexValue=Passkeys#login/
+https://am.jrsz.net:9443/am/XUI/?realm=/alpha&authIndexType=service&authIndexValue=Passkeys#login/
 ```
 
 ## Why these are authored, not exported
@@ -49,8 +49,8 @@ Invoked automatically by the amster bootstrap when `BOOTSTRAP_JOURNEYS=true`
 AM_URL=https://am.jrsz.org:8443/am AM_ADMIN_PASSWORD=changeit \
   config/amster/journeys/run-bootstrap.sh
 
-# jrsz.com
-AM_URL=https://am.jrsz.com:9443/am AM_ADMIN_PASSWORD=changeit \
+# jrsz.net
+AM_URL=https://am.jrsz.net:9443/am AM_ADMIN_PASSWORD=changeit \
   config/amster/journeys/run-bootstrap.sh
 ```
 

@@ -1,5 +1,5 @@
 {
-  "entityId": "https://am.jrsz.com:9443/am/jrsz-com",
+  "entityId": "https://am.jrsz.net:9443/am/jrsz-com",
   "identityProvider": {
     "assertionContent": {
       "signingAndEncryption": {
@@ -41,53 +41,53 @@
         "artifactResolutionService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/ArtifactResolver/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/ArtifactResolver/metaAlias/alpha/idp-com"
           }
         ],
         "singleLogoutService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/IDPSloRedirect/metaAlias/alpha/idp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/IDPSloRedirect/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/IDPSloRedirect/metaAlias/alpha/idp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/IDPSloRedirect/metaAlias/alpha/idp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/IDPSloPOST/metaAlias/alpha/idp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/IDPSloPOST/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/IDPSloPOST/metaAlias/alpha/idp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/IDPSloPOST/metaAlias/alpha/idp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/IDPSloSoap/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/IDPSloSoap/metaAlias/alpha/idp-com"
           }
         ],
         "nameIdService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/IDPMniRedirect/metaAlias/alpha/idp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/IDPMniRedirect/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/IDPMniRedirect/metaAlias/alpha/idp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/IDPMniRedirect/metaAlias/alpha/idp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/IDPMniPOST/metaAlias/alpha/idp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/IDPMniPOST/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/IDPMniPOST/metaAlias/alpha/idp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/IDPMniPOST/metaAlias/alpha/idp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/IDPMniSoap/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/IDPMniSoap/metaAlias/alpha/idp-com"
           }
         ],
         "singleSignOnService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SSORedirect/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/SSORedirect/metaAlias/alpha/idp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SSOPOST/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/SSOPOST/metaAlias/alpha/idp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SSOSoap/metaAlias/alpha/idp-com"
+            "location": "https://am.jrsz.net:9443/am/SSOSoap/metaAlias/alpha/idp-com"
           }
         ]
       }
@@ -101,8 +101,8 @@
         "relayStateUrlList": [
           "https://app7.jrsz.org/*",
           "https://app7.jrsz.org/*?*",
-          "https://app7.jrsz.com:8444/*",
-          "https://app7.jrsz.com:8444/*?*",
+          "https://app7.jrsz.net:8444/*",
+          "https://app7.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*",
           "https://*",
@@ -152,52 +152,52 @@
         "singleLogoutService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/alpha/sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/alpha/sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/alpha/sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/alpha/sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/alpha/sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/alpha/sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/alpha/sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/alpha/sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SPSloSoap/metaAlias/alpha/sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPSloSoap/metaAlias/alpha/sp-com"
           }
         ],
         "nameIdService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SPMniRedirect/metaAlias/alpha/sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPMniRedirect/metaAlias/alpha/sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPMniRedirect/metaAlias/alpha/sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPMniRedirect/metaAlias/alpha/sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SPMniPOST/metaAlias/alpha/sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPMniPOST/metaAlias/alpha/sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPMniPOST/metaAlias/alpha/sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPMniPOST/metaAlias/alpha/sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SPMniSoap/metaAlias/alpha/sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPMniSoap/metaAlias/alpha/sp-com"
           }
         ],
         "assertionConsumerService": [
           {
             "isDefault": false,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact",
-            "location": "https://am.jrsz.com:9443/am/Consumer/metaAlias/alpha/sp-com",
+            "location": "https://am.jrsz.net:9443/am/Consumer/metaAlias/alpha/sp-com",
             "index": 0
           },
           {
             "isDefault": true,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/Consumer/metaAlias/alpha/sp-com",
+            "location": "https://am.jrsz.net:9443/am/Consumer/metaAlias/alpha/sp-com",
             "index": 1
           },
           {
             "isDefault": false,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:PAOS",
-            "location": "https://am.jrsz.com:9443/am/Consumer/ECP/metaAlias/alpha/sp-com",
+            "location": "https://am.jrsz.net:9443/am/Consumer/ECP/metaAlias/alpha/sp-com",
             "index": 2
           }
         ]
@@ -211,8 +211,8 @@
         "relayStateUrlList": [
           "https://app7.jrsz.org/*",
           "https://app7.jrsz.org/*?*",
-          "https://app7.jrsz.com:8444/*",
-          "https://app7.jrsz.com:8444/*?*",
+          "https://app7.jrsz.net:8444/*",
+          "https://app7.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*",
           "https://*",

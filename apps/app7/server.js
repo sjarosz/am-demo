@@ -8,7 +8,7 @@ app.use(express.json());
 // Configuration
 //
 // app7 is a SAML v2.0 cross-domain federation test console. Two AM stacks
-// (jrsz.org and jrsz.com) are federated: each /alpha realm hosts a single
+// (jrsz.org and jrsz.net) are federated: each /alpha realm hosts a single
 // dual-role (IDP + SP) entity and imports the other AM's entity as a remote
 // provider, joined by the `jrsz-federation` circle of trust. AM is BOTH the
 // IDP and the SP; this console only launches AM's built-in SAML SSO-init
@@ -20,16 +20,16 @@ const port = Number.parseInt(process.env.PORT || "3000", 10);
 // Which stack this console instance is deployed on ("org" or "com").
 const localSide = (process.env.LOCAL_SIDE || "org").toLowerCase() === "com" ? "com" : "org";
 const appBaseUrl = (
-  process.env.APP7_BASE_URL || (localSide === "com" ? "https://app7.jrsz.com:8444" : "https://app7.jrsz.org")
+  process.env.APP7_BASE_URL || (localSide === "com" ? "https://app7.jrsz.net:8444" : "https://app7.jrsz.org")
 ).replace(/\/+$/, "");
 
 // Local (co-located) AM used for server-to-server session inspection. This is
 // the same published URL the browser uses, so it doubles as a browser target.
 const amBaseUrl = (
   process.env.AM_BASE_URL ||
-  (localSide === "com" ? "https://am.jrsz.com:9443/am" : "https://am.jrsz.org:8443/am")
+  (localSide === "com" ? "https://am.jrsz.net:9443/am" : "https://am.jrsz.org:8443/am")
 ).replace(/\/+$/, "");
-const amCookieDomain = process.env.AM_COOKIE_DOMAIN || (localSide === "com" ? "jrsz.com" : "jrsz.org");
+const amCookieDomain = process.env.AM_COOKIE_DOMAIN || (localSide === "com" ? "jrsz.net" : "jrsz.org");
 const amAdminUser = process.env.AM_ADMIN_USER || "amadmin";
 const amAdminPassword = process.env.AM_ADMIN_PASSWORD || "changeit";
 const demoUser = process.env.DEMO_USER_NAME || "demo-user";
@@ -42,11 +42,11 @@ const sessionsUrl = `${amBaseUrl}/json/${realmPath}/sessions`;
 // Browser-facing AM base URLs for BOTH stacks (used to build the four flow
 // launch URLs regardless of which side this console runs on).
 const orgAmBaseUrl = (process.env.ORG_AM_BASE_URL || "https://am.jrsz.org:8443/am").replace(/\/+$/, "");
-const comAmBaseUrl = (process.env.COM_AM_BASE_URL || "https://am.jrsz.com:9443/am").replace(/\/+$/, "");
+const comAmBaseUrl = (process.env.COM_AM_BASE_URL || "https://am.jrsz.net:9443/am").replace(/\/+$/, "");
 
 // SAML entity ids and per-role metaAliases (must match the AM federation config).
 const orgEntityId = process.env.ORG_ENTITY_ID || "https://am.jrsz.org:8443/am/jrsz-org";
-const comEntityId = process.env.COM_ENTITY_ID || "https://am.jrsz.com:9443/am/jrsz-com";
+const comEntityId = process.env.COM_ENTITY_ID || "https://am.jrsz.net:9443/am/jrsz-com";
 const orgIdpMetaAlias = process.env.ORG_IDP_METAALIAS || "/alpha/idp-org";
 const orgSpMetaAlias = process.env.ORG_SP_METAALIAS || "/alpha/sp-org";
 const comIdpMetaAlias = process.env.COM_IDP_METAALIAS || "/alpha/idp-com";
@@ -77,7 +77,7 @@ function spInitUrl(spAm, spMetaAlias, idpEntityId, relayState) {
 }
 
 const orgApp7 = "https://app7.jrsz.org";
-const comApp7 = "https://app7.jrsz.com:8444";
+const comApp7 = "https://app7.jrsz.net:8444";
 
 // The four IDP/SP-init permutations. `landsOn` is the SP side (where the
 // federated session is created), so the user should inspect that side's console.
@@ -101,7 +101,7 @@ const FLOWS = [
     idp: "org",
     sp: "com",
     landsOn: "com",
-    startAt: "am.jrsz.com",
+    startAt: "am.jrsz.net",
     url: spInitUrl(comAmBaseUrl, comSpMetaAlias, orgEntityId, `${comApp7}/?flow=org-idp_com-sp_sp-init`),
     blurb:
       "Start at the com SP. com sends an AuthnRequest to the org IDP, the user authenticates at org, org POSTs the assertion back to com, and com creates the federated session.",
@@ -113,7 +113,7 @@ const FLOWS = [
     idp: "com",
     sp: "org",
     landsOn: "org",
-    startAt: "am.jrsz.com",
+    startAt: "am.jrsz.net",
     url: idpInitUrl(comAmBaseUrl, comIdpMetaAlias, orgEntityId, `${orgApp7}/?flow=com-idp_org-sp_idp-init`),
     blurb:
       "Start unauthenticated at the com IDP. After login as the demo user, AM (com) builds an assertion and HTTP-POSTs it to the org SP's ACS. org auto-federates on uid and creates a session for the user.",
@@ -169,7 +169,7 @@ const SLO_ENTITIES = [
     side: "com",
     label: "jrsz-com",
     entityId: comEntityId,
-    startAt: "am.jrsz.com",
+    startAt: "am.jrsz.net",
     idpSlo: idpSloUrl(comAmBaseUrl, `${comApp7}/?slo=com-idp`),
     spSlo: spSloUrl(comAmBaseUrl, `${comApp7}/?slo=com-sp`),
   },
@@ -500,7 +500,7 @@ function renderPage() {
 <header class="top">
   <span class="${eyebrowClass}">app7 &middot; ${htmlEscape(appBaseUrl)} &middot; realm ${htmlEscape(realmName)}</span>
   <h1>SAML v2.0 Cross-Domain Federation Console</h1>
-  <p class="sub">jrsz.org and jrsz.com are federated: each <code>/alpha</code> realm hosts one dual-role (IDP + SP) entity in the <code>jrsz-federation</code> circle of trust. AM is both the IDP and the SP. Launch any of the four IDP/SP-init permutations below; the federated session is created on the SP side and resolves to <code>${htmlEscape(demoUser)}</code> via auto-federation on <code>uid</code>.</p>
+  <p class="sub">jrsz.org and jrsz.net are federated: each <code>/alpha</code> realm hosts one dual-role (IDP + SP) entity in the <code>jrsz-federation</code> circle of trust. AM is both the IDP and the SP. Launch any of the four IDP/SP-init permutations below; the federated session is created on the SP side and resolves to <code>${htmlEscape(demoUser)}</code> via auto-federation on <code>uid</code>.</p>
   <div id="strip" class="strip"></div>
   <div id="banner" class="banner"></div>
 </header>

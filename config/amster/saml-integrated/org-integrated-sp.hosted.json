@@ -92,8 +92,8 @@
         "relayStateUrlList": [
           "https://ig.jrsz.org/*",
           "https://ig.jrsz.org/*?*",
-          "https://ig.jrsz.com:8444/*",
-          "https://ig.jrsz.com:8444/*?*",
+          "https://ig.jrsz.net:8444/*",
+          "https://ig.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*"
         ]

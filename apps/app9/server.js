@@ -29,15 +29,15 @@ const STAR = "\u2B50";
 
 const localSide = (process.env.LOCAL_SIDE || "org").toLowerCase() === "com" ? "com" : "org";
 const appBaseUrl = (
-  process.env.APP9_BASE_URL || (localSide === "com" ? "https://app9.jrsz.com:8444" : "https://app9.jrsz.org")
+  process.env.APP9_BASE_URL || (localSide === "com" ? "https://app9.jrsz.net:8444" : "https://app9.jrsz.org")
 ).replace(/\/+$/, "");
 
 // Local (co-located) AM used for server-to-server session/config inspection.
 const amBaseUrl = (
   process.env.AM_BASE_URL ||
-  (localSide === "com" ? "https://am.jrsz.com:9443/am" : "https://am.jrsz.org:8443/am")
+  (localSide === "com" ? "https://am.jrsz.net:9443/am" : "https://am.jrsz.org:8443/am")
 ).replace(/\/+$/, "");
-const amCookieDomain = process.env.AM_COOKIE_DOMAIN || (localSide === "com" ? "jrsz.com" : "jrsz.org");
+const amCookieDomain = process.env.AM_COOKIE_DOMAIN || (localSide === "com" ? "jrsz.net" : "jrsz.org");
 const amAdminUser = process.env.AM_ADMIN_USER || "amadmin";
 const amAdminPassword = process.env.AM_ADMIN_PASSWORD || "changeit";
 const demoUser = process.env.DEMO_USER_NAME || "demo-user";
@@ -50,18 +50,18 @@ const sessionsUrl = `${amBaseUrl}/json/${realmPath}/sessions`;
 // Browser-facing AM base URLs for BOTH stacks (to build the flow launch URLs
 // regardless of which side this console runs on).
 const orgAmBaseUrl = (process.env.ORG_AM_BASE_URL || "https://am.jrsz.org:8443/am").replace(/\/+$/, "");
-const comAmBaseUrl = (process.env.COM_AM_BASE_URL || "https://am.jrsz.com:9443/am").replace(/\/+$/, "");
+const comAmBaseUrl = (process.env.COM_AM_BASE_URL || "https://am.jrsz.net:9443/am").replace(/\/+$/, "");
 
 // SAML entity ids and per-role metaAliases (must match the /samllab federation).
 const idpEntityId = process.env.SAMLLAB_IDP_ENTITY_ID || "https://am.jrsz.org:8443/am/samllab-idp";
-const spEntityId = process.env.SAMLLAB_SP_ENTITY_ID || "https://am.jrsz.com:9443/am/samllab-sp";
+const spEntityId = process.env.SAMLLAB_SP_ENTITY_ID || "https://am.jrsz.net:9443/am/samllab-sp";
 const idpMetaAlias = process.env.SAMLLAB_IDP_METAALIAS || "/samllab/idp";
 const spMetaAlias = process.env.SAMLLAB_SP_METAALIAS || "/samllab/sp";
 
 const POST_BINDING = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST";
 
 const orgApp9 = "https://app9.jrsz.org";
-const comApp9 = "https://app9.jrsz.com:8444";
+const comApp9 = "https://app9.jrsz.net:8444";
 
 function idpInitUrl(idpAm, metaAlias, spEntity, relayState) {
   const u = new URL(`${idpAm}/idpssoinit`);
@@ -96,7 +96,7 @@ const FLOWS = [
     id: "sp-init",
     title: "org IdP &rarr; com SP (SP-init)",
     init: "SP-initiated",
-    startAt: "am.jrsz.com",
+    startAt: "am.jrsz.net",
     url: spInitUrl(comAmBaseUrl, spMetaAlias, idpEntityId, `${comApp9}/?flow=sp-init`),
     blurb:
       "Start at the com SP. com sends an AuthnRequest to the org IdP; after login the same three scripts run, org POSTs the star-tagged assertion back to com, and the SP Adapter stashes the proof into the com session.",

@@ -4,7 +4,7 @@ set -euo pipefail
 # Imports the MFA / TOTP / Passkeys / Passwordless authentication journeys into
 # the alpha realm. Journeys are defined as self-contained artifacts under
 # trees/*.json (tree document + every node body), so a fresh `git pull` plus
-# bootstrap recreates them identically on both the jrsz.org and jrsz.com stacks.
+# bootstrap recreates them identically on both the jrsz.org and jrsz.net stacks.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TREES_DIR="${SCRIPT_DIR}/trees"

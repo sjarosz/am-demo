@@ -1,13 +1,13 @@
 {
   "name": "app9",
-  "condition": "${request.uri.host == 'app9.jrsz.com'}",
-  "comment": "SAML2 custom-script tester console (SP side). Ungated: app9 only launches AM's built-in SAML SSO-init endpoints and reads the resulting com SP session over REST against the /samllab realm, so the gateway just reverse-proxies the backend.",
+  "condition": "${request.uri.host == 'app9.jrsz.net'}",
+  "comment": "SAML2 custom-script tester console. Ungated: app9 only launches AM's built-in SAML SSO-init endpoints and reads the resulting session over REST against the /samllab realm, so the gateway just reverse-proxies the backend.",
   "handler": {
     "type": "DispatchHandler",
     "config": {
       "bindings": [
         {
-          "baseURI": "http://app9-backend.jrsz.com:3000",
+          "baseURI": "http://app9-backend.jrsz.net:3000",
           "handler": "PlainReverseProxy"
         }
       ]

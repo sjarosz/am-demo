@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser-simulating QA smoketests for the jrsz.org <-> jrsz.com SAML flows.
+"""Browser-simulating QA smoketests for the jrsz.org <-> jrsz.net SAML flows.
 
 Drives all four IDP/SP-init permutations end to end using the SAML HTTP-POST
 binding, exactly as a browser would:
@@ -30,7 +30,7 @@ from html.parser import HTMLParser
 # Config (env overridable; defaults match the lab .env)
 # --------------------------------------------------------------------------
 ORG_AM = os.environ.get("ORG_AM_BASE_URL", "https://am.jrsz.org:8443/am").rstrip("/")
-COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.com:9443/am").rstrip("/")
+COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.net:9443/am").rstrip("/")
 ORG_ENTITY = os.environ.get("ORG_ENTITY_ID", f"{ORG_AM}/jrsz-org")
 COM_ENTITY = os.environ.get("COM_ENTITY_ID", f"{COM_AM}/jrsz-com")
 ORG_IDP_MA = os.environ.get("ORG_IDP_METAALIAS", "/alpha/idp-org")
@@ -45,7 +45,7 @@ ADMIN_USER = os.environ.get("AM_ADMIN_USER", "amadmin")
 ADMIN_PW = os.environ.get("AM_ADMIN_PASSWORD", "")
 
 ORG_APP7 = os.environ.get("APP7_BASE_URL", "https://app7.jrsz.org").rstrip("/")
-COM_APP7 = "https://app7.jrsz.com:8444"
+COM_APP7 = "https://app7.jrsz.net:8444"
 
 POST_BINDING = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
 UA = "Mozilla/5.0 (SAML-smoketest; like-browser)"

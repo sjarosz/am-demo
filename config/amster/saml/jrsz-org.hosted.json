@@ -101,8 +101,8 @@
         "relayStateUrlList": [
           "https://app7.jrsz.org/*",
           "https://app7.jrsz.org/*?*",
-          "https://app7.jrsz.com:8444/*",
-          "https://app7.jrsz.com:8444/*?*",
+          "https://app7.jrsz.net:8444/*",
+          "https://app7.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*",
           "https://*",
@@ -211,8 +211,8 @@
         "relayStateUrlList": [
           "https://app7.jrsz.org/*",
           "https://app7.jrsz.org/*?*",
-          "https://app7.jrsz.com:8444/*",
-          "https://app7.jrsz.com:8444/*?*",
+          "https://app7.jrsz.net:8444/*",
+          "https://app7.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*",
           "https://*",

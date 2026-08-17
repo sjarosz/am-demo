@@ -34,7 +34,7 @@ import urllib.request
 from html.parser import HTMLParser
 
 ORG_AM = os.environ.get("ORG_AM_BASE_URL", "https://am.jrsz.org:8443/am").rstrip("/")
-COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.com:9443/am").rstrip("/")
+COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.net:9443/am").rstrip("/")
 REALM_PATH = os.environ.get("AM_REALM_PATH", "realms/root/realms/alpha")
 DEMO_USER = os.environ.get("DEMO_USER_NAME", "demo-user")
 DEMO_PW = os.environ.get("DEMO_USER_PASSWORD", "")

@@ -24,7 +24,7 @@ python3 scripts/timeout-tests/run.py --include-timed --max-wait 180
 # average everything already stored under results/
 python3 scripts/timeout-tests/run.py --aggregate
 
-# target the jrsz.com twin
+# target the jrsz.net twin
 python3 scripts/timeout-tests/run.py --side com
 ```
 

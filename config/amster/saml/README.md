@@ -1,7 +1,7 @@
 # SAML 2.0 cross-domain federation (canon)
 
 This directory is the **source of truth** for the SAML federation between the
-`jrsz.org` and `jrsz.com` AM stacks. A clean `git clone` + `scripts/reset-stack.sh`
+`jrsz.org` and `jrsz.net` AM stacks. A clean `git clone` + `scripts/reset-stack.sh`
 recreates a fully working federation from these artifacts — no manual steps.
 
 ## What gets provisioned
@@ -11,7 +11,7 @@ AM as a remote provider, joined by the `jrsz-federation` circle of trust.
 
 | | org | com |
 |--|-----|-----|
-| Entity ID | `https://am.jrsz.org:8443/am/jrsz-org` | `https://am.jrsz.com:9443/am/jrsz-com` |
+| Entity ID | `https://am.jrsz.org:8443/am/jrsz-org` | `https://am.jrsz.net:9443/am/jrsz-com` |
 | IDP / SP metaAlias | `/alpha/idp-org`, `/alpha/sp-org` | `/alpha/idp-com`, `/alpha/sp-com` |
 | Hosted artifact | `jrsz-org.hosted.json` | `jrsz-com.hosted.json` |
 | Standard metadata | `jrsz-org.metadata.xml` | `jrsz-com.metadata.xml` |
@@ -61,7 +61,7 @@ scripts/smoke_saml.sh            # browser POST-SSO smoketest, all four flows
 # Re-apply canon to both already-provisioned stacks:
 AM_SERVER_URL=https://am.jrsz.org:8443/am AM_COOKIE_DOMAIN=jrsz.org \
   AM_ADMIN_PASSWORD=changeit python3 config/amster/saml/provision.py
-AM_SERVER_URL=https://am.jrsz.com:9443/am AM_COOKIE_DOMAIN=jrsz.com \
+AM_SERVER_URL=https://am.jrsz.net:9443/am AM_COOKIE_DOMAIN=jrsz.net \
   AM_ADMIN_PASSWORD=changeit python3 config/amster/saml/provision.py
 ```
 

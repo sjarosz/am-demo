@@ -1,6 +1,6 @@
 {
   "name": "app6",
-  "condition": "${request.uri.host == 'app6.jrsz.com'}",
+  "condition": "${request.uri.host == 'app6.jrsz.net'}",
   "comment": "Session-timeout / logout / OIDC SLO test console. Console, OIDC RPs, API E and probes are ungated; /protected/a and /protected/b are IG-protected (App A no-cache, App B cached); /logout is a global IG logout.",
   "handler": {
     "type": "DispatchHandler",
@@ -8,7 +8,7 @@
       "bindings": [
         {
           "condition": "${request.uri.path == '/protected/a' or request.uri.path == '/protected/a/'}",
-          "baseURI": "http://app6-backend.jrsz.com:3000",
+          "baseURI": "http://app6-backend.jrsz.net:3000",
           "handler": {
             "type": "Chain",
             "config": {
@@ -26,7 +26,7 @@
         },
         {
           "condition": "${request.uri.path == '/protected/b' or request.uri.path == '/protected/b/'}",
-          "baseURI": "http://app6-backend.jrsz.com:3000",
+          "baseURI": "http://app6-backend.jrsz.net:3000",
           "handler": {
             "type": "Chain",
             "config": {
@@ -44,7 +44,7 @@
         },
         {
           "condition": "${request.uri.path == '/logout'}",
-          "baseURI": "http://app6-backend.jrsz.com:3000",
+          "baseURI": "http://app6-backend.jrsz.net:3000",
           "handler": {
             "type": "Chain",
             "config": {
@@ -54,7 +54,7 @@
                   "config": {
                     "amService": "AmServiceTimeout",
                     "logoutExpression": "${request.uri.path == '/logout'}",
-                    "defaultLogoutLandingPage": "https://app6.jrsz.com:8444/"
+                    "defaultLogoutLandingPage": "https://app6.jrsz.net:8444/"
                   }
                 }
               ],
@@ -63,7 +63,7 @@
           }
         },
         {
-          "baseURI": "http://app6-backend.jrsz.com:3000",
+          "baseURI": "http://app6-backend.jrsz.net:3000",
           "handler": "PlainReverseProxy"
         }
       ]

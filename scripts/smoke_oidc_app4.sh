@@ -3,7 +3,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ENV_FILE="${ROOT_DIR}/.env"
-CA_CERT="${ROOT_DIR}/secrets/tls/ca/jrsz-root-ca.cert.pem"
+CA_CERT="${ROOT_DIR}/secrets/tls/ca/ca-bundle.pem"   # JRSZ root + ISRG Root X1 (written by scripts/le-cert.sh install)
+[[ -f "${CA_CERT}" ]] || CA_CERT="${ROOT_DIR}/secrets/tls/ca/jrsz-root-ca.cert.pem"
 APP_BASE_URL="${APP_BASE_URL:-https://app4.jrsz.org}"
 APP_LOGIN_URL="${APP_BASE_URL}/login"
 

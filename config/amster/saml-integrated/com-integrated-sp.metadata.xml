@@ -55,10 +55,10 @@ q5yziqyU04eP4wLr3cM=
                 <xenc:KeySize>128</xenc:KeySize>
             </EncryptionMethod>
         </KeyDescriptor>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com" ResponseLocation="https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com"/>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com" ResponseLocation="https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com"/>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://am.jrsz.com:9443/am/SPSloSoap/metaAlias/alpha/integrated-sp-com"/>
-        <AssertionConsumerService index="0" isDefault="false" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://am.jrsz.com:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com"/>
-        <AssertionConsumerService index="1" isDefault="true" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://am.jrsz.com:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com" ResponseLocation="https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com" ResponseLocation="https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://am.jrsz.net:9443/am/SPSloSoap/metaAlias/alpha/integrated-sp-com"/>
+        <AssertionConsumerService index="0" isDefault="false" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://am.jrsz.net:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com"/>
+        <AssertionConsumerService index="1" isDefault="true" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://am.jrsz.net:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com"/>
     </SPSSODescriptor>
 </EntityDescriptor>

@@ -84,7 +84,7 @@ hr {
   height: 6px;
   background-color: black;
   border-radius: 3px; /* Smooths out sharp edges */
-}    
+}
   </style>
 </head>
 <body>
@@ -93,7 +93,7 @@ hr {
       <span class="who">Signed in as <strong id="session-user">&hellip;</strong></span>
       <button id="logout-btn" class="button outline" type="button">Single Logout</button>
     </div>
-    <span class="eyebrow">jrsz.com lab</span>
+    <span class="eyebrow">jrsz.net lab</span>
     <h1>Launchpad</h1>
     <p class="lead">Every demo flow available in this lab. The gateway-protected apps trigger AM session SSO; the OIDC buttons exercise the federation paths configured in the <code>/alpha</code> realm.</p>
 
@@ -102,21 +102,21 @@ hr {
     <div class="grid">
       <div class="card">
         <h3>app1</h3>
-        <p class="meta">https://app1.jrsz.com:8444/</p>
+        <p class="meta">https://app1.jrsz.net:8444/</p>
         <p>Session-protected static demo backend.</p>
-        <a class="button" href="https://app1.jrsz.com:8444/">Launch app1</a>
+        <a class="button" href="https://app1.jrsz.net:8444/">Launch app1</a>
       </div>
       <div class="card">
         <h3>app2</h3>
-        <p class="meta">https://app2.jrsz.com:8444/</p>
+        <p class="meta">https://app2.jrsz.net:8444/</p>
         <p>Session-protected static demo backend.</p>
-        <a class="button" href="https://app2.jrsz.com:8444/">Launch app2</a>
+        <a class="button" href="https://app2.jrsz.net:8444/">Launch app2</a>
       </div>
       <div class="card">
         <h3>app3</h3>
-        <p class="meta">https://app3.jrsz.com:8444/</p>
+        <p class="meta">https://app3.jrsz.net:8444/</p>
         <p>Session-protected static demo backend.</p>
-        <a class="button" href="https://app3.jrsz.com:8444/">Launch app3</a>
+        <a class="button" href="https://app3.jrsz.net:8444/">Launch app3</a>
       </div>
     </div>
 
@@ -125,9 +125,9 @@ hr {
     <div class="grid">
       <div class="card">
         <h3>app4</h3>
-        <p class="meta">https://app4.jrsz.com:8444/ &middot; client demo-pkce-app</p>
+        <p class="meta">https://app4.jrsz.net:8444/ &middot; client demo-pkce-app</p>
         <p>OIDC discovery, PKCE login, token + claim inspection on the callback page.</p>
-        <a class="button" href="https://app4.jrsz.com:8444/">Open app4</a>
+        <a class="button" href="https://app4.jrsz.net:8444/">Open app4</a>
       </div>
     </div>
 
@@ -136,9 +136,20 @@ hr {
     <div class="grid">
       <div class="card">
         <h3>app5</h3>
-        <p class="meta">https://app5.jrsz.com:8444/ &middot; client sdkPublicClient</p>
+        <p class="meta">https://app5.jrsz.net:8444/ &middot; client sdkPublicClient</p>
         <p>Modal Login Widget flow with OAuth redirect to <code>/callback.html</code> and userinfo display after sign-in.</p>
-        <a class="button" href="https://app5.jrsz.com:8444/">Open app5</a>
+        <a class="button" href="https://app5.jrsz.net:8444/">Open app5</a>
+      </div>
+    </div>
+
+    <h2>OAuth2/OIDC custom-script tester</h2>
+    <p class="section">app8 is a confidential OIDC client against the isolated <code>/scriptlab</code> realm whose OAuth2 provider wires six PingAM sample scripts. Every custom token element is named with a star emoji so the customization is instantly visible in the decoded tokens.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>app8</h3>
+        <p class="meta">https://app8.jrsz.net:8444/ &middot; realm /scriptlab &middot; client scriptlab-rp</p>
+        <p>Runs OIDC claims, access-token modification, evaluate-scope, validate-scope, authorize-endpoint data and may_act &mdash; with &#11088;-tagged elements highlighted across id_token, userinfo, tokeninfo and introspect.</p>
+        <a class="button" href="https://app8.jrsz.net:8444/">Open app8</a>
       </div>
     </div>
 
@@ -149,45 +160,44 @@ hr {
         <h3>OIDC external IDP login</h3>
         <p class="meta">tree SocialLogin &middot; realm /alpha</p>
         <p>Select Identity Provider (social only) &rarr; Social Provider Handler (OIDC back-channel to the partner AM over the shared network) &rarr; existing account or Provision Dynamic Account. Proves cross-AM OIDC federation in both directions.</p>
-        <a class="button" href="https://am.jrsz.com:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=SocialLogin#login/">Open OIDC external IDP login</a>
+        <a class="button" href="https://am.jrsz.net:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=SocialLogin#login/">Open OIDC external IDP login</a>
       </div>
     </div>
-
 <p>&nbsp;</p>
     <hr>
 
     <h2>External SAML IDP login (integrated mode, cross-AM)</h2>
-    <p class="section">SAML 2.0 federation driven from inside an authentication tree. The <code>SamlLogin</code> journey in <code>/alpha</code> uses a SAML2 Authentication node on the hosted SP <code>com-integrated-sp</code> (AuthConsumer endpoints) to SP-init an AuthnRequest to the partner AM's IdP. After the partner authenticates the user, the assertion returns to this SP and the journey finds or auto-provisions the federated user. Auto-federation on <code>uid</code> resolves the existing <code>demo-user</code>; genuinely new users go through Provision Dynamic Account. This is separate from, and leaves untouched, the standalone app7 federation below.</p>
+    <p class="section">SAML 2.0 federation driven from inside an authentication tree. The <code>SamlLogin</code> journey in <code>/alpha</code> uses a SAML2 Authentication node on the hosted SP <code>org-integrated-sp</code> (AuthConsumer endpoints) to SP-init an AuthnRequest to the partner AM's IdP. After the partner authenticates the user, the assertion returns to this SP and the journey finds or auto-provisions the federated user. Auto-federation on <code>uid</code> resolves the existing <code>demo-user</code>; genuinely new users go through Provision Dynamic Account. This is separate from, and leaves untouched, the standalone app7 federation below.</p>
     <div class="grid">
       <div class="card">
         <h3>External SAML IDP login</h3>
         <p class="meta">tree SamlLogin &middot; realm /alpha</p>
-        <p>SAML2 Authentication node (SP-init, SP <code>com-integrated-sp</code> &rarr; partner IdP <code>jrsz-org</code>) &rarr; Account Exists or Provision Dynamic Account. Proves SAML integrated-mode federation inside a journey.</p>
-        <a class="button" href="https://am.jrsz.com:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=SamlLogin#login/">Open external SAML IDP login</a>
+        <p>SAML2 Authentication node (SP-init, SP <code>org-integrated-sp</code> &rarr; partner IdP <code>jrsz-com</code>) &rarr; Account Exists or Provision Dynamic Account. Proves SAML integrated-mode federation inside a journey.</p>
+        <a class="button" href="https://am.jrsz.net:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=SamlLogin#login/">Open external SAML IDP login</a>
       </div>
     </div>
 <p>&nbsp;</p>
     <hr>
 
     <h2>SAML v2.0 cross-domain federation console</h2>
-    <p class="section">app7 federates the jrsz.com and jrsz.com AM stacks. Each <code>/alpha</code> realm hosts one dual-role (IDP + SP) entity in the <code>jrsz-federation</code> circle of trust, so AM is both the IDP and the SP. The console launches all four IDP/SP-init permutations and shows the resulting federated AM session (auto-federation on <code>uid</code> resolves to <code>demo-user</code>).</p>
+    <p class="section">app7 federates the jrsz.net and jrsz.net AM stacks. Each <code>/alpha</code> realm hosts one dual-role (IDP + SP) entity in the <code>jrsz-federation</code> circle of trust, so AM is both the IDP and the SP. The console launches all four IDP/SP-init permutations and shows the resulting federated AM session (auto-federation on <code>uid</code> resolves to <code>demo-user</code>).</p>
     <div class="grid">
       <div class="card">
         <h3>app7 federation console</h3>
-        <p class="meta">https://app7.jrsz.com:8444/ &middot; realm /alpha</p>
-        <p>Launch org&harr;com IDP-init and SP-init flows. The partner console at <code>https://app7.jrsz.com:8444/</code> shows sessions that land on the com side.</p>
-        <a class="button" href="https://app7.jrsz.com:8444/">Open federation console</a>
+        <p class="meta">https://app7.jrsz.net:8444/ &middot; realm /alpha</p>
+        <p>Launch org&harr;com IDP-init and SP-init flows. The partner console at <code>https://app7.jrsz.net:8444/</code> shows sessions that land on the com side.</p>
+        <a class="button" href="https://app7.jrsz.net:8444/">Open federation console</a>
       </div>
     </div>
 
     <h2>SAML v2.0 custom-script tester</h2>
-    <p class="section">app9 demonstrates three PingAM sample SAML2 scripts in a genuine cross-AM federation isolated in the <code>/samllab</code> realm (org hosts the IdP, com hosts the SP, joined by the <code>samllab-cot</code> circle of trust). This com side hosts the <b>SP Adapter</b> script, which stashes the star-tagged assertion attributes and NameID (from the org IdP's IDP Attribute Mapper + NameID Mapper) into the com SP session. Every custom element is named with a star emoji for instant identification.</p>
+    <p class="section">app9 demonstrates three PingAM sample SAML2 scripts in a genuine cross-AM federation isolated in the <code>/samllab</code> realm (org hosts the IdP, com hosts the SP, joined by the <code>samllab-cot</code> circle of trust). The <b>IDP Attribute Mapper</b> and <b>NameID Mapper</b> build a star-tagged assertion at the org IdP, and the <b>SP Adapter</b> stashes those elements into the com SP session. Every custom element is named with a star emoji for instant identification.</p>
     <div class="grid">
       <div class="card">
-        <h3>app9 SAML script console (SP side)</h3>
-        <p class="meta">https://app9.jrsz.com:8444/ &middot; realm /samllab</p>
-        <p>The federated session lands here on the com SP stack. This console reads the <code>samllabProof</code> session property back over REST and highlights the &#11088;-tagged assertion attributes and NameID. Start a flow from <code>https://app9.jrsz.org/</code>.</p>
-        <a class="button" href="https://app9.jrsz.com:8444/">Open SAML script console</a>
+        <h3>app9 SAML script console</h3>
+        <p class="meta">https://app9.jrsz.net:8444/ &middot; realm /samllab</p>
+        <p>Launch the org IdP &rarr; com SP flow (IdP-init or SP-init). The session lands on the com stack &mdash; the partner console at <code>https://app9.jrsz.net:8444/</code> reads it back and highlights the &#11088;-tagged assertion attributes and NameID.</p>
+        <a class="button" href="https://app9.jrsz.net:8444/">Open SAML script console</a>
       </div>
     </div>
 
@@ -198,25 +208,25 @@ hr {
         <h3>MFA</h3>
         <p class="meta">tree MFA &middot; realm /</p>
         <p>Page login (username + password), data-store decision, then OATH registration and OATH token verification for MFA enrollment and step-up.</p>
-        <a class="button" href="https://am.jrsz.com:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=MFA#login/">Open MFA tree</a>
+        <a class="button" href="https://am.jrsz.net:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=MFA#login/">Open MFA tree</a>
       </div>
       <div class="card">
         <h3>TOTP</h3>
         <p class="meta">tree TOTP &middot; realm /</p>
         <p>Username collector followed by OATH token verifier only &mdash; for users who already have a registered authenticator app.</p>
-        <a class="button" href="https://am.jrsz.com:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=TOTP#login/">Open TOTP tree</a>
+        <a class="button" href="https://am.jrsz.net:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=TOTP#login/">Open TOTP tree</a>
       </div>
       <div class="card">
         <h3>Passkeys</h3>
         <p class="meta">tree Passkeys &middot; realm /</p>
         <p>Page node with WebAuthn registration and WebAuthn authentication nodes for passkey enrollment and sign-in.</p>
-        <a class="button outline" href="https://am.jrsz.com:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=Passkeys#login/">Open Passkeys tree</a>
+        <a class="button outline" href="https://am.jrsz.net:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=Passkeys#login/">Open Passkeys tree</a>
       </div>
       <div class="card">
         <h3>Passwordless</h3>
         <p class="meta">tree Passwordless &middot; realm /</p>
         <p>Username collector then WebAuthn authentication &mdash; no password step in the tree.</p>
-        <a class="button outline" href="https://am.jrsz.com:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=Passwordless#login/">Open Passwordless tree</a>
+        <a class="button outline" href="https://am.jrsz.net:9443/am/XUI/?realm=/alpha&amp;authIndexType=service&amp;authIndexValue=Passwordless#login/">Open Passwordless tree</a>
       </div>
     </div>
 
@@ -225,9 +235,9 @@ hr {
     <div class="grid">
       <div class="card">
         <h3>app6 test console</h3>
-        <p class="meta">https://app6.jrsz.com:8444/ &middot; realm /timeout-test</p>
+        <p class="meta">https://app6.jrsz.net:8444/ &middot; realm /timeout-test</p>
         <p>Runnable S/C/G/O/T matrix with live pass/fail evidence: AM validate (refresh=false), REST/RP-initiated/IG logout, back-channel logout feed, introspection, refresh reuse and API E.</p>
-        <a class="button" href="https://app6.jrsz.com:8444/">Open test console</a>
+        <a class="button" href="https://app6.jrsz.net:8444/">Open test console</a>
       </div>
     </div>
 

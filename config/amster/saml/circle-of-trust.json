@@ -2,7 +2,7 @@
   "_id": "jrsz-federation",
   "status": "active",
   "trustedProviders": [
-    "https://am.jrsz.com:9443/am/jrsz-com|saml2",
+    "https://am.jrsz.net:9443/am/jrsz-com|saml2",
     "https://am.jrsz.org:8443/am/jrsz-org|saml2"
   ]
 }

@@ -247,21 +247,21 @@ main() {
   generate_gateway_pem_bundle gateway gateway
   generate_ds_keystore ds ds
 
-  # --- jrsz.com leaves (same CA, parallel stack) ---
-  generate_leaf_material am-com am.jrsz.com am \
-    DNS:am.jrsz.com
-  generate_leaf_material gateway-com ig.jrsz.com gateway \
-    DNS:ig.jrsz.com DNS:app1.jrsz.com DNS:app2.jrsz.com DNS:app3.jrsz.com \
-    DNS:app4.jrsz.com DNS:app5.jrsz.com DNS:app6.jrsz.com DNS:app7.jrsz.com \
-    DNS:app9.jrsz.com
-  generate_leaf_material ds-com ds.jrsz.com ssl-key-pair \
-    DNS:ds.jrsz.com
-  generate_leaf_material app1-com app1-backend.jrsz.com app1 \
-    DNS:app1-backend.jrsz.com
-  generate_leaf_material app2-com app2-backend.jrsz.com app2 \
-    DNS:app2-backend.jrsz.com
-  generate_leaf_material app3-com app3-backend.jrsz.com app3 \
-    DNS:app3-backend.jrsz.com
+  # --- jrsz.net leaves (same CA, parallel stack) ---
+  generate_leaf_material am-com am.jrsz.net am \
+    DNS:am.jrsz.net
+  generate_leaf_material gateway-com ig.jrsz.net gateway \
+    DNS:ig.jrsz.net DNS:app1.jrsz.net DNS:app2.jrsz.net DNS:app3.jrsz.net \
+    DNS:app4.jrsz.net DNS:app5.jrsz.net DNS:app6.jrsz.net DNS:app7.jrsz.net \
+    DNS:app9.jrsz.net
+  generate_leaf_material ds-com ds.jrsz.net ssl-key-pair \
+    DNS:ds.jrsz.net
+  generate_leaf_material app1-com app1-backend.jrsz.net app1 \
+    DNS:app1-backend.jrsz.net
+  generate_leaf_material app2-com app2-backend.jrsz.net app2 \
+    DNS:app2-backend.jrsz.net
+  generate_leaf_material app3-com app3-backend.jrsz.net app3 \
+    DNS:app3-backend.jrsz.net
 
   generate_gateway_pem_bundle gateway-com gateway-com
   generate_ds_keystore ds-com ds-com

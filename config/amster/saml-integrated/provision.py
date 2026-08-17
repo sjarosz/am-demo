@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Provision the cross-AM SAML 2.0 external IdP in INTEGRATED MODE
-(jrsz.org <-> jrsz.com), from the checked-in canon artifacts in this directory.
+(jrsz.org <-> jrsz.net), from the checked-in canon artifacts in this directory.
 Idempotent; safe to re-run.
 
 This sits alongside (and leaves untouched) the standalone ``app7`` SAML
@@ -44,14 +44,16 @@ REALM_PATH = os.environ.get("SAML_REALM_PATH", "realms/root/realms/alpha")
 HERE = os.path.dirname(os.path.abspath(__file__))
 COT_NAME = "jrsz-federation"
 
-SIDE = "com" if "com" in COOKIE_DOMAIN else "org"
+# Side detection: the org stack owns jrsz.org; any other cookie domain (jrsz.net, formerly
+# jrsz.com) is the "com" side. AM_SIDE=org|com overrides.
+SIDE = os.environ.get("AM_SIDE") or ("org" if COOKIE_DOMAIN.lstrip(".") == "jrsz.org" else "com")
 PARTNER = "org" if SIDE == "com" else "com"
 
 # Partner IdP entity ID = the partner's standalone hosted SAML entity (jrsz-<partner>),
 # which the standalone saml/ provisioner imports as a remote IdP on this stack.
 BASES = {
     "org": (os.environ.get("ORG_AM_BASE_URL") or "https://am.jrsz.org:8443/am").rstrip("/"),
-    "com": (os.environ.get("COM_AM_BASE_URL") or "https://am.jrsz.com:9443/am").rstrip("/"),
+    "com": (os.environ.get("COM_AM_BASE_URL") or "https://am.jrsz.net:9443/am").rstrip("/"),
 }
 PARTNER_IDP_ENTITY = f"{BASES[PARTNER]}/jrsz-{PARTNER}"
 
@@ -61,7 +63,7 @@ SP_METAALIAS = f"/alpha/integrated-sp-{SIDE}"
 # On success the SamlLogin journey's Set Success URL node sends the browser to
 # THIS side's PingGateway (IG) launchpad (same pattern as the OIDC social
 # feature; IG_BASE_URL/* is already whitelisted in validGotoDestinations).
-IG_DEFAULTS = {"org": "https://ig.jrsz.org", "com": "https://ig.jrsz.com:8444"}
+IG_DEFAULTS = {"org": "https://ig.jrsz.org", "com": "https://ig.jrsz.net:8444"}
 IG_BASE = (os.environ.get("IG_BASE_URL") or IG_DEFAULTS[SIDE]).rstrip("/")
 SUCCESS_URL = IG_BASE + "/"
 

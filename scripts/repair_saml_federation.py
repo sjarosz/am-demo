@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Idempotently repair the jrsz.org <-> jrsz.com SAML federation config so the
+"""Idempotently repair the jrsz.org <-> jrsz.net SAML federation config so the
 four browser POST-SSO flows work end to end.
 
 The hosted IDP/SP entities were originally provisioned with a minimal REST
@@ -44,11 +44,11 @@ DEMO_PW = os.environ.get("DEMO_USER_PASSWORD", "")
 REALM_PATH = os.environ.get("AM_REALM_PATH", "realms/root/realms/alpha")
 
 ORG_AM = os.environ.get("ORG_AM_BASE_URL", "https://am.jrsz.org:8443/am").rstrip("/")
-COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.com:9443/am").rstrip("/")
+COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.net:9443/am").rstrip("/")
 ORG_ENTITY = os.environ.get("ORG_ENTITY_ID", f"{ORG_AM}/jrsz-org")
 COM_ENTITY = os.environ.get("COM_ENTITY_ID", f"{COM_AM}/jrsz-com")
 ORG_APP7 = os.environ.get("APP7_BASE_URL", "https://app7.jrsz.org").rstrip("/")
-COM_APP7 = os.environ.get("APP7_COM_BASE_URL", "https://app7.jrsz.com:8444").rstrip("/")
+COM_APP7 = os.environ.get("APP7_COM_BASE_URL", "https://app7.jrsz.net:8444").rstrip("/")
 
 RELAY_PATTERNS = [
     f"{ORG_APP7}/*", f"{ORG_APP7}/*?*",

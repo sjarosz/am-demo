@@ -37,7 +37,7 @@
       "name": "PlatformTrustManager",
       "type": "SecretsTrustManager",
       "config": {
-        "verificationSecretId": "platform.ca",
+        "certificateVerificationSecretId": "platform.ca",
         "secretsProvider": "PlatformTrustStore",
         "checkRevocation": false
       }

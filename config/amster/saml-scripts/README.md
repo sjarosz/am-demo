@@ -87,9 +87,9 @@ Both *next-gen* evaluator variants are also out of scope; these use the legacy
 ```bash
 # Provision (per stack; normally run by bootstrap)
 AM_SERVER_URL=https://am.jrsz.org:8443/am AM_ADMIN_PASSWORD=changeit AM_COOKIE_DOMAIN=jrsz.org python3 provision.py
-AM_SERVER_URL=https://am.jrsz.com:9443/am AM_ADMIN_PASSWORD=changeit AM_COOKIE_DOMAIN=jrsz.com python3 provision.py
+AM_SERVER_URL=https://am.jrsz.net:9443/am AM_ADMIN_PASSWORD=changeit AM_COOKIE_DOMAIN=jrsz.net python3 provision.py
 ```
 
 Then open `https://app9.jrsz.org/`, launch a flow, log in as `demo-user`, and open
-`https://app9.jrsz.com:8444/` — the **⭐ Script proof** panel lists the
+`https://app9.jrsz.net:8444/` — the **⭐ Script proof** panel lists the
 `samllabProof` entries, all ⭐-tagged.

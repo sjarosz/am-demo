@@ -1,6 +1,6 @@
 {
   "name": "app1",
-  "condition": "${request.uri.host == 'app1.jrsz.com'}",
+  "condition": "${request.uri.host == 'app1.jrsz.net'}",
   "handler": {
     "type": "DispatchHandler",
     "config": {
@@ -18,7 +18,7 @@
           "handler": "SloLoginHandler"
         },
         {
-          "baseURI": "https://app1-backend.jrsz.com:8443",
+          "baseURI": "https://app1-backend.jrsz.net:8443",
           "handler": {
             "type": "Chain",
             "config": {

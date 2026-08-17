@@ -39,46 +39,46 @@
         "singleLogoutService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/alpha/integrated-sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/alpha/integrated-sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SPSloSoap/metaAlias/alpha/integrated-sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPSloSoap/metaAlias/alpha/integrated-sp-com"
           }
         ],
         "nameIdService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SPMniRedirect/metaAlias/alpha/integrated-sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPMniRedirect/metaAlias/alpha/integrated-sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPMniRedirect/metaAlias/alpha/integrated-sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPMniRedirect/metaAlias/alpha/integrated-sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SPMniPOST/metaAlias/alpha/integrated-sp-com",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPMniPOST/metaAlias/alpha/integrated-sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPMniPOST/metaAlias/alpha/integrated-sp-com",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPMniPOST/metaAlias/alpha/integrated-sp-com"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SPMniSoap/metaAlias/alpha/integrated-sp-com"
+            "location": "https://am.jrsz.net:9443/am/SPMniSoap/metaAlias/alpha/integrated-sp-com"
           }
         ],
         "assertionConsumerService": [
           {
             "isDefault": false,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact",
-            "location": "https://am.jrsz.com:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com",
+            "location": "https://am.jrsz.net:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com",
             "index": 0
           },
           {
             "isDefault": true,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com",
+            "location": "https://am.jrsz.net:9443/am/AuthConsumer/metaAlias/alpha/integrated-sp-com",
             "index": 1
           }
         ]
@@ -90,8 +90,8 @@
       "idpProxy": {},
       "relayStateUrlList": {
         "relayStateUrlList": [
-          "https://ig.jrsz.com:8444/*",
-          "https://ig.jrsz.com:8444/*?*",
+          "https://ig.jrsz.net:8444/*",
+          "https://ig.jrsz.net:8444/*?*",
           "https://ig.jrsz.org/*",
           "https://ig.jrsz.org/*?*",
           "https://*",

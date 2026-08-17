@@ -28,7 +28,7 @@ ADMIN_USER = os.environ.get("AM_ADMIN_USER", "amadmin")
 ADMIN_PW = os.environ.get("AM_ADMIN_PASSWORD", "")
 
 ORG_AM = os.environ.get("ORG_AM_BASE_URL", "https://am.jrsz.org:8443/am").rstrip("/")
-COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.com:9443/am").rstrip("/")
+COM_AM = os.environ.get("COM_AM_BASE_URL", "https://am.jrsz.net:9443/am").rstrip("/")
 ORG_ENTITY = os.environ.get("ORG_ENTITY_ID", f"{ORG_AM}/jrsz-org")
 COM_ENTITY = os.environ.get("COM_ENTITY_ID", f"{COM_AM}/jrsz-com")
 

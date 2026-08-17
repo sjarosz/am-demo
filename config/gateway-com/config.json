@@ -37,7 +37,7 @@
       "name": "PlatformTrustManager",
       "type": "SecretsTrustManager",
       "config": {
-        "verificationSecretId": "platform.ca",
+        "certificateVerificationSecretId": "platform.ca",
         "secretsProvider": "PlatformTrustStore",
         "checkRevocation": false
       }
@@ -117,7 +117,7 @@
       "name": "AmService",
       "type": "AmService",
       "config": {
-        "url": "https://am.jrsz.com:9443/am",
+        "url": "https://am.jrsz.net:9443/am",
         "realm": "/alpha",
         "version": "8.1.0",
         "secretsProvider": {
@@ -150,7 +150,7 @@
       "type": "AmService",
       "comment": "app6 IG App A: timeout-test realm, no session cache (every request revalidates against AM).",
       "config": {
-        "url": "https://am.jrsz.com:9443/am",
+        "url": "https://am.jrsz.net:9443/am",
         "realm": "/timeout-test",
         "version": "8.1.0",
         "secretsProvider": {
@@ -183,7 +183,7 @@
       "type": "AmService",
       "comment": "app6 IG App B: timeout-test realm with an IG session cache. notifications is intentionally DISABLED so the gateway boots even before the timeout-test realm/agent is bootstrapped (fresh clone or after `docker compose down -v`); an enabled notification service is a fatal startup dependency in IG. With notifications off, the cache evicts on expiration (CACHE_TTL), so App B can briefly serve stale content after AM logout/timeout - this exercises the stale-cache (G3) behavior. To demo instant WebSocket eviction (G2), set notifications.enabled=true AFTER running the bootstrap, then restart the gateway.",
       "config": {
-        "url": "https://am.jrsz.com:9443/am",
+        "url": "https://am.jrsz.net:9443/am",
         "realm": "/timeout-test",
         "version": "8.1.0",
         "secretsProvider": {

@@ -1,7 +1,7 @@
 # SAML 2.0 external IdP — integrated mode (cross-AM)
 
 This directory is the **source of truth** for the cross-AM SAML 2.0 **integrated
-mode** feature between the `jrsz.org` and `jrsz.com` AM stacks. A clean
+mode** feature between the `jrsz.org` and `jrsz.net` AM stacks. A clean
 `git clone` + `scripts/reset-stack.sh` recreates it from these artifacts — no
 manual steps.
 
@@ -38,7 +38,7 @@ direction), joins the existing `jrsz-federation` circle of trust, and gets the
 | SP entity ID | `org-integrated-sp` | `com-integrated-sp` |
 | SP metaAlias | `/alpha/integrated-sp-org` | `/alpha/integrated-sp-com` |
 | ACS endpoints | `…/am/AuthConsumer/metaAlias/alpha/integrated-sp-org` | `…/am/AuthConsumer/metaAlias/alpha/integrated-sp-com` |
-| Partner IdP (SP-init target) | `https://am.jrsz.com:9443/am/jrsz-com` | `https://am.jrsz.org:8443/am/jrsz-org` |
+| Partner IdP (SP-init target) | `https://am.jrsz.net:9443/am/jrsz-com` | `https://am.jrsz.org:8443/am/jrsz-org` |
 | Hosted artifact | `org-integrated-sp.hosted.json` | `com-integrated-sp.hosted.json` |
 | Remote metadata (for partner) | `org-integrated-sp.metadata.xml` | `com-integrated-sp.metadata.xml` |
 | Journey | `SamlLogin` | `SamlLogin` |
@@ -90,7 +90,7 @@ directly:
 
 ```
 https://am.jrsz.org:8443/am/XUI/?realm=/alpha&authIndexType=service&authIndexValue=SamlLogin#login/
-https://am.jrsz.com:9443/am/XUI/?realm=/alpha&authIndexType=service&authIndexValue=SamlLogin#login/
+https://am.jrsz.net:9443/am/XUI/?realm=/alpha&authIndexType=service&authIndexValue=SamlLogin#login/
 ```
 
 Expect a federated session for `demo-user` (Account Exists via auto-fed `uid`).
@@ -101,6 +101,6 @@ Expect a federated session for `demo-user` (Account Exists via auto-fed `uid`).
 # Re-apply canon to both already-provisioned stacks:
 AM_SERVER_URL=https://am.jrsz.org:8443/am AM_COOKIE_DOMAIN=jrsz.org \
   AM_ADMIN_PASSWORD=changeit python3 config/amster/saml-integrated/provision.py
-AM_SERVER_URL=https://am.jrsz.com:9443/am AM_COOKIE_DOMAIN=jrsz.com \
+AM_SERVER_URL=https://am.jrsz.net:9443/am AM_COOKIE_DOMAIN=jrsz.net \
   AM_ADMIN_PASSWORD=changeit python3 config/amster/saml-integrated/provision.py
 ```

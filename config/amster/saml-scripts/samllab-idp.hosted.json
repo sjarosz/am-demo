@@ -101,8 +101,8 @@
         "relayStateUrlList": [
           "https://app9.jrsz.org/*",
           "https://app9.jrsz.org/*?*",
-          "https://app9.jrsz.com:8444/*",
-          "https://app9.jrsz.com:8444/*?*",
+          "https://app9.jrsz.net:8444/*",
+          "https://app9.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*"
         ]

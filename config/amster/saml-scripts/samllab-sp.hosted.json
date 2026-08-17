@@ -1,5 +1,5 @@
 {
-  "entityId": "https://am.jrsz.com:9443/am/samllab-sp",
+  "entityId": "https://am.jrsz.net:9443/am/samllab-sp",
   "serviceProvider": {
     "assertionContent": {
       "signingAndEncryption": {
@@ -39,46 +39,46 @@
         "singleLogoutService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/samllab/sp",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPSloRedirect/metaAlias/samllab/sp"
+            "location": "https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/samllab/sp",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPSloRedirect/metaAlias/samllab/sp"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/samllab/sp",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPSloPOST/metaAlias/samllab/sp"
+            "location": "https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/samllab/sp",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPSloPOST/metaAlias/samllab/sp"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SPSloSoap/metaAlias/samllab/sp"
+            "location": "https://am.jrsz.net:9443/am/SPSloSoap/metaAlias/samllab/sp"
           }
         ],
         "nameIdService": [
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            "location": "https://am.jrsz.com:9443/am/SPMniRedirect/metaAlias/samllab/sp",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPMniRedirect/metaAlias/samllab/sp"
+            "location": "https://am.jrsz.net:9443/am/SPMniRedirect/metaAlias/samllab/sp",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPMniRedirect/metaAlias/samllab/sp"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/SPMniPOST/metaAlias/samllab/sp",
-            "responseLocation": "https://am.jrsz.com:9443/am/SPMniPOST/metaAlias/samllab/sp"
+            "location": "https://am.jrsz.net:9443/am/SPMniPOST/metaAlias/samllab/sp",
+            "responseLocation": "https://am.jrsz.net:9443/am/SPMniPOST/metaAlias/samllab/sp"
           },
           {
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP",
-            "location": "https://am.jrsz.com:9443/am/SPMniSoap/metaAlias/samllab/sp"
+            "location": "https://am.jrsz.net:9443/am/SPMniSoap/metaAlias/samllab/sp"
           }
         ],
         "assertionConsumerService": [
           {
             "isDefault": false,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact",
-            "location": "https://am.jrsz.com:9443/am/Consumer/metaAlias/samllab/sp",
+            "location": "https://am.jrsz.net:9443/am/Consumer/metaAlias/samllab/sp",
             "index": 0
           },
           {
             "isDefault": true,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            "location": "https://am.jrsz.com:9443/am/Consumer/metaAlias/samllab/sp",
+            "location": "https://am.jrsz.net:9443/am/Consumer/metaAlias/samllab/sp",
             "index": 1
           }
         ]
@@ -92,8 +92,8 @@
         "relayStateUrlList": [
           "https://app9.jrsz.org/*",
           "https://app9.jrsz.org/*?*",
-          "https://app9.jrsz.com:8444/*",
-          "https://app9.jrsz.com:8444/*?*",
+          "https://app9.jrsz.net:8444/*",
+          "https://app9.jrsz.net:8444/*?*",
           "https://*",
           "https://*?*"
         ]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provision the cross-domain SAML federation (jrsz.org <-> jrsz.com) from the
+"""Provision the cross-domain SAML federation (jrsz.org <-> jrsz.net) from the
 checked-in canon artifacts in this directory. Idempotent; safe to re-run.
 
 Runs once per stack from the amster bootstrap container, targeting the local AM
@@ -36,7 +36,9 @@ REALM_PATH = os.environ.get("SAML_REALM_PATH", "realms/root/realms/alpha")
 HERE = os.path.dirname(os.path.abspath(__file__))
 COT_NAME = "jrsz-federation"
 
-SIDE = "com" if "com" in COOKIE_DOMAIN else "org"
+# Side detection: the org stack owns jrsz.org; any other cookie domain (jrsz.net, formerly
+# jrsz.com) is the "com" side. AM_SIDE=org|com overrides.
+SIDE = os.environ.get("AM_SIDE") or ("org" if COOKIE_DOMAIN.lstrip(".") == "jrsz.org" else "com")
 PARTNER = "org" if SIDE == "com" else "com"
 
 

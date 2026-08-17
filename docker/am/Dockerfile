@@ -19,8 +19,11 @@ RUN apt-get update && \
     apt-get install -y curl tar unzip && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /opt && \
-    curl -fsSL "https://downloads.apache.org/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
-      | tar -xz -C /opt && \
+    # downloads.apache.org removes superseded releases; archive.apache.org keeps all
+    { curl -fsSL -o /tmp/tomcat.tar.gz "https://downloads.apache.org/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz" \
+      || curl -fsSL -o /tmp/tomcat.tar.gz "https://archive.apache.org/dist/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz"; } && \
+    tar -xzf /tmp/tomcat.tar.gz -C /opt && \
+    rm -f /tmp/tomcat.tar.gz && \
     mv "/opt/apache-tomcat-${TOMCAT_VERSION}" "${CATALINA_HOME}" && \
     mv /tmp/server.xml.template ${CATALINA_HOME}/conf/server.xml.template && \
     mv /tmp/setenv.sh ${CATALINA_HOME}/bin/setenv.sh && \

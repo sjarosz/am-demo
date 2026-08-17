@@ -27,7 +27,16 @@ Override the default password for all generated stores with:
 DEFAULT_PASSWORD='your-password' ./scripts/generate-tls.sh
 ```
 
-The resulting CA certificate must be trusted by your host browser or OS if you want clean browser access to the `jrsz.org` HTTPS endpoints.
+The resulting CA certificate must be trusted by your host browser or OS if you want clean browser access to the `jrsz.org` HTTPS endpoints — or use a real certificate instead:
+
+```bash
+./scripts/le-cert.sh issue --domain jrsz.org --dry-run   # validate the zone's token (secrets/cloudflare/jrsz.org.ini)
+./scripts/le-cert.sh issue --domain jrsz.org             # Let's Encrypt wildcard via Cloudflare DNS-01 (also --domain jrsz.net)
+./scripts/le-cert.sh install --domain jrsz.org           # am.p12 + gateway PEM + ISRG root in the shared truststore
+./scripts/le-cert.sh renew --domain jrsz.org             # manual renewal (no-op when not due)
+```
+
+`le-cert.sh` only affects `am`/`gateway` (jrsz.org, via `AM_TLS_DIR` / `GATEWAY_TLS_DIR` in `.env`) and `am-com`/`gateway-com` (jrsz.net, via `AM_COM_TLS_DIR` / `AM_COM_KEYSTORE_FILE` / `GATEWAY_COM_TLS_DIR`); see [docs/tls-letsencrypt.md](../docs/tls-letsencrypt.md).
 
 Additional smoke tests:
 

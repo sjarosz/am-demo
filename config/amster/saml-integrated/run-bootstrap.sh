@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Provision cross-AM SAML 2.0 integrated-mode external IdP (jrsz.org <-> jrsz.com)
+# Provision cross-AM SAML 2.0 integrated-mode external IdP (jrsz.org <-> jrsz.net)
 # from the artifacts in this directory. Invoked by the amster bootstrap container
 # (docker/amster/docker-entrypoint.sh) once per stack; idempotent.
 #

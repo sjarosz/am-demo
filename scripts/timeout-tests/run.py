@@ -27,7 +27,7 @@ Usage
   python3 scripts/timeout-tests/run.py --runs 5        # 5 runs, then average
   python3 scripts/timeout-tests/run.py --include-timed # also run the idle test
   python3 scripts/timeout-tests/run.py --aggregate     # average all stored runs
-  python3 scripts/timeout-tests/run.py --side com      # target the jrsz.com twin
+  python3 scripts/timeout-tests/run.py --side com      # target the jrsz.net twin
   python3 scripts/timeout-tests/run.py --list          # list test cases
 
 Results are written under scripts/timeout-tests/results/.
@@ -84,9 +84,9 @@ class Config:
 
         self.side = side
         if side == "com":
-            self.am_url = (pick("AM_URL", default="https://am.jrsz.com:9443/am")).rstrip("/")
-            self.app6_base = (pick("APP6_BASE_URL", default="https://app6.jrsz.com:8444")).rstrip("/")
-            self.cookie_domain = pick("AM_COOKIE_DOMAIN", default="jrsz.com")
+            self.am_url = (pick("AM_URL", default="https://am.jrsz.net:9443/am")).rstrip("/")
+            self.app6_base = (pick("APP6_BASE_URL", default="https://app6.jrsz.net:8444")).rstrip("/")
+            self.cookie_domain = pick("AM_COOKIE_DOMAIN", default="jrsz.net")
         else:
             self.am_url = (pick("AM_URL", default="https://am.jrsz.org:8443/am")).rstrip("/")
             self.app6_base = (pick("APP6_BASE_URL", default="https://app6.jrsz.org")).rstrip("/")
@@ -103,7 +103,8 @@ class Config:
         # extension that Python's strict verifier requires), so like the repo's
         # own bootstrap/curl scripts we default to unverified TLS. Opt in to CA
         # verification with --verify.
-        self.ca_cert = ROOT_DIR / "secrets/tls/ca/jrsz-root-ca.cert.pem"
+        ca_bundle = ROOT_DIR / "secrets/tls/ca/ca-bundle.pem"  # JRSZ root + ISRG Root X1 (scripts/le-cert.sh install)
+        self.ca_cert = ca_bundle if ca_bundle.is_file() else ROOT_DIR / "secrets/tls/ca/jrsz-root-ca.cert.pem"
         self.verify = bool(getattr(args, "verify", False))
 
         self.sessions_url = f"{self.am_url}/json/{self.realm_path}/sessions"

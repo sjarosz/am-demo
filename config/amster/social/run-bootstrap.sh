@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Provision cross-AM OIDC social login (jrsz.org <-> jrsz.com) from the artifacts
+# Provision cross-AM OIDC social login (jrsz.org <-> jrsz.net) from the artifacts
 # in this directory. Invoked by the amster bootstrap container
 # (docker/amster/docker-entrypoint.sh) once per stack; idempotent.
 #

@@ -180,12 +180,12 @@ hr {
     <hr>
 
     <h2>SAML v2.0 cross-domain federation console</h2>
-    <p class="section">app7 federates the jrsz.org and jrsz.com AM stacks. Each <code>/alpha</code> realm hosts one dual-role (IDP + SP) entity in the <code>jrsz-federation</code> circle of trust, so AM is both the IDP and the SP. The console launches all four IDP/SP-init permutations and shows the resulting federated AM session (auto-federation on <code>uid</code> resolves to <code>demo-user</code>).</p>
+    <p class="section">app7 federates the jrsz.org and jrsz.net AM stacks. Each <code>/alpha</code> realm hosts one dual-role (IDP + SP) entity in the <code>jrsz-federation</code> circle of trust, so AM is both the IDP and the SP. The console launches all four IDP/SP-init permutations and shows the resulting federated AM session (auto-federation on <code>uid</code> resolves to <code>demo-user</code>).</p>
     <div class="grid">
       <div class="card">
         <h3>app7 federation console</h3>
         <p class="meta">https://app7.jrsz.org/ &middot; realm /alpha</p>
-        <p>Launch org&harr;com IDP-init and SP-init flows. The partner console at <code>https://app7.jrsz.com:8444/</code> shows sessions that land on the com side.</p>
+        <p>Launch org&harr;com IDP-init and SP-init flows. The partner console at <code>https://app7.jrsz.net:8444/</code> shows sessions that land on the com side.</p>
         <a class="button" href="https://app7.jrsz.org/">Open federation console</a>
       </div>
     </div>
@@ -196,7 +196,7 @@ hr {
       <div class="card">
         <h3>app9 SAML script console</h3>
         <p class="meta">https://app9.jrsz.org/ &middot; realm /samllab</p>
-        <p>Launch the org IdP &rarr; com SP flow (IdP-init or SP-init). The session lands on the com stack &mdash; the partner console at <code>https://app9.jrsz.com:8444/</code> reads it back and highlights the &#11088;-tagged assertion attributes and NameID.</p>
+        <p>Launch the org IdP &rarr; com SP flow (IdP-init or SP-init). The session lands on the com stack &mdash; the partner console at <code>https://app9.jrsz.net:8444/</code> reads it back and highlights the &#11088;-tagged assertion attributes and NameID.</p>
         <a class="button" href="https://app9.jrsz.org/">Open SAML script console</a>
       </div>
     </div>

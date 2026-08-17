@@ -9,16 +9,16 @@ These artifacts are version-controlled and restored by `git pull`:
 | Area | Contents |
 |------|----------|
 | `compose.yaml` | jrsz.org services (DS, AM, apps 1–5, Gateway, bootstrap profile) + `include: compose.com.yaml` |
-| `compose.com.yaml` | Parallel jrsz.com twin of every service (see below) |
+| `compose.com.yaml` | Parallel jrsz.net twin of every service (see below) |
 | `docker/` | Dockerfiles, entrypoints, nginx/Tomcat templates |
 | `config/gateway/` | IG routes (`app1`–`app6`, launchpad), `config.json` (incl. `AmServiceTimeout`/`AmServiceCached`), `admin.json`, Groovy scripts |
-| `config/gateway-com/` | Generated jrsz.com gateway config (`./scripts/render-com-config.sh`) |
+| `config/gateway-com/` | Generated jrsz.net gateway config (`./scripts/render-com-config.sh`) |
 | `config/amster/` | Bootstrap scripts: OAuth2 demo, Login Widget, demo user, auth journeys |
 | `config/amster/oauth-oidc.service.json` | Canonical OAuth2/OIDC provider template |
 | `apps/` | Static apps 1–3, PKCE app4, Login Widget app5, session-timeout test console app6 (source + `package-lock.json`) |
 | `scripts/` | `generate-tls.sh`, `render-com-config.sh`, `set-timeout-profile.sh`, `reset-stack.sh`, smoke tests |
 | `.env.example` | Documented defaults for the jrsz.org lab variables |
-| `.env.com` | Runtime values for the jrsz.com stack |
+| `.env.com` | Runtime values for the jrsz.net stack |
 
 **Not in git (by design):**
 
@@ -85,7 +85,7 @@ From the repo root:
 This creates:
 
 - Local CA: `secrets/tls/ca/jrsz-root-ca.cert.pem`
-- Service keystores: `secrets/tls/{am,gateway,ds,app1,app2,app3}/` (+ `*-com` twins for the jrsz.com stack, same CA)
+- Service keystores: `secrets/tls/{am,gateway,ds,app1,app2,app3}/` (+ `*-com` twins for the jrsz.net stack, same CA)
 - Gateway PEM bundle: `secrets/tls/gateway/gateway.server.keypair.pem` (+ `secrets/tls/gateway-com/gateway.server.keypair.pem`)
 - Shared truststore: `secrets/truststores/truststore.p12` (CA-only, used by both stacks)
 - Gateway password files: `secrets/passwords/gateway/truststore.pass`, `ig.agent.alpha.pass`
@@ -108,6 +108,14 @@ Open `.env` and confirm at least these values for a standard lab:
 | `BOOTSTRAP_*` | Toggle bootstrap steps (`true`/`false`) |
 
 **Do not commit `.env` or `secrets/` to git.**
+
+### Optional — publicly trusted certificate for jrsz.org
+
+Instead of importing the lab CA into your browser, the org stack's browser-facing endpoints
+(`am.jrsz.org:8443`, `ig.jrsz.org` / `app*.jrsz.org` on 443) can serve a Let's Encrypt wildcard
+certificate obtained through Cloudflare DNS-01 — see [tls-letsencrypt.md](tls-letsencrypt.md)
+(`./scripts/le-cert.sh issue && ./scripts/le-cert.sh install`, then set `AM_TLS_DIR` /
+`GATEWAY_TLS_DIR` in `.env`). The `jrsz.net` twin, DS and the backends stay on the lab CA.
 
 ### Optional — trust the lab CA
 
@@ -170,29 +178,34 @@ Optional smoke test:
 
 ---
 
-## Parallel `jrsz.com` stack
+## Parallel `jrsz.net` stack
 
-A second, fully independent stack (`compose.com.yaml`, included automatically from `compose.yaml`) mirrors every `jrsz.org` service as a `jrsz.com` twin. Both run concurrently on the shared `jrsz_net` network with deconflicted host ports.
+A second, fully independent stack (`compose.com.yaml`, included automatically from `compose.yaml`) mirrors every `jrsz.org` service as a `jrsz.net` twin. Both run concurrently on the shared `jrsz_net` network with deconflicted host ports.
 
-| Service | jrsz.org | jrsz.com |
+| Service | jrsz.org | jrsz.net |
 |---------|----------|----------|
-| AM | `https://am.jrsz.org:8443/am` | `https://am.jrsz.com:9443/am` |
-| Gateway / apps | `https://*.jrsz.org` (443) | `https://*.jrsz.com:8444` |
+| AM | `https://am.jrsz.org:8443/am` | `https://am.jrsz.net:9443/am` |
+| Gateway / apps | `https://*.jrsz.org` (443) | `https://*.jrsz.net:8444` |
 
-The `jrsz.com` AM listens on **9443 inside the container** (not 8443), so the single URL `https://am.jrsz.com:9443/am` is valid for both browsers and server-to-server callers (IG, app4). The gateway listens on 8443 internally and is published on 8444.
+> Naming: this stack was `jrsz.com` until 2026‑08‑16 and keeps the `-com` suffix in service names, files and
+> env vars (`am-com`, `gateway-com`, `compose.com.yaml`, `.env.com`, `secrets/tls/*-com`, `AM_COM_*`). Only the
+> domain changed; the provisioning scripts detect the side from `AM_COOKIE_DOMAIN` (`jrsz.org` = org, anything
+> else = com; `AM_SIDE=org|com` overrides).
+
+The `jrsz.net` AM listens on **9443 inside the container** (not 8443), so the single URL `https://am.jrsz.net:9443/am` is valid for both browsers and server-to-server callers (IG, app4). The gateway listens on 8443 internally and is published on 8444.
 
 ### Setup
 
-1. Hostnames — add the `jrsz.com` names to `/etc/hosts`:
+1. Hostnames — add the `jrsz.net` names to `/etc/hosts`:
 
 ```text
-127.0.0.1 am.jrsz.com ig.jrsz.com
-127.0.0.1 app1.jrsz.com app2.jrsz.com app3.jrsz.com
-127.0.0.1 app4.jrsz.com app5.jrsz.com app6.jrsz.com
-127.0.0.1 app7.jrsz.com app9.jrsz.com
+127.0.0.1 am.jrsz.net ig.jrsz.net
+127.0.0.1 app1.jrsz.net app2.jrsz.net app3.jrsz.net
+127.0.0.1 app4.jrsz.net app5.jrsz.net app6.jrsz.net
+127.0.0.1 app7.jrsz.net app9.jrsz.net
 ```
 
-2. TLS + gateway config — `generate-tls.sh` already emits the `jrsz.com` leaves (`secrets/tls/*-com`) under the same CA. Render the `jrsz.com` gateway config (committed, but regenerate after editing `config/gateway/`):
+2. TLS + gateway config — `generate-tls.sh` already emits the `jrsz.net` leaves (`secrets/tls/*-com`) under the same CA. Render the `jrsz.net` gateway config (committed, but regenerate after editing `config/gateway/`):
 
 ```bash
 ./scripts/generate-tls.sh
@@ -206,7 +219,7 @@ The `jrsz.com` AM listens on **9443 inside the container** (not 8443), so the si
 ```bash
 docker compose up -d --build
 docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap       # jrsz.org
-docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap-com   # jrsz.com
+docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap-com   # jrsz.net
 ```
 
 > Always pass `--build` to the bootstrap commands. The amster entrypoint (which
@@ -217,9 +230,9 @@ docker compose --profile bootstrap up --build --abort-on-container-exit amster-b
 
 | URL | Expected |
 |-----|----------|
-| `https://am.jrsz.com:9443/am` | AM admin UI for the com stack |
-| `https://ig.jrsz.com:8444/` | jrsz.com launchpad |
-| `https://app1.jrsz.com:8444` – `app6.jrsz.com:8444` | Same demos as jrsz.org, isolated identities |
+| `https://am.jrsz.net:9443/am` | AM admin UI for the com stack |
+| `https://ig.jrsz.net:8444/` | jrsz.net launchpad |
+| `https://app1.jrsz.net:8444` – `app6.jrsz.net:8444` | Same demos as jrsz.org, isolated identities |
 
 The two stacks have **fully separate** AM/DS state, realms, and identities.
 
@@ -250,12 +263,12 @@ After wiping you must run the bootstrap profile again.
 > one-shot containers too:
 >
 > ```bash
-> docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.com 2>/dev/null || true
+> docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.net 2>/dev/null || true
 > docker compose --profile bootstrap down -v --remove-orphans
 > docker compose up -d --build
 > docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap
 > docker compose --profile bootstrap up --build --abort-on-container-exit amster-bootstrap-com
-> docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.com 2>/dev/null || true
+> docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.net 2>/dev/null || true
 > ```
 
 ---
@@ -265,7 +278,7 @@ After wiping you must run the bootstrap profile again.
 | Symptom | Check |
 |---------|-------|
 | AM logs `ConfigurationException: Configuration store is not available` (HTTP 500 on `/am/`) | AM home is out of sync with the DS config store (usually a `down -v` that left a pinned `am-home-bootstrap` volume). Run `./scripts/reset-stack.sh` |
-| `down -v` reports `Volume ... Resource is still in use` | A lingering `amster-bootstrap*` container holds the volume. `docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.com`, then retry — or just use `./scripts/reset-stack.sh` |
+| `down -v` reports `Volume ... Resource is still in use` | A lingering `amster-bootstrap*` container holds the volume. `docker rm -f amster-bootstrap.jrsz.org amster-bootstrap.jrsz.net`, then retry — or just use `./scripts/reset-stack.sh` |
 | Bootstrap aborts with `container am.jrsz.org is unhealthy` | AM never reached the configurator (same stale-volume cause as above). Reset with `./scripts/reset-stack.sh` |
 | Build fails: missing `openam/` etc. | Restore vendor distributions (Prerequisites) |
 | TLS / connection errors | Re-run `./scripts/generate-tls.sh`; confirm `/etc/hosts` |

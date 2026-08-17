@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Idempotently repair the cross-domain SAML federation config (jrsz.org <-> jrsz.com)
+# Idempotently repair the cross-domain SAML federation config (jrsz.org <-> jrsz.net)
 # so the four browser POST-SSO flows work end to end. See the docstring in
 # scripts/repair_saml_federation.py for the exact settings this corrects.
 #

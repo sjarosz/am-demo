@@ -36,3 +36,6 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+
+# local secrets/overrides (see .env.example)
+/.env
